@@ -7,6 +7,7 @@ const FooterWrapper = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
+  z-index: 1000;
 `;
 
 const Footer = styled.footer`
@@ -25,7 +26,7 @@ const ListItem = styled.li`
 `;
 
 const Link = styled.a`
-  color: ${props => props.theme.darkBlueColor};
+  color: ${props => props.theme.whiteColor};
   text-transform: uppercase;
   font-size: 13px;
 `;
