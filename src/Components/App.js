@@ -5,11 +5,20 @@ import { ThemeProvider } from "styled-components";
 import GlobalStyles from "../Styles/GlobalStyles";
 import Theme from "../Styles/Theme";
 import Router from "./Router";
+import Footer from "./Footer";
+import styled from "styled-components";
 
 const QUERY = gql`
   {
     isLoggedIn @client
   }
+`;
+
+const Wrapper = styled.div`
+  position: relative;
+  min-width: 920px;
+  min-height: 600px;
+  height: 100%;
 `;
 
 export default () => {
@@ -19,10 +28,11 @@ export default () => {
 
   return (
     <ThemeProvider theme={Theme}>
-      <>
+      <Wrapper>
         <GlobalStyles />
         <Router isLoggedIn={isLoggedIn} />
-      </>
+        <Footer />
+      </Wrapper>
     </ThemeProvider>
   );
 };
