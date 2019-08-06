@@ -7,6 +7,7 @@ import { ThemeProvider } from "styled-components";
 import GlobalStyles from "../Styles/GlobalStyles";
 import Theme from "../Styles/Theme";
 import Router from "./Router";
+import Header from "./Header";
 import Footer from "./Footer";
 import styled from "styled-components";
 
@@ -23,6 +24,10 @@ const Wrapper = styled.div`
   height: 100%;
 `;
 
+const Container = styled.div`
+  padding-top: ${props => props.theme.headerHeight};
+`;
+
 export default () => {
   const {
     data: { isLoggedIn }
@@ -32,7 +37,10 @@ export default () => {
     <ThemeProvider theme={Theme}>
       <Wrapper>
         <GlobalStyles />
-        <Router isLoggedIn={isLoggedIn} />
+        <Header />
+        <Container>
+          <Router isLoggedIn={isLoggedIn} />
+        </Container>
         <Footer />
         <ToastContainer position={toast.POSITION.BOTTOM_RIGHT} />
       </Wrapper>

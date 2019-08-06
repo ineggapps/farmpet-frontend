@@ -2,14 +2,13 @@ import React from "react";
 import styled from "styled-components";
 import Input from "../../Components/Input";
 import Button from "../../Components/Button";
-import Logo from "../../Components/Logo";
 import PuppyVideo from "../../Components/PuppyVideo";
 import { STATE_SIGNUP, STATE_LOGIN } from "./AuthContainer";
 
 const Wrapper = styled.div`
   width: 300px;
   margin: 0 auto;
-  min-height: ${props => props.windowHeight}px;
+  min-height: ${props => props.windowHeight - props.theme.headerHeightSize}px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -110,7 +109,6 @@ export default ({
 }) => {
   return (
     <Wrapper windowHeight={window.innerHeight}>
-      <Logo />
       <PuppyVideo />
       <StateChanger>
         {action === "logIn" ? (

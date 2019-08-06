@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-const FooterWrapper = styled.div`
+const Footer = styled.footer`
   position: absolute;
   bottom: 20px;
   width: 100%;
@@ -10,7 +10,7 @@ const FooterWrapper = styled.div`
   z-index: 1000;
 `;
 
-const Footer = styled.footer`
+const FooterWrapper = styled.div`
   width: 300px;
 `;
 
@@ -40,8 +40,8 @@ const Copyright = styled.span`
 `;
 
 export default () => (
-  <FooterWrapper>
-    <Footer>
+  <Footer>
+    <FooterWrapper>
       <List>
         <ListItem>
           <Link href="#">about us</Link>
@@ -56,7 +56,7 @@ export default () => (
           <Link href="#">privacy</Link>
         </ListItem>
       </List>
-      <Copyright>Instaclone {new Date().getFullYear()} &copy;</Copyright>
-    </Footer>
-  </FooterWrapper>
+      <Copyright>Farmpet {new Date().getFullYear()} &copy;</Copyright>
+    </FooterWrapper>
+  </Footer>
 );

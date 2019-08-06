@@ -1,7 +1,10 @@
 const BOX_BORDER = "1px solid #e6e6e6";
 const BORDER_RADIUS = "4px";
+const HEADER_HEIGHT = 65;
 
 export default {
+  headerHeightSize: `${HEADER_HEIGHT}`,
+  headerHeight: `${HEADER_HEIGHT}px`,
   maxWidth: "935px",
   bgColor: "#FAFAFA",
   whiteColor: "#FFFFFF",

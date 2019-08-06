@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { PetIcon } from "./Icons";
 
 const Container = styled.div`
   z-index: 1000;
@@ -8,6 +9,10 @@ const Container = styled.div`
   top: 10px;
 `;
 
-const Logo = () => <Container>Farmpet</Container>;
+const Logo = () => (
+  <Container>
+    <PetIcon size={32} fill="#FFF" />
+  </Container>
+);
 
 export default Logo;
