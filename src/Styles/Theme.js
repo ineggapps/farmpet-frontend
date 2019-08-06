@@ -3,15 +3,17 @@ const BORDER_RADIUS = "4px";
 const HEADER_HEIGHT = 65;
 
 export default {
+  titleColor: "#DD604A",
   headerHeightSize: `${HEADER_HEIGHT}`,
   headerHeight: `${HEADER_HEIGHT}px`,
+  headerBorderBottomColor: "#D0D0D0",
   maxWidth: "935px",
   bgColor: "#FAFAFA",
   whiteColor: "#FFFFFF",
   yellowColor: "#F9DF33",
   blackColor: "#222222",
-  darkGreyColor: "#999",
-  lightGreyColor: "#c7c7c7",
+  darkGreyColor: "#7D7D7D",
+  lightGreyColor: "#ADADAD",
   redColor: "#ED4956",
   blueColor: "#3897f0",
   darkBlueColor: "#003569",

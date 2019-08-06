@@ -6,7 +6,8 @@ import { gql } from "apollo-boost";
 import { ThemeProvider } from "styled-components";
 import GlobalStyles from "../Styles/GlobalStyles";
 import Theme from "../Styles/Theme";
-import Router from "./Router";
+import { HashRouter as Router } from "react-router-dom";
+import Routes from "./Router";
 import Header from "./Header";
 import Footer from "./Footer";
 import styled from "styled-components";
@@ -37,12 +38,14 @@ export default () => {
     <ThemeProvider theme={Theme}>
       <Wrapper>
         <GlobalStyles />
-        <Header />
-        <Container>
-          <Router isLoggedIn={isLoggedIn} />
-        </Container>
-        <Footer />
-        <ToastContainer position={toast.POSITION.BOTTOM_RIGHT} />
+        <Router>
+          {isLoggedIn && <Header />}
+          <Container>
+            <Routes isLoggedIn={isLoggedIn} />
+          </Container>
+          {!isLoggedIn && <Footer />}
+          <ToastContainer position={toast.POSITION.BOTTOM_RIGHT} />
+        </Router>
       </Wrapper>
     </ThemeProvider>
   );
