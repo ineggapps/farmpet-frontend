@@ -1,11 +1,12 @@
+export const TOKEN = "token";
 export const defaults = {
-  isLoggedIn: Boolean(localStorage.getItem("token")) || false
+  isLoggedIn: Boolean(localStorage.getItem(TOKEN)) || false
 };
 
 export const resolvers = {
   Mutation: {
     logUserIn: (_, { token }, { cache }) => {
-      localStorage.setItem("token", token);
+      localStorage.setItem(TOKEN, token);
       cache.writeData({
         data: {
           isLoggedIn: true
@@ -14,7 +15,7 @@ export const resolvers = {
       return null;
     },
     logUserOut: (_, __, { cache }) => {
-      localStorage.removeItem("token");
+      localStorage.removeItem(TOKEN);
       window.location = "/";
       return null;
     }
