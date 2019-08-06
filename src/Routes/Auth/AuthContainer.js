@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import AuthPresenter from "./AuthPresenter";
 import useInput from "../../Hooks/useInput";
+import { useMutation } from "react-apollo-hooks";
+import { LOG_IN } from "./AuthQueries";
 
 export const STATE_LOGIN = "logIn";
 export const STATE_SIGNUP = "signUp";
@@ -14,6 +16,17 @@ export default () => {
   const firstName = useInput("");
   const lastName = useInput("");
 
+  const [confirmAccount] = useMutation(LOG_IN, {
+    variables: { email: email.value, password: password.value }
+  });
+
+  const onLogin = e => {
+    e.preventDefault();
+    if (email !== "" && password !== "") {
+      console.log(confirmAccount());
+    }
+  };
+
   return (
     <AuthPresenter
       action={action}
@@ -24,6 +37,7 @@ export default () => {
       username={username}
       firstName={firstName}
       lastName={lastName}
+      onLogin={onLogin}
     />
   );
 };
