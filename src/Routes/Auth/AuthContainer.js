@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import AuthPresenter from "./AuthPresenter";
 import useInput from "../../Hooks/useInput";
 import { useMutation } from "react-apollo-hooks";
-import { LOG_IN, CREATE_ACCOUNT } from "./AuthQueries";
+import { LOG_IN, CREATE_ACCOUNT, LOCAL_LOG_IN } from "./AuthQueries";
 import { toast } from "react-toastify";
 
 export const STATE_LOGIN = "logIn";
@@ -17,19 +17,19 @@ export default () => {
   const firstName = useInput("");
   const lastName = useInput("");
 
-  const [confirmAccount] = useMutation(LOG_IN, {
-    update: (_, { data }) => {
-      const { confirmAccount } = data;
-      toast.success(confirmAccount);
-      console.log(confirmAccount);
-    },
+  const [confirmAccountMutation] = useMutation(LOG_IN, {
+    // update: (_, { data }) => {
+    //   const { confirmAccountMutation } = data;
+    //   toast.success(confirmAccountMutation);
+    //   console.log(confirmAccountMutation);
+    // },
     variables: { email: email.value, password: password.value }
   });
 
-  const [createAccount] = useMutation(CREATE_ACCOUNT, {
-    update: (_, { data }) => {
-      setAction(STATE_LOGIN);
-    },
+  const [createAccountMutation] = useMutation(CREATE_ACCOUNT, {
+    // update: (_, { data }) => {
+    //   setAction(STATE_LOGIN);
+    // },
     variables: {
       email: email.value,
       password: password.value,
@@ -39,14 +39,22 @@ export default () => {
     }
   });
 
+  const [localLogInMutation] = useMutation(LOCAL_LOG_IN, {});
+
   const onSubmit = async e => {
     e.preventDefault();
     if (action === STATE_LOGIN) {
       if (email.value !== "" && password.value !== "") {
         try {
-          await confirmAccount();
+          const result = await confirmAccountMutation();
+          const {
+            data: { confirmAccount: token }
+          } = result;
+          if (token !== "" && token !== undefined) {
+            localLogInMutation({ variables: { token } });
+          }
         } catch (error) {
-          // console.log(error, "오류");
+          console.log(error, "오류");
           toast.error("The email address or password you entered were invalid.");
         }
       }
@@ -62,10 +70,11 @@ export default () => {
         lastName.value !== ""
       ) {
         try {
-          await createAccount();
+          await createAccountMutation();
+          setAction(STATE_LOGIN);
         } catch (error) {
           console.log(error);
-          toast.error("Signing up was failed. Try again.");
+          toast.error("Can't create account. try again.");
         }
       } else {
         toast.error("Please fill out all of them.");
