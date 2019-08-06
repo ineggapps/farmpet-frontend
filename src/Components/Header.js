@@ -1,9 +1,12 @@
 import React from "react";
+import { gql } from "apollo-boost";
 import { Link, withRouter } from "react-router-dom";
 import styled from "styled-components";
 import Logo from "./Logo";
-import HeaderGNB from "./HeaderGNB";
-import HeaderSearch from "./HeaderSearch";
+import { GNBWriteIcon, GNBNotificationIcon, SearchIcon } from "./Icons";
+import Input from "./Input";
+import useInput from "../Hooks/useInput";
+import { useQuery } from "react-apollo-hooks";
 
 const Header = styled.header`
   position: fixed;
@@ -31,7 +34,58 @@ const HeaderWrapper = styled.div`
   height: 100%;
 `;
 
+const GNBWrapper = styled.div``;
+const GNB = styled.ul`
+  display: flex;
+`;
+const GNBList = styled.li`
+  &:not(:last-child) {
+    padding-right: 15px;
+  }
+  svg {
+    fill: ${props => props.theme.lightGreyColor};
+    &:hover {
+      fill: ${props => props.theme.darkGreyColor};
+    }
+    transition: fill 0.1s linear;
+    cursor: pointer;
+  }
+`;
+
+const SearchBoxWrapper = styled.div`
+  position: relative;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border-bottom: 2px solid ${props => props.theme.lightGreyColor};
+
+  svg {
+    fill: ${props => props.theme.lightGreyColor};
+  }
+`;
+
+const SearchInput = styled(Input)`
+  background: transparent;
+  border: 0 none;
+  &:focus {
+    outline: none;
+  }
+`;
+
+// const ME = gql`
+//   {
+//     me {
+//       username
+//     }
+//   }
+// `;
+
 export default withRouter(({ history }) => {
+  const search = useInput("");
+  const onSearchSubmit = e => {
+    e.preventDefault();
+    history.push(`/search?term=${search.value}`);
+  };
   return (
     <Header>
       <HeaderWrapper>
@@ -41,8 +95,22 @@ export default withRouter(({ history }) => {
             Farmpet
           </h1>
         </Link>
-        <HeaderSearch />
-        <HeaderGNB />
+        <SearchBoxWrapper>
+          <form onSubmit={onSearchSubmit}>
+            <SearchInput placeholder="Search something..." {...search} />
+            <SearchIcon />
+          </form>
+        </SearchBoxWrapper>
+        <GNBWrapper>
+          <GNB>
+            <GNBList>
+              <GNBWriteIcon />
+            </GNBList>
+            <GNBList>
+              <GNBNotificationIcon />
+            </GNBList>
+          </GNB>
+        </GNBWrapper>
       </HeaderWrapper>
     </Header>
   );
