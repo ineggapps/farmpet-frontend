@@ -48,9 +48,9 @@ const Form = styled.div`
   margin-bottom: 20px;
 `;
 
-const LogInComponents = ({ email, password, onLogin }) => (
+const LogInComponents = ({ email, password, onSubmit }) => (
   <Form>
-    <form onSubmit={onLogin}>
+    <form onSubmit={onSubmit}>
       <Input type="email" required placeholder="Email Address" {...email} />
       <Input type="password" required placeholder="Password" {...password} />
       <Button
@@ -70,10 +70,10 @@ const SignUpComponents = ({
   username,
   firstName,
   lastName,
-  onLogin
+  onSubmit
 }) => (
   <Form>
-    <form onSubmit={onLogin}>
+    <form onSubmit={onSubmit}>
       <Input type="email" required placeholder="Email Address" {...email} />
       <Input type="password" required placeholder="Password" {...password} />
       <Input type="password" required placeholder="Password Confirm" {...passwordConfirm} />
@@ -106,7 +106,7 @@ export default ({
   username,
   firstName,
   lastName,
-  onLogin
+  onSubmit
 }) => {
   return (
     <Wrapper windowHeight={window.innerHeight}>
@@ -115,7 +115,7 @@ export default ({
       <StateChanger>
         {action === "logIn" ? (
           <>
-            <LogInComponents email={email} password={password} onLogin={onLogin} />
+            <LogInComponents email={email} password={password} onSubmit={onSubmit} />
             <Label>Don't you have an account?</Label>
             <Link onClick={() => setAction(STATE_SIGNUP)}>Sign Up</Link>
           </>
@@ -128,7 +128,7 @@ export default ({
               passwordConfirm={passwordConfirm}
               firstName={firstName}
               lastName={lastName}
-              onLogin={onLogin}
+              onSubmit={onSubmit}
             />
             <Label>Have an account?</Label>
             <Link onClick={() => setAction(STATE_LOGIN)}>Log In</Link>
