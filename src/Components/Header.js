@@ -9,6 +9,7 @@ import useInput from "../Hooks/useInput";
 import { useQuery } from "react-apollo-hooks";
 
 const Header = styled.header`
+  background-color: white;
   position: fixed;
   width: 100%;
   height: ${props => props.theme.headerHeight};
