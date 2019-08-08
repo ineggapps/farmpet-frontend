@@ -3,7 +3,16 @@ import PropTypes from "prop-types";
 import PostPresenter from "./PostPresenter";
 import useInput from "../../Hooks/useInput";
 
-const PostContainer = ({ id, user, files, likeCount, isLiked, commentCount, createdAt }) => {
+const PostContainer = ({
+  id,
+  user,
+  files,
+  likeCount,
+  caption,
+  isLiked,
+  commentCount,
+  createdAt
+}) => {
   const [isLikedS, setIsLiked] = useState(isLiked);
   const [likeCountS, setLikeCount] = useState(likeCount);
   const comment = useInput("");
@@ -12,6 +21,7 @@ const PostContainer = ({ id, user, files, likeCount, isLiked, commentCount, crea
       id={id}
       user={user}
       files={files}
+      caption={caption}
       likeCount={likeCountS}
       isLiked={isLikedS}
       commentCount={commentCount}
@@ -36,6 +46,7 @@ PostContainer.propTypes = {
       file: PropTypes.string
     })
   ),
+  caption: PropTypes.string.isRequired,
   likeCount: PropTypes.number.isRequired,
   isLiked: PropTypes.bool.isRequired,
   commentCount: PropTypes.number.isRequired,

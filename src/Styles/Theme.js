@@ -8,7 +8,7 @@ export default {
   headerHeight: `${HEADER_HEIGHT}px`,
   headerBorderBottomColor: "#D0D0D0",
   maxWidth: "935px",
-  bgColor: "#FAFAFA",
+  bgColor: "#F3F3F3",
   whiteColor: "#FFFFFF",
   yellowColor: "#F9DF33",
   blackColor: "#222222",
@@ -25,8 +25,8 @@ export default {
             `,
   postBox: `
   width:600px;
-  margin:20px auto 0;
-  padding:40px 40px 0;
+  border-radius:3px;
+  margin:20px auto 40px;
   border-bottom:1px solid #DEDEDE;
   background-color:#FFF;
   box-shadow:0 1px 0 rgba(198,201,206,.2);
