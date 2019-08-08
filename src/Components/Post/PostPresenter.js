@@ -21,7 +21,7 @@ const UserColumn = styled.div`
 `;
 
 const Content = styled.div`
-  padding: 10px 40px 0;
+  padding: 10px 40px 20px;
   border-bottom: 1px solid #f4f4f4;
 `;
 
@@ -76,7 +76,14 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
-export default ({ user: { username, avatar }, caption, files, createdAt }) => {
+export default ({
+  user: { username, avatar },
+  caption,
+  files,
+  createdAt,
+  newComment,
+  onKeyPress
+}) => {
   return (
     <Post>
       <Header>
@@ -101,12 +108,12 @@ export default ({ user: { username, avatar }, caption, files, createdAt }) => {
           </CommentInfo>
         </CommentViewer>
         <CommentWriter>
-          <InputBox>
-            <Textarea />
-          </InputBox>
-          <Button href="#" onClick={() => console.log("sent")}>
-            Send
-          </Button>
+          <Textarea
+            placeholder={"Add a comment."}
+            value={newComment.value}
+            onChange={newComment.onChange}
+            onKeyPress={onKeyPress}
+          />
         </CommentWriter>
       </CommentArea>
     </Post>

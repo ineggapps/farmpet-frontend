@@ -16,6 +16,15 @@ const PostContainer = ({
   const [isLikedS, setIsLiked] = useState(isLiked);
   const [likeCountS, setLikeCount] = useState(likeCount);
   const comment = useInput("");
+
+  const onKeyPress = async e => {
+    const { which } = e;
+    if (which === 13) {
+      e.preventDefault();
+      comment.setValue("");
+    }
+  };
+
   return (
     <PostPresenter
       id={id}
@@ -29,6 +38,7 @@ const PostContainer = ({
       newComment={comment}
       setIsLiked={setIsLiked}
       setLikeCount={setLikeCount}
+      onKeyPress={onKeyPress}
     />
   );
 };
