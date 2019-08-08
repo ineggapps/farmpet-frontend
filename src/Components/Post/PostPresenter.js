@@ -1,4 +1,5 @@
 import React from "react";
+import TextareaAutosize from "react-autosize-textarea";
 import styled from "styled-components";
 import FatText from "../FatText";
 import Avatar from "../Avatar";
@@ -20,7 +21,7 @@ const UserColumn = styled.div`
 `;
 
 const Content = styled.div`
-  padding: 40px 40px 0;
+  padding: 10px 40px 0;
   border-bottom: 1px solid #f4f4f4;
 `;
 
@@ -33,7 +34,7 @@ const Files = styled.div`
 `;
 
 const CommentArea = styled.div`
-  background-color: #f4f4f4;
+  background-color: #fcfcfc;
 `;
 
 const CommentViewer = styled.div`
@@ -43,11 +44,36 @@ const CommentViewer = styled.div`
 const CommentInfo = styled.div`
   font-size: 12px;
   padding: 10px 0;
-  border-bottom: 1px solid #eeeeee;
+  border-bottom: 1px solid ${props => props.theme.superLightGreyColor};
 `;
 
 const CommentWriter = styled.div`
   padding: 0 40px 15px;
+  display: flex;
+`;
+
+const InputBox = styled.div`
+  width: 90%;
+  padding: 3px 5px;
+  background-color: #fff;
+  border: 1px solid;
+  border-color: #f4f4f4;
+`;
+
+const Textarea = styled(TextareaAutosize)`
+  width: 100%;
+  border: 0 none;
+  resize: none;
+  &:focus {
+    outline: none;
+  }
+`;
+
+const Button = styled.button`
+  ${props => props.theme.redButton};
+  margin-left: 8px;
+  width: 62px;
+  cursor: pointer;
 `;
 
 export default ({ user: { username, avatar }, caption, files, createdAt }) => {
@@ -71,10 +97,17 @@ export default ({ user: { username, avatar }, caption, files, createdAt }) => {
       <CommentArea>
         <CommentViewer>
           <CommentInfo>
-            좋아요 <FatText text="몇" /> 댓글 <FatText text="몇" />
+            Likes <FatText text="몇" /> Comments <FatText text="몇" />
           </CommentInfo>
         </CommentViewer>
-        <CommentWriter>Writing Area</CommentWriter>
+        <CommentWriter>
+          <InputBox>
+            <Textarea />
+          </InputBox>
+          <Button href="#" onClick={() => console.log("sent")}>
+            Send
+          </Button>
+        </CommentWriter>
       </CommentArea>
     </Post>
   );
