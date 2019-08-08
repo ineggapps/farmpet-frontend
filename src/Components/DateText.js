@@ -4,6 +4,7 @@ import styled from "styled-components";
 
 const Text = styled.span`
   color: ${props => props.theme.lightGreyColor};
+  font-size: 13px;
 `;
 
 const convertDateFormat = date => {
