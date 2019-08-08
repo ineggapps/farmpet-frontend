@@ -14,6 +14,7 @@ export default {
   blackColor: "#222222",
   darkGreyColor: "#7D7D7D",
   lightGreyColor: "#ADADAD",
+  superLightGreyColor: "#EEE",
   redColor: "#ED4956",
   blueColor: "#3897f0",
   darkBlueColor: "#003569",
@@ -30,5 +31,16 @@ export default {
   border-bottom:1px solid #DEDEDE;
   background-color:#FFF;
   box-shadow:0 1px 0 rgba(198,201,206,.2);
+`,
+  redButton: `
+  border:1px solid #f26a41;
+  background-color:#f26a41;
+  color:#FFF;
+  &:focus {
+    outline: none;
+  }
+  &:hover{
+    background-color:#d95f3a;
+  }
 `
 };
