@@ -1,4 +1,5 @@
 import React from "react";
+import Helmet from "react-helmet";
 import styled from "styled-components";
 import { gql } from "apollo-boost";
 import { useQuery } from "react-apollo-hooks";
@@ -64,6 +65,9 @@ export default () => {
 
   return (
     <Wrapper>
+      <Helmet>
+        <title>Feed | Farmpet</title>
+      </Helmet>
       {loading && <Loader />}
       {!loading &&
         data &&
@@ -74,6 +78,7 @@ export default () => {
             id={post.id}
             user={post.user}
             files={post.files}
+            caption={post.caption}
             likeCount={post.likeCount}
             isLiked={post.isLiked}
             commentCount={post.commentCount}

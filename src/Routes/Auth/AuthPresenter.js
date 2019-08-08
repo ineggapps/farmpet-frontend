@@ -1,4 +1,5 @@
 import React from "react";
+import Helmet from "react-helmet";
 import styled from "styled-components";
 import Input from "../../Components/Input";
 import Button from "../../Components/Button";
@@ -48,18 +49,23 @@ const Form = styled.div`
 `;
 
 const LogInComponents = ({ email, password, onSubmit }) => (
-  <Form>
-    <form onSubmit={onSubmit}>
-      <Input type="email" required placeholder="Email Address" {...email} />
-      <Input type="password" required placeholder="Password" {...password} />
-      <Button
-        text="Log In"
-        onClick={() => {
-          console.log("click");
-        }}
-      />
-    </form>
-  </Form>
+  <>
+    <Helmet>
+      <title>Log In | Farmpet</title>
+    </Helmet>
+    <Form>
+      <form onSubmit={onSubmit}>
+        <Input type="email" required placeholder="Email Address" {...email} />
+        <Input type="password" required placeholder="Password" {...password} />
+        <Button
+          text="Log In"
+          onClick={() => {
+            console.log("click");
+          }}
+        />
+      </form>
+    </Form>
+  </>
 );
 
 const SignUpComponents = ({
@@ -71,22 +77,27 @@ const SignUpComponents = ({
   lastName,
   onSubmit
 }) => (
-  <Form>
-    <form onSubmit={onSubmit}>
-      <Input type="email" required placeholder="Email Address" {...email} />
-      <Input type="password" required placeholder="Password" {...password} />
-      <Input type="password" required placeholder="Password Confirm" {...passwordConfirm} />
-      <Input required placeholder="User name" {...username} />
-      <Input required placeholder="First name" {...firstName} />
-      <Input required placeholder="Last name" {...lastName} />
-      <Button
-        text="Register"
-        onClick={() => {
-          console.log("click");
-        }}
-      />
-    </form>
-  </Form>
+  <>
+    <Helmet>
+      <title>Sign Up | Farmpet</title>
+    </Helmet>
+    <Form>
+      <form onSubmit={onSubmit}>
+        <Input type="email" required placeholder="Email Address" {...email} />
+        <Input type="password" required placeholder="Password" {...password} />
+        <Input type="password" required placeholder="Password Confirm" {...passwordConfirm} />
+        <Input required placeholder="User name" {...username} />
+        <Input required placeholder="First name" {...firstName} />
+        <Input required placeholder="Last name" {...lastName} />
+        <Button
+          text="Register"
+          onClick={() => {
+            console.log("click");
+          }}
+        />
+      </form>
+    </Form>
+  </>
 );
 
 /*
