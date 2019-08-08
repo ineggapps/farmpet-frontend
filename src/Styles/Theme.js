@@ -22,5 +22,13 @@ export default {
   whiteBox: `border:${BOX_BORDER};
              border-radius:${BORDER_RADIUS};
              background-color:white;
-            `
+            `,
+  postBox: `
+  width:600px;
+  margin:20px auto 0;
+  padding:40px 40px 0;
+  border-bottom:1px solid #DEDEDE;
+  background-color:#FFF;
+  box-shadow:0 1px 0 rgba(198,201,206,.2);
+`
 };

@@ -34,7 +34,7 @@ const FEED_QUERY = gql`
         }
         updatedAt
       }
-      updatedAt
+      createdAt
       isLiked
       likeCount
       likes {
