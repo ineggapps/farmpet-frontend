@@ -5,6 +5,8 @@ import FatText from "../FatText";
 import Avatar from "../Avatar";
 import DateText from "../DateText";
 import Slider from "../Slider";
+import { HeartIcon } from "../Icons";
+import HeartButton from "../HeartButton";
 
 const Post = styled.div`
   ${props => props.theme.postBox};
@@ -64,24 +66,25 @@ const Textarea = styled(TextareaAutosize)`
   width: 100%;
   border: 0 none;
   resize: none;
+  font-family: ${props => props.theme.fontFamily};
+  background: transparent;
   &:focus {
     outline: none;
   }
 `;
 
-const Button = styled.button`
-  ${props => props.theme.redButton};
-  margin-left: 8px;
-  width: 62px;
-  cursor: pointer;
+const Buttons = styled.div`
+  width: 100%;
 `;
 
 export default ({
   user: { username, avatar },
   caption,
   files,
+  isLiked,
   createdAt,
   newComment,
+  toggleLike,
   onKeyPress
 }) => {
   return (
@@ -100,6 +103,9 @@ export default ({
       <Content>
         <Caption>{caption}</Caption>
         <Slider files={files} />
+        <Buttons>
+          <HeartButton onClick={toggleLike} isLiked={isLiked} />
+        </Buttons>
       </Content>
       <CommentArea>
         <CommentViewer>

@@ -1,8 +1,11 @@
 const BOX_BORDER = "1px solid #e6e6e6";
 const BORDER_RADIUS = "4px";
 const HEADER_HEIGHT = 65;
+const FONTS =
+  "-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,Cantarell,'Open Sans','Helvetica Neue',sans-serif";
 
 export default {
+  fontFamily: FONTS,
   titleColor: "#DD604A",
   headerHeightSize: `${HEADER_HEIGHT}`,
   headerHeight: `${HEADER_HEIGHT}px`,

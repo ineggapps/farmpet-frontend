@@ -10,7 +10,7 @@ export default createGlobalStyle`
     body{
         background-color:${props => props.theme.bgColor};
         color:${props => props.theme.blackColor};
-        font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        font-family:${props => props.theme.fontFamily};
     }
     a{
         color:${props => props.theme.blueColor};

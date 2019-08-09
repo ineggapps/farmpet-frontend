@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import PostPresenter from "./PostPresenter";
 import useInput from "../../Hooks/useInput";
+import { useMutation } from "react-apollo-hooks";
+import { TOGGLE_LIKE, CREATE_COMMENT } from "./PostQueries";
 
 const PostContainer = ({
   id,
@@ -16,12 +18,31 @@ const PostContainer = ({
   const [isLikedS, setIsLiked] = useState(isLiked);
   const [likeCountS, setLikeCount] = useState(likeCount);
   const comment = useInput("");
+  const [toggleLikeMutation] = useMutation(TOGGLE_LIKE, { variables: { id } });
+  const [createCommentMutation] = useMutation(CREATE_COMMENT, {
+    variables: { postId: id, text: comment.value }
+  });
 
   const onKeyPress = async e => {
     const { which } = e;
     if (which === 13) {
       e.preventDefault();
       comment.setValue("");
+    }
+  };
+
+  const toggleLike = async () => {
+    if (isLikedS === true) {
+      setIsLiked(false);
+    } else {
+      setIsLiked(true);
+    }
+    //reflect to database
+    try {
+      await toggleLikeMutation();
+    } catch (error) {
+      setIsLiked(isLiked);
+      console.log(error);
     }
   };
 
@@ -36,6 +57,7 @@ const PostContainer = ({
       commentCount={commentCount}
       createdAt={createdAt}
       newComment={comment}
+      toggleLike={toggleLike}
       setIsLiked={setIsLiked}
       setLikeCount={setLikeCount}
       onKeyPress={onKeyPress}
