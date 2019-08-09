@@ -8,6 +8,7 @@ import { TOGGLE_LIKE, CREATE_COMMENT } from "./PostQueries";
 const PostContainer = ({
   id,
   user,
+  pets,
   files,
   caption,
   likeCount,
@@ -81,6 +82,7 @@ const PostContainer = ({
     <PostPresenter
       id={id}
       user={user}
+      pets={pets}
       files={files}
       caption={caption}
       likeCount={likeCountS}
@@ -105,6 +107,12 @@ PostContainer.propTypes = {
     avatar: PropTypes.string,
     username: PropTypes.string.isRequired
   }).isRequired,
+  pets: PropTypes.shape({
+    id: PropTypes.string,
+    category: PropTypes.string,
+    name: PropTypes.string,
+    avatar: PropTypes.string
+  }),
   files: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.string,

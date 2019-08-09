@@ -23,6 +23,7 @@ const FEED_QUERY = gql`
       caption
       pets {
         id
+        category
         name
         avatar
       }
@@ -80,6 +81,7 @@ export default () => {
             key={post.id}
             id={post.id}
             user={post.user}
+            pets={post.pets}
             files={post.files}
             caption={post.caption}
             likeCount={post.likeCount}

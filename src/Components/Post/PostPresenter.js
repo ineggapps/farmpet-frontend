@@ -7,6 +7,7 @@ import DateText from "../DateText";
 import Slider from "../Slider";
 import { HeartIcon } from "../Icons";
 import HeartButton from "../HeartButton";
+import PetAvatar from "../PetAvatar";
 
 const Post = styled.div`
   ${props => props.theme.postBox};
@@ -71,11 +72,14 @@ const CommentContainer = styled.div`
 
 const CommentContent = styled.div`
   padding-left: 8px;
+  font-size: 0.8em;
+  & p {
+    line-height: 1.35;
+  }
 `;
 
 const CommentSubTitle = styled.p`
   padding: 5px 0;
-  font-size: 0.8em;
   & * {
     margin-right: 5px;
   }
@@ -97,12 +101,41 @@ const Textarea = styled(TextareaAutosize)`
   }
 `;
 
-const Buttons = styled.div`
+const ContentFooter = styled.section`
   width: 100%;
+  display: flex;
+  justify-content: space-between;
+`;
+
+const Buttons = styled.div``;
+
+const Pets = styled.ul`
+  display: flex;
+`;
+
+const Pet = styled.li`
+  position: relative;
+  &:not(:last-child) {
+    margin-right: 5px;
+  }
+  & span {
+    text-align: center;
+    width: 100%;
+    position: absolute;
+    top: 40px;
+    background-color: skyblue;
+    display: none;
+    font-size: 0.75em;
+    letter-spacing: -0.8px;
+  }
+  &:hover span {
+    display: inline-block;
+  }
 `;
 
 export default ({
   user: { username, avatar },
+  pets,
   id,
   files,
   caption,
@@ -134,9 +167,20 @@ export default ({
       <Content>
         <Caption>{caption}</Caption>
         <Slider files={files} />
-        <Buttons>
-          <HeartButton onClick={toggleLike} isLiked={isLiked} />
-        </Buttons>
+        <ContentFooter>
+          <Buttons>
+            <HeartButton onClick={toggleLike} isLiked={isLiked} />
+          </Buttons>
+          <Pets>
+            {pets &&
+              pets.map(pet => (
+                <Pet key={pet.id}>
+                  <PetAvatar category={pet.category} url={pet.avatar} size="md" />
+                  <span>{pet.name}</span>
+                </Pet>
+              ))}
+          </Pets>
+        </ContentFooter>
       </Content>
       <CommentArea>
         <CommentViewer>
@@ -155,7 +199,7 @@ export default ({
                       <FatText text={comment.user.username} />
                       <DateText date={comment.createdAt} />
                     </CommentSubTitle>
-                    <FatText text={comment.text} />
+                    <p>{comment.text}</p>
                   </CommentContent>
                 </CommentContainer>
               </CommentList>
@@ -170,7 +214,7 @@ export default ({
                       <FatText text={comment.user.username} />
                       <DateText date={comment.createdAt} />
                     </CommentSubTitle>
-                    <FatText text={comment.text} />
+                    <p>{comment.text}</p>
                   </CommentContent>
                 </CommentContainer>
               </CommentList>
