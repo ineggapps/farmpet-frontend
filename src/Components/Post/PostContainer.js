@@ -14,10 +14,12 @@ const PostContainer = ({
   isLiked,
   commentCount,
   comments,
-  createdAt
+  createdAt,
+  me
 }) => {
   const [isLikedS, setIsLiked] = useState(isLiked);
   const [likeCountS, setLikeCount] = useState(likeCount);
+  const [selfComments, setSelfComments] = useState([]);
   const comment = useInput("");
   const [toggleLikeMutation] = useMutation(TOGGLE_LIKE, { variables: { id } });
   const [createCommentMutation] = useMutation(CREATE_COMMENT, {
@@ -27,7 +29,22 @@ const PostContainer = ({
   const onKeyPress = async e => {
     const { which } = e;
     if (which === 13) {
+      if (comment.value.length < 10) {
+        //10자 이상 입력하지 않으면 무시
+        return;
+      }
       e.preventDefault();
+      console.log(comment.value.length + "길이");
+      setSelfComments([
+        ...selfComments,
+        {
+          id: `self${Math.random()}`,
+          text: comment.value,
+          user: { avatar: me.avatar, id: me.id, username: me.username },
+          createdAt: new Date() + "",
+          updatedAt: new Date() + ""
+        }
+      ]);
       comment.setValue("");
     }
   };
@@ -69,6 +86,7 @@ const PostContainer = ({
       setIsLiked={setIsLiked}
       setLikeCount={setLikeCount}
       onKeyPress={onKeyPress}
+      selfComments={selfComments}
     />
   );
 };
@@ -102,7 +120,12 @@ PostContainer.propTypes = {
       updatedAt: PropTypes.string.isRequired
     })
   ),
-  createdAt: PropTypes.string.isRequired
+  createdAt: PropTypes.string.isRequired,
+  me: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    avatar: PropTypes.string,
+    username: PropTypes.string.isRequired
+  }).isRequired
 };
 
 export default PostContainer;

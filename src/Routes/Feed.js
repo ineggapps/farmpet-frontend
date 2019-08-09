@@ -52,6 +52,16 @@ const FEED_QUERY = gql`
   }
 `;
 
+export const ME = gql`
+  {
+    me {
+      id
+      avatar
+      username
+    }
+  }
+`;
+
 const Wrapper = styled.div`
   padding-top: 20px;
   display: flex;
@@ -61,16 +71,20 @@ const Wrapper = styled.div`
 
 export default () => {
   const { data, loading } = useQuery(FEED_QUERY);
+  const { data: meData, loading: meLoading } = useQuery(ME);
 
-  console.log(data, loading);
+  console.log(data, loading, "data");
+  console.log(meData, meLoading, "me");
 
   return (
     <Wrapper>
       <Helmet>
         <title>Feed | Farmpet</title>
       </Helmet>
-      {loading && <Loader />}
-      {!loading &&
+      {loading || meLoading ? <Loader /> : ""}
+      {!meLoading &&
+        meData &&
+        !loading &&
         data &&
         data.seeFeed &&
         data.seeFeed.map(post => (
@@ -85,6 +99,7 @@ export default () => {
             commentCount={post.commentCount}
             comments={post.comments}
             createdAt={post.createdAt}
+            me={meData.me}
           />
         ))}
     </Wrapper>

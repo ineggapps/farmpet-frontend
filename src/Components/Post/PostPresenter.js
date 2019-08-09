@@ -50,15 +50,19 @@ const CommentInfo = styled.div`
     margin: 0 3px;
   }
   user-select: none;
+  border-bottom: 1px solid ${props => props.theme.superLightGreyColor};
 `;
 
 const Comments = styled.ul`
   padding: 10px 0;
-  border-top: 1px solid ${props => props.theme.superLightGreyColor};
-  border-bottom: 1px solid ${props => props.theme.superLightGreyColor};
+  &:last-child {
+    border-bottom: 1px solid ${props => props.theme.superLightGreyColor};
+  }
 `;
 
-const CommentList = styled.li``;
+const CommentList = styled.li`
+  margin-bottom: 10px;
+`;
 
 const CommentContainer = styled.div`
   padding: 5px 0;
@@ -111,7 +115,8 @@ export default ({
   toggleLike,
   setIsLiked,
   setLikeCount,
-  onKeyPress
+  onKeyPress,
+  selfComments
 }) => {
   return (
     <Post>
@@ -140,7 +145,23 @@ export default ({
             {commentCount > 1 ? "s" : ""} <FatText text={`${commentCount}`} />
           </CommentInfo>
           <Comments>
-            {comments.map(comment => (
+            {/* 실제 DB에서 불러오는 코멘트 */
+            comments.map(comment => (
+              <CommentList key={comment.id}>
+                <CommentContainer>
+                  <Avatar url={comment.user.avatar} size={"md"} />
+                  <CommentContent>
+                    <CommentSubTitle>
+                      <FatText text={comment.user.username} />
+                      <DateText date={comment.createdAt} />
+                    </CommentSubTitle>
+                    <FatText text={comment.text} />
+                  </CommentContent>
+                </CommentContainer>
+              </CommentList>
+            ))}
+            {/* 실제 DB에서 불러오는 코멘트 */
+            selfComments.map(comment => (
               <CommentList key={comment.id}>
                 <CommentContainer>
                   <Avatar url={comment.user.avatar} size={"md"} />
