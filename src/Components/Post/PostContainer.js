@@ -21,7 +21,7 @@ const PostContainer = ({
   const [likeCountS, setLikeCount] = useState(likeCount);
   const [selfComments, setSelfComments] = useState([]);
   const comment = useInput("");
-  const [toggleLikeMutation] = useMutation(TOGGLE_LIKE, { variables: { id } });
+  const [toggleLikeMutation] = useMutation(TOGGLE_LIKE, { variables: { postId: id } });
   const [createCommentMutation] = useMutation(CREATE_COMMENT, {
     variables: { postId: id, text: comment.value }
   });
@@ -29,12 +29,7 @@ const PostContainer = ({
   const onKeyPress = async e => {
     const { which } = e;
     if (which === 13) {
-      if (comment.value.length < 10) {
-        //10자 이상 입력하지 않으면 무시
-        return;
-      }
       e.preventDefault();
-      console.log(comment.value.length + "길이");
       setSelfComments([
         ...selfComments,
         {
@@ -45,7 +40,17 @@ const PostContainer = ({
           updatedAt: new Date() + ""
         }
       ]);
-      comment.setValue("");
+      try {
+        const result = await createCommentMutation();
+        if (result) {
+          comment.setValue("");
+        } else {
+          setSelfComments(...selfComments.slice(0, selfComments.length - 1));
+        }
+      } catch (error) {
+        setSelfComments(...selfComments.slice(0, selfComments.length - 1));
+        console.log(error);
+      }
     }
   };
 
@@ -69,6 +74,8 @@ const PostContainer = ({
       console.log(error);
     }
   };
+
+  console.log("postid is", id);
 
   return (
     <PostPresenter

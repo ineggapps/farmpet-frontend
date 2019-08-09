@@ -5,6 +5,7 @@ import { gql } from "apollo-boost";
 import { useQuery } from "react-apollo-hooks";
 import Loader from "../Components/Loader";
 import Post from "../Components/Post";
+import { ME } from "../SharedQueries";
 
 const FEED_QUERY = gql`
   {
@@ -52,16 +53,6 @@ const FEED_QUERY = gql`
   }
 `;
 
-export const ME = gql`
-  {
-    me {
-      id
-      avatar
-      username
-    }
-  }
-`;
-
 const Wrapper = styled.div`
   padding-top: 20px;
   display: flex;
@@ -72,9 +63,6 @@ const Wrapper = styled.div`
 export default () => {
   const { data, loading } = useQuery(FEED_QUERY);
   const { data: meData, loading: meLoading } = useQuery(ME);
-
-  console.log(data, loading, "data");
-  console.log(meData, meLoading, "me");
 
   return (
     <Wrapper>
