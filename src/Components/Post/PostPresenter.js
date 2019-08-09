@@ -40,26 +40,46 @@ const CommentArea = styled.div`
 `;
 
 const CommentViewer = styled.div`
-  padding: 0 40px 15px;
+  padding: 15px 40px;
 `;
 
 const CommentInfo = styled.div`
   font-size: 12px;
   padding: 10px 0;
+  & span {
+    margin: 0 3px;
+  }
+  user-select: none;
+`;
+
+const Comments = styled.ul`
+  padding: 10px 0;
+  border-top: 1px solid ${props => props.theme.superLightGreyColor};
   border-bottom: 1px solid ${props => props.theme.superLightGreyColor};
+`;
+
+const CommentList = styled.li``;
+
+const CommentContainer = styled.div`
+  padding: 5px 0;
+  display: flex;
+`;
+
+const CommentContent = styled.div`
+  padding-left: 8px;
+`;
+
+const CommentSubTitle = styled.p`
+  padding: 5px 0;
+  font-size: 0.8em;
+  & * {
+    margin-right: 5px;
+  }
 `;
 
 const CommentWriter = styled.div`
   padding: 0 40px 15px;
   display: flex;
-`;
-
-const InputBox = styled.div`
-  width: 90%;
-  padding: 3px 5px;
-  background-color: #fff;
-  border: 1px solid;
-  border-color: #f4f4f4;
 `;
 
 const Textarea = styled(TextareaAutosize)`
@@ -79,12 +99,18 @@ const Buttons = styled.div`
 
 export default ({
   user: { username, avatar },
-  caption,
+  id,
   files,
+  caption,
+  likeCount,
   isLiked,
+  comments,
+  commentCount,
   createdAt,
   newComment,
   toggleLike,
+  setIsLiked,
+  setLikeCount,
   onKeyPress
 }) => {
   return (
@@ -110,8 +136,25 @@ export default ({
       <CommentArea>
         <CommentViewer>
           <CommentInfo>
-            Likes <FatText text="몇" /> Comments <FatText text="몇" />
+            Like{likeCount > 1 ? "s" : ""} <FatText text={`${likeCount}`} /> Comment
+            {commentCount > 1 ? "s" : ""} <FatText text={`${commentCount}`} />
           </CommentInfo>
+          <Comments>
+            {comments.map(comment => (
+              <CommentList key={comment.id}>
+                <CommentContainer>
+                  <Avatar url={comment.user.avatar} size={"md"} />
+                  <CommentContent>
+                    <CommentSubTitle>
+                      <FatText text={comment.user.username} />
+                      <DateText date={comment.createdAt} />
+                    </CommentSubTitle>
+                    <FatText text={comment.text} />
+                  </CommentContent>
+                </CommentContainer>
+              </CommentList>
+            ))}
+          </Comments>
         </CommentViewer>
         <CommentWriter>
           <Textarea

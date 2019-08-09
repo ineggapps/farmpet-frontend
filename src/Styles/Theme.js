@@ -45,5 +45,12 @@ export default {
   &:hover{
     background-color:#d95f3a;
   }
-`
+`,
+  avatar: {
+    size: {
+      sm: "28px",
+      md: "36px",
+      lg: "56px"
+    }
+  }
 };

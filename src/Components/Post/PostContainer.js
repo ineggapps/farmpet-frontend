@@ -9,10 +9,11 @@ const PostContainer = ({
   id,
   user,
   files,
-  likeCount,
   caption,
+  likeCount,
   isLiked,
   commentCount,
+  comments,
   createdAt
 }) => {
   const [isLikedS, setIsLiked] = useState(isLiked);
@@ -34,14 +35,20 @@ const PostContainer = ({
   const toggleLike = async () => {
     if (isLikedS === true) {
       setIsLiked(false);
+      setLikeCount(likeCountS - 1);
     } else {
       setIsLiked(true);
+      setLikeCount(likeCountS + 1);
     }
     //reflect to database
     try {
-      await toggleLikeMutation();
+      const result = await toggleLikeMutation();
+      if (!result) {
+        throw Error("The attempt failed.");
+      }
     } catch (error) {
       setIsLiked(isLiked);
+      setLikeCount(likeCount);
       console.log(error);
     }
   };
@@ -55,6 +62,7 @@ const PostContainer = ({
       likeCount={likeCountS}
       isLiked={isLikedS}
       commentCount={commentCount}
+      comments={comments}
       createdAt={createdAt}
       newComment={comment}
       toggleLike={toggleLike}

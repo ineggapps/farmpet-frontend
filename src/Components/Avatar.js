@@ -12,8 +12,11 @@ const getSize = size => {
   if (size === "sm") number = 28;
   else if (size === "md") number = 36;
   else if (size === "lg") number = 56;
-  return `width:${number}px;
-    height:${number}px`;
+  return `
+  width:${number}px;
+  min-width:${number}px;
+  height:${number}px;
+    max-height:${number}px`;
 };
 
 const Container = styled.div`
@@ -22,6 +25,7 @@ const Container = styled.div`
   background-size: cover;
   background-color: blue;
   border-radius: 50%;
+  cursor: pointer;
 `;
 
 const Avatar = ({ size = "sm", url }) => <Container size={size} url={url} />;
