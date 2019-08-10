@@ -82,21 +82,17 @@ const ControlPanel = styled.div`
   align-items: center;
 `;
 
-export default ({ pets }) => {
+export default ({
+  pets,
+  permission,
+  setPermission,
+  open,
+  setOpen,
+  selectedPets,
+  setSelectedPets,
+  onSelected
+}) => {
   const classes = useStyles();
-  const [permission, setPermission] = useState(`${PERMISSION_PUBLIC}`);
-  const [open, setOpen] = useState(false);
-  const [selectedPets, setSelectedPets] = useState(pets);
-  const onSelected = async targetId => {
-    const newPets = selectedPets.map(pet => {
-      if (pet.id === targetId) {
-        pet.selected = !pet.selected;
-      }
-      return pet;
-    });
-    await setSelectedPets(newPets);
-    console.log("onSelected 이벤트 발생", newPets);
-  };
 
   return (
     <Container>
