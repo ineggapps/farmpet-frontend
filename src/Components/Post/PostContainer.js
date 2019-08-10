@@ -80,7 +80,7 @@ const PostContainer = ({
     }
   };
 
-  console.log("postid is", id);
+  // console.log("postid is", id);
 
   return (
     <PostPresenter

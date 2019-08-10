@@ -6,14 +6,13 @@ import { useMutation } from "react-apollo-hooks";
 import { UPLOAD_POST } from "./WritingToolBoxQueries";
 import useInput from "../../Hooks/useInput";
 
-const WritingToolBoxContainer = ({ pets }) => {
+const WritingToolBoxContainer = ({ pets, user }) => {
   const captionWriting = useInput("");
+  const [selfPosts, setSelfPosts] = useState([]);
   const [permission, setPermission] = useState(`${PERMISSION_PUBLIC}`);
   const [open, setOpen] = useState(false);
   const [selectedPets, setSelectedPets] = useState(pets);
   const [uploadPostMutation] = useMutation(UPLOAD_POST);
-
-  const getId = ({ pet }) => pet.id;
 
   const uploadPost = async () => {
     const pets = selectedPets.map(pet => {
@@ -21,7 +20,9 @@ const WritingToolBoxContainer = ({ pets }) => {
         return pet.id;
       }
     });
-    const result = await uploadPostMutation({
+    const {
+      data: { uploadPost: result }
+    } = await uploadPostMutation({
       variables: {
         caption: captionWriting.value,
         permission,
@@ -29,16 +30,34 @@ const WritingToolBoxContainer = ({ pets }) => {
       }
     });
     console.log(result);
+    setSelfPosts([
+      ...selfPosts,
+      {
+        id: result.id,
+        user: result.user,
+        pets: result.pets,
+        files: result.files,
+        caption: result.caption,
+        likeCount: 0,
+        isLiked: false,
+        commentCount: 0,
+        comments: [],
+        createdAt: result.createdAt,
+        me: result.user
+      }
+    ]);
   };
 
-  const onSelected = async targetId => {
+  const onSelected = targetId => {
     const newPets = selectedPets.map(pet => {
       if (pet.id === targetId) {
         pet.selected = !pet.selected;
       }
       return pet;
     });
-    await setSelectedPets(newPets);
+
+    setSelectedPets(newPets);
+
     // console.log("onSelected 이벤트 발생", newPets);
   };
 
@@ -55,6 +74,7 @@ const WritingToolBoxContainer = ({ pets }) => {
       uploadPostMutation={uploadPostMutation}
       captionWriting={captionWriting}
       uploadPost={uploadPost}
+      selfPosts={selfPosts}
     />
   );
 };
