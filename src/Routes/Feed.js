@@ -5,6 +5,7 @@ import { gql } from "apollo-boost";
 import { useQuery } from "react-apollo-hooks";
 import Loader from "../Components/Loader";
 import Post from "../Components/Post";
+import WritingToolBox from "../Components/WritingToolBox";
 import { ME } from "../SharedQueries";
 
 const FEED_QUERY = gql`
@@ -70,6 +71,7 @@ export default () => {
       <Helmet>
         <title>Feed | Farmpet</title>
       </Helmet>
+      <WritingToolBox />
       {loading || meLoading ? <Loader /> : ""}
       {!meLoading &&
         meData &&
