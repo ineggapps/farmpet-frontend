@@ -7,6 +7,8 @@ export const PERMISSION_PUBLIC = "PUBLIC";
 export const PERMISSION_FRIENDS = "FRIENDS";
 export const PERMISSION_PRIVATE = "PRIVATE";
 
+export const NEW_LINE = "\r\n";
+
 export const ME = gql`
   {
     me {

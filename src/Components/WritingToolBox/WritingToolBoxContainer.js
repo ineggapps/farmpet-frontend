@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import WritingToolBoxPresenter from "./WritingToolBoxPresenter";
-import { PERMISSION_PUBLIC } from "../../SharedQueries";
+import { PERMISSION_PUBLIC, NEW_LINE } from "../../SharedQueries";
 import { useMutation } from "react-apollo-hooks";
 import { UPLOAD_POST } from "./WritingToolBoxQueries";
 import useInput from "../../Hooks/useInput";
@@ -14,24 +14,37 @@ const WritingToolBoxContainer = ({ pets, user }) => {
   const [selectedPets, setSelectedPets] = useState(pets);
   const [uploadPostMutation] = useMutation(UPLOAD_POST);
 
+  const resetWritingComponent = () => {
+    captionWriting.setValue("");
+    setSelectedPets(
+      pets.map(pet => {
+        pet.selected = false;
+        return pet;
+      })
+    );
+  };
+
   const uploadPost = async () => {
     const pets = selectedPets.map(pet => {
       if (pet.selected) {
         return pet.id;
       }
     });
+    // str = str.replace(/(?:\r\n|\r|\n)/g, '<br>');
+    const caption = captionWriting.value.replace(/(?:\r\n|\r|\n)/g, NEW_LINE);
+    //글 서버에 올리기
     const {
       data: { uploadPost: result }
     } = await uploadPostMutation({
       variables: {
-        caption: captionWriting.value,
+        caption,
         permission,
         pets: pets.filter(pet => (pet !== undefined && pet !== null ? true : false))
       }
     });
-    console.log(result);
+    //서버에 올린 글 피드 밑에 반영하기
+    //console.log(result);
     setSelfPosts([
-      ...selfPosts,
       {
         id: result.id,
         user: result.user,
@@ -44,8 +57,10 @@ const WritingToolBoxContainer = ({ pets, user }) => {
         comments: [],
         createdAt: result.createdAt,
         me: result.user
-      }
+      },
+      ...selfPosts
     ]);
+    resetWritingComponent();
   };
 
   const onSelected = targetId => {

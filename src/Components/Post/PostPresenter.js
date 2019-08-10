@@ -32,6 +32,7 @@ const Caption = styled.p`
   word-break: break-word;
   line-height: 1.35;
   margin: 10px 0;
+  white-space: pre;
 `;
 
 const Files = styled.div`

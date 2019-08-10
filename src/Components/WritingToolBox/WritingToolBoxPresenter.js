@@ -84,7 +84,6 @@ const ControlPanel = styled.div`
 `;
 
 export default ({
-  pets,
   permission,
   setPermission,
   open,
@@ -110,8 +109,8 @@ export default ({
           />
           <Photos>포토프리뷰</Photos>
           <Pets>
-            {pets &&
-              pets.map(pet => (
+            {selectedPets &&
+              selectedPets.map(pet => (
                 <Pet
                   key={pet.id}
                   onClick={() => onSelected(pet.id)}

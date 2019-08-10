@@ -17,6 +17,7 @@ export const UPLOAD_POST = gql`
       permission
       pets {
         id
+        category
         avatar
         name
       }
