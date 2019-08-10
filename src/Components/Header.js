@@ -1,12 +1,10 @@
 import React from "react";
-import { gql } from "apollo-boost";
 import { Link, withRouter } from "react-router-dom";
 import styled from "styled-components";
 import Logo from "./Logo";
 import { GNBWriteIcon, GNBNotificationIcon, SearchIcon } from "./Icons";
 import Input from "./Input";
 import useInput from "../Hooks/useInput";
-import { useQuery } from "react-apollo-hooks";
 
 const Header = styled.header`
   background-color: white;
@@ -83,6 +81,7 @@ const SearchInput = styled(Input)`
 
 export default withRouter(({ history }) => {
   const search = useInput("");
+
   const onSearchSubmit = e => {
     e.preventDefault();
     history.push(`/search?term=${search.value}`);

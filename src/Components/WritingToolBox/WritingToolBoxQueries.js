@@ -25,6 +25,8 @@ export const UPLOAD_POST = gql`
         avatar
         username
       }
+      createdAt
+      updatedAt
     }
   }
 `;
