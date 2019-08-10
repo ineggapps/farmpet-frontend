@@ -90,14 +90,21 @@ export default ({
   setOpen,
   selectedPets,
   setSelectedPets,
-  onSelected
+  onSelected,
+  uploadPostMutation,
+  captionWriting,
+  uploadPost
 }) => {
   const classes = useStyles();
 
   return (
     <Container>
       <form autoComplete="off" className={classes.formControl}>
-        <TextArea placeholder={`Tell me your story.`} />
+        <TextArea
+          placeholder={`Tell me your story.`}
+          value={captionWriting.value}
+          onChange={captionWriting.onChange}
+        />
         <Photos>포토프리뷰</Photos>
         <Pets>
           {pets &&
@@ -128,7 +135,7 @@ export default ({
             <MenuItem value={`${PERMISSION_FRIENDS}`}>Friends</MenuItem>
             <MenuItem value={`${PERMISSION_PRIVATE}`}>Private</MenuItem>
           </Select>
-          <ButtonTest variant="contained" color="secondary">
+          <ButtonTest variant="contained" color="secondary" onClick={() => uploadPost()}>
             Upload
           </ButtonTest>
         </ControlPanel>
