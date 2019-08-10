@@ -65,14 +65,13 @@ const Wrapper = styled.div`
 export default () => {
   const { data, loading } = useQuery(FEED_QUERY);
   const { data: meData, loading: meLoading } = useQuery(ME);
-
   return (
     <Wrapper>
       <Helmet>
         <title>Feed | Farmpet</title>
       </Helmet>
-      <WritingToolBox />
       {loading || meLoading ? <Loader /> : ""}
+      {!meLoading && meData && <WritingToolBox pets={meData.me.pets} />}
       {!meLoading &&
         meData &&
         !loading &&

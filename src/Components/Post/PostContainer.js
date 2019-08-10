@@ -107,12 +107,14 @@ PostContainer.propTypes = {
     avatar: PropTypes.string,
     username: PropTypes.string.isRequired
   }).isRequired,
-  pets: PropTypes.shape({
-    id: PropTypes.string,
-    category: PropTypes.string,
-    name: PropTypes.string,
-    avatar: PropTypes.string
-  }),
+  pets: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string,
+      category: PropTypes.string,
+      name: PropTypes.string,
+      avatar: PropTypes.string
+    })
+  ),
   files: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.string,
@@ -139,7 +141,15 @@ PostContainer.propTypes = {
   me: PropTypes.shape({
     id: PropTypes.string.isRequired,
     avatar: PropTypes.string,
-    username: PropTypes.string.isRequired
+    username: PropTypes.string.isRequired,
+    pets: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.string,
+        category: PropTypes.string,
+        name: PropTypes.string,
+        avatar: PropTypes.string
+      })
+    )
   }).isRequired
 };
 
