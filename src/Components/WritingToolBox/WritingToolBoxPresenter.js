@@ -53,7 +53,7 @@ const Pets = styled.ul`
 
 const Pet = styled.li`
   position: relative;
-  ${props => (props.selected === "true" ? "opacity:1;" : "opacity:.4")}
+  ${props => (props.selected === "selected" ? "opacity:1;" : "opacity:.4")}
   &:hover {
     opacity: 0.8;
   }
@@ -109,7 +109,7 @@ export default ({ pets }) => {
               <Pet
                 key={pet.id}
                 onClick={() => onSelected(pet.id)}
-                selected={pet.selected ? "true" : "false"}
+                selected={pet.selected ? "selected" : ""}
               >
                 <PetAvatar category={pet.category} url={pet.avatar} size="md" />
                 <span>{pet.name}</span>
