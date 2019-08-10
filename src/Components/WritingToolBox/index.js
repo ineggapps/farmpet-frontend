@@ -1,2 +1,2 @@
-import WritingToolBoxContainer from "./WritingToolBoxContaineroolBoxContainer";
+import WritingToolBoxContainer from "./WritingToolBoxContainer";
 export default WritingToolBoxContainer;
