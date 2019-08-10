@@ -20,6 +20,7 @@ const PostContainer = ({
 }) => {
   const [isLikedS, setIsLiked] = useState(isLiked);
   const [likeCountS, setLikeCount] = useState(likeCount);
+  const [commentCountS, setCommentCount] = useState(commentCount);
   const [selfComments, setSelfComments] = useState([]);
   const comment = useInput("");
   const [toggleLikeMutation] = useMutation(TOGGLE_LIKE, { variables: { postId: id } });
@@ -43,13 +44,16 @@ const PostContainer = ({
       ]);
       try {
         const result = await createCommentMutation();
+        setCommentCount(commentCountS + 1);
         if (result) {
           comment.setValue("");
         } else {
           setSelfComments(...selfComments.slice(0, selfComments.length - 1));
+          setCommentCount(commentCountS - 1);
         }
       } catch (error) {
         setSelfComments(...selfComments.slice(0, selfComments.length - 1));
+        setCommentCount(commentCountS - 1);
         console.log(error);
       }
     }
@@ -87,7 +91,7 @@ const PostContainer = ({
       caption={caption}
       likeCount={likeCountS}
       isLiked={isLikedS}
-      commentCount={commentCount}
+      commentCount={commentCountS}
       comments={comments}
       createdAt={createdAt}
       newComment={comment}

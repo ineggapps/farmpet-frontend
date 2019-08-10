@@ -29,6 +29,8 @@ const Content = styled.div`
 `;
 
 const Caption = styled.p`
+  word-break: break-word;
+  line-height: 1.35;
   margin: 10px 0;
 `;
 
@@ -41,7 +43,7 @@ const CommentArea = styled.div`
 `;
 
 const CommentViewer = styled.div`
-  padding: 15px 40px;
+  padding: 15px 40px 0;
 `;
 
 const CommentInfo = styled.div`
@@ -57,7 +59,6 @@ const CommentInfo = styled.div`
 const Comments = styled.ul`
   padding: 10px 0;
   &:last-child {
-    border-bottom: 1px solid ${props => props.theme.superLightGreyColor};
   }
 `;
 
@@ -86,7 +87,8 @@ const CommentSubTitle = styled.p`
 `;
 
 const CommentWriter = styled.div`
-  padding: 0 40px 15px;
+  border-top: 1px solid ${props => props.theme.superLightGreyColor};
+  padding: 15px 40px 15px;
   display: flex;
 `;
 
@@ -183,44 +185,46 @@ export default ({
         </ContentFooter>
       </Content>
       <CommentArea>
-        <CommentViewer>
-          <CommentInfo>
-            Like{likeCount > 1 ? "s" : ""} <FatText text={`${likeCount}`} /> Comment
-            {commentCount > 1 ? "s" : ""} <FatText text={`${commentCount}`} />
-          </CommentInfo>
-          <Comments>
-            {/* 실제 DB에서 불러오는 코멘트 */
-            comments.map(comment => (
-              <CommentList key={comment.id}>
-                <CommentContainer>
-                  <Avatar url={comment.user.avatar} size={"md"} />
-                  <CommentContent>
-                    <CommentSubTitle>
-                      <FatText text={comment.user.username} />
-                      <DateText date={comment.createdAt} />
-                    </CommentSubTitle>
-                    <p>{comment.text}</p>
-                  </CommentContent>
-                </CommentContainer>
-              </CommentList>
-            ))}
-            {/* 실제 DB에서 불러오는 코멘트 */
-            selfComments.map(comment => (
-              <CommentList key={comment.id}>
-                <CommentContainer>
-                  <Avatar url={comment.user.avatar} size={"md"} />
-                  <CommentContent>
-                    <CommentSubTitle>
-                      <FatText text={comment.user.username} />
-                      <DateText date={comment.createdAt} />
-                    </CommentSubTitle>
-                    <p>{comment.text}</p>
-                  </CommentContent>
-                </CommentContainer>
-              </CommentList>
-            ))}
-          </Comments>
-        </CommentViewer>
+        {likeCount + commentCount > 0 && (
+          <CommentViewer>
+            <CommentInfo>
+              Like{likeCount > 1 ? "s" : ""} <FatText text={`${likeCount}`} /> Comment
+              {commentCount > 1 ? "s" : ""} <FatText text={`${commentCount}`} />
+            </CommentInfo>
+            <Comments>
+              {/* 실제 DB에서 불러오는 코멘트 */
+              comments.map(comment => (
+                <CommentList key={comment.id}>
+                  <CommentContainer>
+                    <Avatar url={comment.user.avatar} size={"md"} />
+                    <CommentContent>
+                      <CommentSubTitle>
+                        <FatText text={comment.user.username} />
+                        <DateText date={comment.createdAt} />
+                      </CommentSubTitle>
+                      <p>{comment.text}</p>
+                    </CommentContent>
+                  </CommentContainer>
+                </CommentList>
+              ))}
+              {/* 실제 DB에서 불러오는 코멘트 */
+              selfComments.map(comment => (
+                <CommentList key={comment.id}>
+                  <CommentContainer>
+                    <Avatar url={comment.user.avatar} size={"md"} />
+                    <CommentContent>
+                      <CommentSubTitle>
+                        <FatText text={comment.user.username} />
+                        <DateText date={comment.createdAt} />
+                      </CommentSubTitle>
+                      <p>{comment.text}</p>
+                    </CommentContent>
+                  </CommentContainer>
+                </CommentList>
+              ))}
+            </Comments>
+          </CommentViewer>
+        )}
         <CommentWriter>
           <Textarea
             placeholder={"Add a comment."}
