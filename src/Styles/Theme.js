@@ -1,6 +1,7 @@
 const BOX_BORDER = "1px solid #e6e6e6";
 const BORDER_RADIUS = "4px";
 const HEADER_HEIGHT = 65;
+const SIDE_BOX_SIZE = 290;
 const FONTS =
   "-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,Cantarell,'Open Sans','Helvetica Neue',sans-serif";
 
@@ -29,6 +30,15 @@ export default {
             `,
   postBox: `
   width:600px;
+  border-radius:3px;
+  margin:20px auto 40px;
+  border-bottom:1px solid #DEDEDE;
+  background-color:#FFF;
+  box-shadow:0 1px 0 rgba(198,201,206,.2);
+`,
+  sideBoxSize: `${SIDE_BOX_SIZE}px`,
+  postBoxSide: `
+  width:${SIDE_BOX_SIZE};
   border-radius:3px;
   margin:20px auto 40px;
   border-bottom:1px solid #DEDEDE;

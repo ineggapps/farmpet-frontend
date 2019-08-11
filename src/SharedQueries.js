@@ -21,6 +21,18 @@ export const ME = gql`
         name
         avatar
       }
+      firstName
+      lastName
+      following {
+        id
+        username
+        avatar
+      }
+      followers {
+        id
+        username
+        avatar
+      }
     }
   }
 `;

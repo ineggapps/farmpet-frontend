@@ -7,6 +7,7 @@ import Loader from "../Components/Loader";
 import Post from "../Components/Post";
 import WritingToolBox from "../Components/WritingToolBox";
 import { ME } from "../SharedQueries";
+import SideProfile from "../Components/SideProfile";
 
 const FEED_QUERY = gql`
   {
@@ -62,37 +63,53 @@ const Wrapper = styled.div`
   align-items: center;
 `;
 
+const Contents = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+const SectionLeft = styled.section`
+  margin-right: 20px;
+`;
+const SNB = styled.section``;
+
 export default () => {
   const { data, loading } = useQuery(FEED_QUERY);
   const { data: meData, loading: meLoading } = useQuery(ME);
+
+  const LoaderContents = <Loader />;
+  const RealContents = (
+    <>
+      <SectionLeft>
+        {!meLoading && meData && <WritingToolBox pets={meData.me.pets} />}
+        {data &&
+          data.seeFeed &&
+          data.seeFeed.map(post => (
+            <Post
+              key={post.id}
+              id={post.id}
+              user={post.user}
+              pets={post.pets}
+              files={post.files}
+              caption={post.caption}
+              likeCount={post.likeCount}
+              isLiked={post.isLiked}
+              commentCount={post.commentCount}
+              comments={post.comments}
+              createdAt={post.createdAt}
+              me={meData.me}
+            />
+          ))}
+      </SectionLeft>
+      <SNB>{!meLoading && meData.me && <SideProfile user={meData.me} />}</SNB>
+    </>
+  );
+
   return (
     <Wrapper>
       <Helmet>
         <title>Feed | Farmpet</title>
       </Helmet>
-      {loading || meLoading ? <Loader /> : ""}
-      {!meLoading && meData && <WritingToolBox pets={meData.me.pets} />}
-      {!meLoading &&
-        meData &&
-        !loading &&
-        data &&
-        data.seeFeed &&
-        data.seeFeed.map(post => (
-          <Post
-            key={post.id}
-            id={post.id}
-            user={post.user}
-            pets={post.pets}
-            files={post.files}
-            caption={post.caption}
-            likeCount={post.likeCount}
-            isLiked={post.isLiked}
-            commentCount={post.commentCount}
-            comments={post.comments}
-            createdAt={post.createdAt}
-            me={meData.me}
-          />
-        ))}
+      <Contents>{loading || meLoading ? LoaderContents : RealContents}</Contents>
     </Wrapper>
   );
 };
