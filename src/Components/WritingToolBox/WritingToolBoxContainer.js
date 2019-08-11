@@ -32,6 +32,9 @@ const WritingToolBoxContainer = ({ pets, user }) => {
     });
     // str = str.replace(/(?:\r\n|\r|\n)/g, '<br>');
     const caption = captionWriting.value.replace(/(?:\r\n|\r|\n)/g, NEW_LINE);
+    if (caption.length <= 0) {
+      return;
+    }
     //글 서버에 올리기
     const {
       data: { uploadPost: result }

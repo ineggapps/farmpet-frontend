@@ -8,6 +8,8 @@ import Post from "../Components/Post";
 import WritingToolBox from "../Components/WritingToolBox";
 import { ME } from "../SharedQueries";
 import SideProfile from "../Components/SideProfile";
+import SideFollowers from "../Components/SideFollowers";
+import SideFollowing from "../Components/SideFollowing";
 
 const FEED_QUERY = gql`
   {
@@ -80,7 +82,7 @@ export default () => {
   const RealContents = (
     <>
       <SectionLeft>
-        {!meLoading && meData && <WritingToolBox pets={meData.me.pets} />}
+        {!meLoading && meData && <WritingToolBox pets={meData.me.pets ? meData.me.pets : null} />}
         {data &&
           data.seeFeed &&
           data.seeFeed.map(post => (
@@ -100,7 +102,11 @@ export default () => {
             />
           ))}
       </SectionLeft>
-      <SNB>{!meLoading && meData.me && <SideProfile user={meData.me} />}</SNB>
+      <SNB>
+        {!meLoading && meData.me && <SideProfile user={meData.me} />}
+        <SideFollowing />
+        <SideFollowers />
+      </SNB>
     </>
   );
 
