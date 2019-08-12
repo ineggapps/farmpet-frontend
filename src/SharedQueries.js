@@ -27,11 +27,13 @@ export const ME = gql`
         id
         username
         avatar
+        isFollowing
       }
       followers {
         id
         username
         avatar
+        isFollowing
       }
     }
   }

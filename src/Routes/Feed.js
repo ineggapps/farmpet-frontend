@@ -82,7 +82,9 @@ export default () => {
   const RealContents = (
     <>
       <SectionLeft>
-        {!meLoading && meData && <WritingToolBox pets={meData.me.pets ? meData.me.pets : null} />}
+        {!meLoading && meData && meData.me && meData.me.pets && (
+          <WritingToolBox pets={meData.me.pets ? meData.me.pets : null} />
+        )}
         {data &&
           data.seeFeed &&
           data.seeFeed.map(post => (
