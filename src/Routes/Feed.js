@@ -8,8 +8,7 @@ import Post from "../Components/Post";
 import WritingToolBox from "../Components/WritingToolBox";
 import { ME } from "../SharedQueries";
 import SideProfile from "../Components/SideProfile";
-import SideFollowers from "../Components/SideFollowers";
-import SideFollowing from "../Components/SideFollowing";
+import SideUsers from "../Components/SideUsers";
 
 const FEED_QUERY = gql`
   {
@@ -77,7 +76,7 @@ const SNB = styled.section``;
 export default () => {
   const { data, loading } = useQuery(FEED_QUERY);
   const { data: meData, loading: meLoading } = useQuery(ME);
-
+  console.log(meData);
   const LoaderContents = <Loader />;
   const RealContents = (
     <>
@@ -103,9 +102,13 @@ export default () => {
           ))}
       </SectionLeft>
       <SNB>
-        {!meLoading && meData.me && <SideProfile user={meData.me} />}
-        <SideFollowing />
-        <SideFollowers />
+        {!meLoading && meData.me && (
+          <>
+            <SideProfile user={meData.me} />
+            <SideUsers title={"Following"} users={meData.me.following} />
+            <SideUsers title={"Followers"} users={meData.me.followers} />
+          </>
+        )}
       </SNB>
     </>
   );

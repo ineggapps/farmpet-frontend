@@ -6,7 +6,7 @@ import FatText from "./FatText";
 
 const Container = styled.div`
   width: ${props => props.theme.sideBoxSize};
-  padding: 20px 0;
+  padding: 20px 0 0;
   display: flex;
   flex-direction: row;
 `;

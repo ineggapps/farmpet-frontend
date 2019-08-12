@@ -38,9 +38,10 @@ export default {
 `,
   sideBoxSize: `${SIDE_BOX_SIZE}px`,
   postBoxSide: `
-  width:${SIDE_BOX_SIZE};
+  width:${SIDE_BOX_SIZE}px;
+  padding:10px;
   border-radius:3px;
-  margin:20px auto 40px;
+  margin:20px auto 25px;
   border-bottom:1px solid #DEDEDE;
   background-color:#FFF;
   box-shadow:0 1px 0 rgba(198,201,206,.2);
