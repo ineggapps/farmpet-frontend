@@ -122,8 +122,6 @@ const PostContainer = ({
       onKeyPress={onKeyPress}
       selfComments={selfComments}
       deleteComment={deleteComment}
-      editCommentS={editCommentS}
-      editComment={editComment}
     />
   );
 };
