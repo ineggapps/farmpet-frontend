@@ -34,20 +34,24 @@ const PostContainer = ({
     const { which } = e;
     if (which === 13) {
       e.preventDefault();
-      setSelfComments([
-        ...selfComments,
-        {
-          id: `self${Math.random()}`,
-          text: comment.value,
-          user: { avatar: me.avatar, id: me.id, username: me.username },
-          createdAt: new Date() + "",
-          updatedAt: new Date() + ""
-        }
-      ]);
+
       try {
-        const result = await createCommentMutation();
+        const {
+          data: { createComment: result }
+        } = await createCommentMutation();
         setCommentCount(commentCountS + 1);
         if (result) {
+          console.log(result);
+          setSelfComments([
+            ...selfComments,
+            {
+              id: result.id,
+              text: comment.value,
+              user: { avatar: me.avatar, id: me.id, username: me.username },
+              createdAt: new Date() + "",
+              updatedAt: new Date() + ""
+            }
+          ]);
           comment.setValue("");
         } else {
           setSelfComments(...selfComments.slice(0, selfComments.length - 1));

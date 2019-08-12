@@ -259,8 +259,24 @@ export default ({
                     <Avatar url={comment.user.avatar} size={"md"} />
                     <CommentContent>
                       <CommentSubTitle>
-                        <FatText text={comment.user.username} />
-                        <DateText date={comment.createdAt} />
+                        <div>
+                          <FatText text={comment.user.username} />
+                          <DateText date={comment.createdAt} />
+                        </div>
+                        <CommentComponents>
+                          <li>
+                            <button>
+                              <span>수정</span>
+                              <WriteIcon size="12" />
+                            </button>
+                          </li>
+                          <li>
+                            <button onClick={() => deleteComment(comment.id)}>
+                              <span>삭제</span>
+                              <RemoveIcon size="12" />
+                            </button>
+                          </li>
+                        </CommentComponents>
                       </CommentSubTitle>
                       <p>{comment.text}</p>
                     </CommentContent>
