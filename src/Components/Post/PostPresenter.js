@@ -5,7 +5,6 @@ import FatText from "../FatText";
 import Avatar from "../Avatar";
 import DateText from "../DateText";
 import Slider from "../Slider";
-import { HeartIcon, WriteIcon, RemoveIcon } from "../Icons";
 import HeartButton from "../HeartButton";
 import PetAvatar from "../PetAvatar";
 
@@ -78,7 +77,12 @@ const CommentContent = styled.div`
   & p {
     line-height: 1.35;
   }
+  &:hover button {
+    visibility: visible;
+  }
 `;
+
+const CommentText = styled.div``;
 
 const CommentSubTitle = styled.div`
   display: flex;
@@ -97,6 +101,7 @@ const CommentComponents = styled.ul`
     margin-right: 5px;
   }
   & button {
+    visibility: hidden;
     cursor: pointer;
     span {
       display: none;
@@ -164,7 +169,7 @@ const Pet = styled.li`
 `;
 
 export default ({
-  user: { username, avatar },
+  user: { id: userId, username, avatar },
   pets,
   id,
   files,
@@ -176,8 +181,6 @@ export default ({
   createdAt,
   newComment,
   toggleLike,
-  setIsLiked,
-  setLikeCount,
   onKeyPress,
   selfComments,
   deleteComment
@@ -232,22 +235,31 @@ export default ({
                           <FatText text={comment.user.username} />
                           <DateText date={comment.createdAt} />
                         </div>
-                        <CommentComponents>
-                          <li>
-                            <button>
-                              <span>수정</span>
-                              <WriteIcon size="12" />
-                            </button>
-                          </li>
-                          <li>
-                            <button onClick={() => deleteComment(comment.id)}>
-                              <span>삭제</span>
-                              <RemoveIcon size="12" />
-                            </button>
-                          </li>
-                        </CommentComponents>
+                        {comment.user.id === userId && (
+                          <CommentComponents>
+                            <li>
+                              <button onClick={() => deleteComment(comment.id)}>
+                                <span>삭제</span>
+                                <RemoveIcon size="12" />
+                              </button>
+                            </li>
+                          </CommentComponents>
+                        )}
                       </CommentSubTitle>
-                      <p>{comment.text}</p>
+                      <CommentText>
+                        {editCommentS &&
+                        editCommentS.id &&
+                        editCommentS.id.filter(c => c.id === comment.id) ? (
+                          <TextareaComment
+                            placeholder={"Edit your comment."}
+                            value={comment.textarea.value}
+                            onChange={comment.textarea.onChange}
+                            onKeyPress={comment.textarea.onKeyPress}
+                          />
+                        ) : (
+                          <p>{comment.text}</p>
+                        )}
+                      </CommentText>
                     </CommentContent>
                   </CommentContainer>
                 </CommentList>
@@ -265,13 +277,7 @@ export default ({
                         </div>
                         <CommentComponents>
                           <li>
-                            <button>
-                              <span>수정</span>
-                              <WriteIcon size="12" />
-                            </button>
-                          </li>
-                          <li>
-                            <button onClick={() => deleteComment(comment.id)}>
+                            <button onClick={() => deleteComment(comment.id, true)}>
                               <span>삭제</span>
                               <RemoveIcon size="12" />
                             </button>
