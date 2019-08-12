@@ -21,6 +21,7 @@ const PostContainer = ({
   const [isLikedS, setIsLiked] = useState(isLiked);
   const [likeCountS, setLikeCount] = useState(likeCount);
   const [commentCountS, setCommentCount] = useState(commentCount);
+  const [commentsS, setComments] = useState(comments);
   const [selfComments, setSelfComments] = useState([]);
   const comment = useInput("");
   const [toggleLikeMutation] = useMutation(TOGGLE_LIKE, { variables: { postId: id } });
@@ -82,11 +83,20 @@ const PostContainer = ({
   };
 
   const deleteComment = async commentId => {
+    /*
+    TODO:
+     즉석에서 등록한 fake comments의 아이디 값 받기.
+     fake comments를 유저가 삭제한다면 id값을 이용하여 서버에 보내기.
+     fake comments에서 유저가 삭제한 댓글 UI로 삭제.
+    */
     console.log(commentId, "삭제 요청하기");
     const result = await deleteCommentMutation({ variables: { commentId } });
     if (result) {
       //지우기에 성공하면
       console.log("댓글 지우기 성공");
+      setCommentCount(commentCount - 1);
+      setComments(commentsS.filter(c => c.id !== commentId));
+      setSelfComments(selfComments.filter(c => c.id !== commentId));
     } else {
       console.log("댓글 지우기 실패");
     }
@@ -104,7 +114,7 @@ const PostContainer = ({
       likeCount={likeCountS}
       isLiked={isLikedS}
       commentCount={commentCountS}
-      comments={comments}
+      comments={commentsS}
       createdAt={createdAt}
       newComment={comment}
       toggleLike={toggleLike}
