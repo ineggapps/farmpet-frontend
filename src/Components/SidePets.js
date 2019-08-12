@@ -18,8 +18,8 @@ const Title = styled.h3`
 
 const Pets = styled.ul``;
 const PetName = styled(LinesEllipsis)`
+  width: auto;
   font-size: 0.95em;
-  letter-spacing: -0.1em;
 `;
 const Pet = styled.li`
   display: flex;
@@ -50,7 +50,7 @@ const SidePets = ({ title, pets }) => {
             <Pet key={pet.id}>
               <Profile>
                 <PetAvatar category={pet.category} size={"md"} url={pet.avatar} />
-                <PetName text={pet.name} maxLine="1" ellipsis="..." trimRight basedOn="letters" />
+                <PetName text={pet.name} maxLine="2" ellipsis="..." trimRight basedOn="letters" />
               </Profile>
               <FollowButton>Follow</FollowButton>
             </Pet>
