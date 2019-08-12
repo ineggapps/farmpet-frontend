@@ -2,7 +2,7 @@ import React from "react";
 import { Link, withRouter } from "react-router-dom";
 import styled from "styled-components";
 import Logo from "./Logo";
-import { GNBWriteIcon, GNBNotificationIcon, SearchIcon } from "./Icons";
+import { WriteIcon, GNBNotificationIcon, SearchIcon } from "./Icons";
 import Input from "./Input";
 import useInput from "../Hooks/useInput";
 
@@ -104,7 +104,7 @@ export default withRouter(({ history }) => {
         <GNBWrapper>
           <GNB>
             <GNBList>
-              <GNBWriteIcon />
+              <WriteIcon />
             </GNBList>
             <GNBList>
               <GNBNotificationIcon />

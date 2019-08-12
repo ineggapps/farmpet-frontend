@@ -5,7 +5,7 @@ import FatText from "../FatText";
 import Avatar from "../Avatar";
 import DateText from "../DateText";
 import Slider from "../Slider";
-import { HeartIcon } from "../Icons";
+import { HeartIcon, WriteIcon, RemoveIcon } from "../Icons";
 import HeartButton from "../HeartButton";
 import PetAvatar from "../PetAvatar";
 
@@ -80,10 +80,37 @@ const CommentContent = styled.div`
   }
 `;
 
-const CommentSubTitle = styled.p`
+const CommentSubTitle = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   padding: 5px 0;
   & * {
     margin-right: 5px;
+  }
+`;
+
+const CommentComponents = styled.ul`
+  display: flex;
+  justify-content: center;
+  & li:first-child {
+    margin-right: 5px;
+  }
+  & button {
+    cursor: pointer;
+    span {
+      display: none;
+    }
+    padding: 0;
+    margin: 0;
+    border: 0 none;
+    background: 0 none;
+    &:focus {
+      outline: none;
+    }
+  }
+  & svg {
+    fill: ${props => props.theme.lightGreyColor};
   }
 `;
 
@@ -152,7 +179,8 @@ export default ({
   setIsLiked,
   setLikeCount,
   onKeyPress,
-  selfComments
+  selfComments,
+  deleteComment
 }) => {
   return (
     <Post>
@@ -200,8 +228,24 @@ export default ({
                     <Avatar url={comment.user.avatar} size={"md"} />
                     <CommentContent>
                       <CommentSubTitle>
-                        <FatText text={comment.user.username} />
-                        <DateText date={comment.createdAt} />
+                        <div>
+                          <FatText text={comment.user.username} />
+                          <DateText date={comment.createdAt} />
+                        </div>
+                        <CommentComponents>
+                          <li>
+                            <button>
+                              <span>수정</span>
+                              <WriteIcon size="12" />
+                            </button>
+                          </li>
+                          <li>
+                            <button onClick={() => deleteComment(comment.id)}>
+                              <span>삭제</span>
+                              <RemoveIcon size="12" />
+                            </button>
+                          </li>
+                        </CommentComponents>
                       </CommentSubTitle>
                       <p>{comment.text}</p>
                     </CommentContent>

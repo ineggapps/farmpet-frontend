@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import PostPresenter from "./PostPresenter";
 import useInput from "../../Hooks/useInput";
 import { useMutation } from "react-apollo-hooks";
-import { TOGGLE_LIKE, CREATE_COMMENT } from "./PostQueries";
+import { TOGGLE_LIKE, CREATE_COMMENT, DELETE_COMMENT } from "./PostQueries";
 
 const PostContainer = ({
   id,
@@ -27,6 +27,7 @@ const PostContainer = ({
   const [createCommentMutation] = useMutation(CREATE_COMMENT, {
     variables: { postId: id, text: comment.value }
   });
+  const [deleteCommentMutation] = useMutation(DELETE_COMMENT);
 
   const onKeyPress = async e => {
     const { which } = e;
@@ -80,6 +81,17 @@ const PostContainer = ({
     }
   };
 
+  const deleteComment = async commentId => {
+    console.log(commentId, "삭제 요청하기");
+    const result = await deleteCommentMutation({ variables: { commentId } });
+    if (result) {
+      //지우기에 성공하면
+      console.log("댓글 지우기 성공");
+    } else {
+      console.log("댓글 지우기 실패");
+    }
+  };
+
   // console.log("postid is", id);
 
   return (
@@ -100,6 +112,7 @@ const PostContainer = ({
       setLikeCount={setLikeCount}
       onKeyPress={onKeyPress}
       selfComments={selfComments}
+      deleteComment={deleteComment}
     />
   );
 };
