@@ -52,7 +52,6 @@ const SidePets = ({ title, pets }) => {
                 <PetAvatar category={pet.category} size={"md"} url={pet.avatar} />
                 <PetName text={pet.name} maxLine="2" ellipsis="..." trimRight basedOn="letters" />
               </Profile>
-              <FollowButton>Follow</FollowButton>
             </Pet>
           ))}
       </Pets>
