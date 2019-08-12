@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import TextareaAutosize from "react-autosize-textarea/lib";
 import Post from "../Post";

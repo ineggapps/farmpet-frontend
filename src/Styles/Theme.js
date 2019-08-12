@@ -31,7 +31,7 @@ export default {
   postBox: `
   width:600px;
   border-radius:3px;
-  margin:20px auto 40px;
+  margin:20px auto 25px;
   border-bottom:1px solid #DEDEDE;
   background-color:#FFF;
   box-shadow:0 1px 0 rgba(198,201,206,.2);

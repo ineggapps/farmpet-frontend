@@ -9,8 +9,8 @@ Frontend for farmpet (GraphQL + Hooks)
 - [x] 좋아요 토글 / toggle Like
 - [x] 글 작성 컴포넌트 (글 작성까지만 완료.)
 - [ ] SNB 나의 펫
-- [ ] SNB 나의 프로필
-- [ ] SNB 팔로잉 목록
+- [x] SNB 나의 프로필
+- [x] SNB 팔로잉 목록
 - [ ] 사진 첨부하여 글 작성하기
 - [ ] 덧글 수정
 - [ ] 덧글 삭제

@@ -3,18 +3,21 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import LinesEllipsis from "react-lines-ellipsis";
 import FatText from "./FatText";
-import Avatar from "./Avatar";
+import PetAvatar from "./PetAvatar";
 
 const Container = styled.div`
   ${props => props.theme.postBoxSide};
 `;
 
 const Title = styled.h3`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 15px;
 `;
 
-const Friends = styled.ul``;
-const Friend = styled.li`
+const Pets = styled.ul``;
+const Pet = styled.li`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -24,26 +27,31 @@ const Profile = styled.div`
   display: flex;
   align-items: center;
 
-  & *:first-child {
+  & > *:first-child {
     margin-right: 8px;
+  }
+
+  & > p {
+    width: auto;
   }
 `;
 const FollowButton = styled.div``;
 
-const SideUsers = ({ title, users }) => {
+const SidePets = ({ title, pets }) => {
   return (
     <Container>
       <Title>
         <FatText text={title} />
+        <FatText text="Add pet" />
       </Title>
-      <Friends>
-        {users &&
-          users.map(f => (
-            <Friend key={f.id}>
+      <Pets>
+        {pets &&
+          pets.map(pet => (
+            <Pet key={pet.id}>
               <Profile>
-                <Avatar size={"md"} url={f.avatar} />
+                <PetAvatar category={pet.category} size={"md"} url={pet.avatar} />
                 <LinesEllipsis
-                  text={f.username}
+                  text={pet.name}
                   maxLine="1"
                   ellipsis="..."
                   trimRight
@@ -51,22 +59,23 @@ const SideUsers = ({ title, users }) => {
                 />
               </Profile>
               <FollowButton>Follow</FollowButton>
-            </Friend>
+            </Pet>
           ))}
-      </Friends>
+      </Pets>
     </Container>
   );
 };
 
-SideUsers.propTypes = {
+SidePets.propTypes = {
   title: PropTypes.string.isRequired,
-  users: PropTypes.arrayOf(
+  pets: PropTypes.arrayOf(
     PropTypes.shape({
+      category: PropTypes.string,
       id: PropTypes.string,
       avatar: PropTypes.string,
-      username: PropTypes.string.isRequired
+      name: PropTypes.string.isRequired
     }).isRequired
   )
 };
 
-export default SideUsers;
+export default SidePets;

@@ -9,6 +9,7 @@ import WritingToolBox from "../Components/WritingToolBox";
 import { ME } from "../SharedQueries";
 import SideProfile from "../Components/SideProfile";
 import SideUsers from "../Components/SideUsers";
+import SidePets from "../Components/SidePets";
 
 const FEED_QUERY = gql`
   {
@@ -105,6 +106,7 @@ export default () => {
         {!meLoading && meData.me && (
           <>
             <SideProfile user={meData.me} />
+            <SidePets title={`${meData.me.username}'s Pets`} pets={meData.me.pets} />
             <SideUsers title={"Following"} users={meData.me.following} />
             <SideUsers title={"Followers"} users={meData.me.followers} />
           </>
