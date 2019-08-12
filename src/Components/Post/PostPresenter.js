@@ -7,6 +7,7 @@ import DateText from "../DateText";
 import Slider from "../Slider";
 import HeartButton from "../HeartButton";
 import PetAvatar from "../PetAvatar";
+import { RemoveIcon } from "../Icons";
 
 const Post = styled.div`
   ${props => props.theme.postBox};
@@ -247,18 +248,7 @@ export default ({
                         )}
                       </CommentSubTitle>
                       <CommentText>
-                        {editCommentS &&
-                        editCommentS.id &&
-                        editCommentS.id.filter(c => c.id === comment.id) ? (
-                          <TextareaComment
-                            placeholder={"Edit your comment."}
-                            value={comment.textarea.value}
-                            onChange={comment.textarea.onChange}
-                            onKeyPress={comment.textarea.onKeyPress}
-                          />
-                        ) : (
-                          <p>{comment.text}</p>
-                        )}
+                        <p>{comment.text}</p>
                       </CommentText>
                     </CommentContent>
                   </CommentContainer>
