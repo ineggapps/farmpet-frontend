@@ -3,7 +3,8 @@ import PropTypes from "prop-types";
 import PostPresenter from "./PostPresenter";
 import useInput from "../../Hooks/useInput";
 import { useMutation } from "react-apollo-hooks";
-import { TOGGLE_LIKE, CREATE_COMMENT, DELETE_COMMENT } from "./PostQueries";
+import { TOGGLE_LIKE, CREATE_COMMENT, DELETE_COMMENT, UPDATE_PERMISSION } from "./PostQueries";
+import { PERMISSION_PRIVATE, PERMISSION_FRIENDS } from "../../SharedQueries";
 
 const PostContainer = ({
   id,
@@ -23,6 +24,8 @@ const PostContainer = ({
   const [likeCountS, setLikeCount] = useState(likeCount);
   const [commentCountS, setCommentCount] = useState(commentCount);
   const [commentsS, setComments] = useState(comments);
+  const [openPermission, setOpenPermission] = useState(false);
+  const [permissionS, setPermissionS] = useState(permission);
   const [selfComments, setSelfComments] = useState([]);
   const comment = useInput("");
   const [toggleLikeMutation] = useMutation(TOGGLE_LIKE, { variables: { postId: id } });
@@ -30,6 +33,7 @@ const PostContainer = ({
     variables: { postId: id, text: comment.value }
   });
   const [deleteCommentMutation] = useMutation(DELETE_COMMENT);
+  const [updatePermissionMutation] = useMutation(UPDATE_PERMISSION);
 
   const onKeyPress = async e => {
     const { which } = e;
@@ -104,6 +108,18 @@ const PostContainer = ({
     }
   };
 
+  const setPermission = async (postId, permission) => {
+    console.log(postId, permission, "changed");
+
+    const result = updatePermissionMutation({
+      variables: { postId, permission }
+    });
+    if (result) {
+      setPermissionS(permission);
+      console.log("권한 변경 완료!");
+    }
+  };
+
   return (
     <PostPresenter
       id={id}
@@ -113,7 +129,7 @@ const PostContainer = ({
       caption={caption}
       likeCount={likeCountS}
       isLiked={isLikedS}
-      permission={permission}
+      permission={permissionS}
       commentCount={commentCountS}
       comments={commentsS}
       createdAt={createdAt}
@@ -124,6 +140,10 @@ const PostContainer = ({
       onKeyPress={onKeyPress}
       selfComments={selfComments}
       deleteComment={deleteComment}
+      me={me}
+      openPermission={openPermission}
+      setOpenPermission={setOpenPermission}
+      setPermission={setPermission}
     />
   );
 };

@@ -26,3 +26,9 @@ export const DELETE_COMMENT = gql`
     deleteComment(commentId: $commentId)
   }
 `;
+
+export const UPDATE_PERMISSION = gql`
+  mutation updatePermission($postId: String!, $permission: PostPermission!) {
+    updatePermission(postId: $postId, permission: $permission)
+  }
+`;

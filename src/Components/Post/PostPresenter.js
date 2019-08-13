@@ -8,6 +8,8 @@ import Slider from "../Slider";
 import HeartButton from "../HeartButton";
 import PetAvatar from "../PetAvatar";
 import { RemoveIcon, EarthIcon, LockIcon, SocialIcon } from "../Icons";
+import { PERMISSION_PUBLIC, PERMISSION_PRIVATE, PERMISSION_FRIENDS } from "../../SharedQueries";
+import { Select, MenuItem } from "@material-ui/core";
 
 const Post = styled.div`
   ${props => props.theme.postBox};
@@ -40,9 +42,9 @@ const PermissionColumn = styled.div`
 `;
 
 const PermissionIcon = ({ permission }) => {
-  if (permission === "PRIVATE") {
+  if (permission === PERMISSION_PRIVATE) {
     return <LockIcon />;
-  } else if (permission === "FRIENDS") {
+  } else if (permission === PERMISSION_FRIENDS) {
     return <SocialIcon />;
   } else {
     return <EarthIcon />;
@@ -213,7 +215,11 @@ export default ({
   toggleLike,
   onKeyPress,
   selfComments,
-  deleteComment
+  deleteComment,
+  me,
+  setPermission,
+  openPermission,
+  setOpenPermission
 }) => {
   return (
     <Post>
@@ -228,8 +234,30 @@ export default ({
           </p>
         </UserColumn>
         <PermissionColumn>
-          <PermissionIcon permission={permission} />
-          {upperFirstLetter(permission)}
+          {me.id === userId ? (
+            <>
+              <Select
+                open={openPermission}
+                onClose={() => setOpenPermission(false)}
+                onOpen={() => setOpenPermission(true)}
+                value={permission}
+                onChange={({ target: { value } }) => setPermission(id, value)}
+                inputProps={{
+                  name: "permission",
+                  id: "demo-controlled-open-select"
+                }}
+              >
+                <MenuItem value={`${PERMISSION_PUBLIC}`}>Public</MenuItem>
+                <MenuItem value={`${PERMISSION_FRIENDS}`}>Friends</MenuItem>
+                <MenuItem value={`${PERMISSION_PRIVATE}`}>Private</MenuItem>
+              </Select>
+            </>
+          ) : (
+            <>
+              <PermissionIcon permission={permission} />
+              {upperFirstLetter(permission)}
+            </>
+          )}
         </PermissionColumn>
       </Header>
       <Content>
