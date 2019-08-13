@@ -7,9 +7,9 @@ import DateText from "../DateText";
 import Slider from "../Slider";
 import HeartButton from "../HeartButton";
 import PetAvatar from "../PetAvatar";
-import { RemoveIcon, EarthIcon, LockIcon, SocialIcon } from "../Icons";
+import { RemoveIcon, EarthIcon, LockIcon, SocialIcon, WriteIcon } from "../Icons";
 import { PERMISSION_PUBLIC, PERMISSION_PRIVATE, PERMISSION_FRIENDS } from "../../SharedQueries";
-import { Select, MenuItem } from "@material-ui/core";
+import { Select, MenuItem, Button } from "@material-ui/core";
 
 const Post = styled.div`
   ${props => props.theme.postBox};
@@ -23,6 +23,10 @@ const Header = styled.header`
   padding: 40px 40px 0;
   &:hover button {
     visibility: visible;
+  }
+  & button {
+    position: relative;
+    left: 18px;
   }
 `;
 const UserColumn = styled.div`
@@ -54,7 +58,7 @@ const PermissionIcon = ({ permission }) => {
   }
 };
 
-const DeleteComponent = styled.div`
+const ControlComponent = styled.li`
   & button {
     visibility: hidden;
     cursor: pointer;
@@ -84,6 +88,9 @@ const Caption = styled.p`
   line-height: 1.35;
   margin: 10px 0;
   white-space: pre-line;
+  & > span {
+    text-align: right;
+  }
 `;
 
 const Files = styled.div`
@@ -146,7 +153,7 @@ const CommentSubTitle = styled.div`
   }
 `;
 
-const CommentComponents = styled.ul`
+const ControlComponents = styled.ul`
   display: flex;
   justify-content: center;
   & li:first-child {
@@ -158,6 +165,24 @@ const CommentWriter = styled.div`
   border-top: 1px solid ${props => props.theme.superLightGreyColor};
   padding: 15px 40px 15px;
   display: flex;
+`;
+
+const EditCaption = styled.div`
+  text-align: right;
+  margin-bottom: 10px;
+  & > * {
+    margin-bottom: 10px;
+  }
+`;
+
+const EditPostTextArea = styled(TextareaAutosize)`
+  width: 100%;
+  border: 2px solid ${props => props.theme.superLightGreyColor};
+  resize: none;
+  font-family: ${props => props.theme.fontFamily};
+  &:focus {
+    outline: none;
+  }
 `;
 
 const Textarea = styled(TextareaAutosize)`
@@ -219,16 +244,21 @@ export default ({
   createdAt,
   newComment,
   toggleLike,
-  onKeyPress,
+  onCommentKeyPress,
   selfComments,
   deleteComment,
   me,
   setPermission,
   openPermission,
   setOpenPermission,
-  deletePost
+  deletePost,
+  isDeletedPost,
+  isEditMode,
+  editPost,
+  editCaptionInput,
+  onEditCaptionKeyPress
 }) => {
-  return (
+  return !isDeletedPost ? (
     <Post>
       <Header>
         <Avatar size="lg" url={avatar} />
@@ -242,12 +272,20 @@ export default ({
         </UserColumn>
         {userId === me.id && (
           <div>
-            <DeleteComponent>
-              <button onClick={() => deletePost(id)}>
-                <span>삭제</span>
-                <RemoveIcon size="12" />
-              </button>
-            </DeleteComponent>
+            <ControlComponents>
+              <ControlComponent>
+                <button onClick={() => editPost(id)}>
+                  <span>수정</span>
+                  <WriteIcon size="12" />
+                </button>
+              </ControlComponent>
+              <ControlComponent>
+                <button onClick={() => deletePost(id)}>
+                  <span>삭제</span>
+                  <RemoveIcon size="12" />
+                </button>
+              </ControlComponent>
+            </ControlComponents>
           </div>
         )}
         <PermissionColumn>
@@ -278,7 +316,21 @@ export default ({
         </PermissionColumn>
       </Header>
       <Content>
-        <Caption>{caption}</Caption>
+        {isEditMode ? (
+          <EditCaption>
+            <EditPostTextArea
+              placeholder={"Edit your caption"}
+              value={editCaptionInput.value}
+              onChange={editCaptionInput.onChange}
+            />
+            <Button variant="contained" color="secondary" onClick={() => editPost()}>
+              Submit
+            </Button>
+          </EditCaption>
+        ) : (
+          <Caption>{caption}</Caption>
+        )}
+
         <Slider files={files} />
         <ContentFooter>
           <Buttons>
@@ -315,16 +367,14 @@ export default ({
                           <DateText date={comment.createdAt} />
                         </div>
                         {comment.user.id === userId && (
-                          <CommentComponents>
-                            <li>
-                              <DeleteComponent>
-                                <button onClick={() => deleteComment(comment.id)}>
-                                  <span>삭제</span>
-                                  <RemoveIcon size="12" />
-                                </button>
-                              </DeleteComponent>
-                            </li>
-                          </CommentComponents>
+                          <ControlComponents>
+                            <ControlComponent>
+                              <button onClick={() => deleteComment(comment.id)}>
+                                <span>삭제</span>
+                                <RemoveIcon size="12" />
+                              </button>
+                            </ControlComponent>
+                          </ControlComponents>
                         )}
                       </CommentSubTitle>
                       <CommentText>
@@ -345,16 +395,14 @@ export default ({
                           <FatText text={comment.user.username} />
                           <DateText date={comment.createdAt} />
                         </div>
-                        <CommentComponents>
-                          <li>
-                            <DeleteComponent>
-                              <button onClick={() => deleteComment(comment.id, true)}>
-                                <span>삭제</span>
-                                <RemoveIcon size="12" />
-                              </button>
-                            </DeleteComponent>
-                          </li>
-                        </CommentComponents>
+                        <ControlComponents>
+                          <ControlComponent>
+                            <button onClick={() => deleteComment(comment.id, true)}>
+                              <span>삭제</span>
+                              <RemoveIcon size="12" />
+                            </button>
+                          </ControlComponent>
+                        </ControlComponents>
                       </CommentSubTitle>
                       <p>{comment.text}</p>
                     </CommentContent>
@@ -369,10 +417,10 @@ export default ({
             placeholder={"Add a comment."}
             value={newComment.value}
             onChange={newComment.onChange}
-            onKeyPress={onKeyPress}
+            onKeyPress={onCommentKeyPress}
           />
         </CommentWriter>
       </CommentArea>
     </Post>
-  );
+  ) : null;
 };

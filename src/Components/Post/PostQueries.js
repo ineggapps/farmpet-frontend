@@ -32,3 +32,15 @@ export const UPDATE_PERMISSION = gql`
     updatePermission(postId: $postId, permission: $permission)
   }
 `;
+
+export const DELETE_POST = gql`
+  mutation deletePost($id: String!) {
+    deletePost(id: $id)
+  }
+`;
+
+export const UPDATE_POST = gql`
+  mutation updatePost($id: String!, $caption: String!) {
+    updatePost(id: $id, caption: $caption)
+  }
+`;
