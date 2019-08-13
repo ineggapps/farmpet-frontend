@@ -145,7 +145,7 @@ const CommentText = styled.div``;
 
 const CommentSubTitle = styled.div`
   display: flex;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   align-items: center;
   padding: 5px 0;
   & * {
