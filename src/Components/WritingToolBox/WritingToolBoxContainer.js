@@ -56,6 +56,7 @@ const WritingToolBoxContainer = ({ pets, user }) => {
         caption: result.caption,
         likeCount: 0,
         isLiked: false,
+        permission: result.permission,
         commentCount: 0,
         comments: [],
         createdAt: result.createdAt,

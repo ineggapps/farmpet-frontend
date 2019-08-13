@@ -7,13 +7,14 @@ import DateText from "../DateText";
 import Slider from "../Slider";
 import HeartButton from "../HeartButton";
 import PetAvatar from "../PetAvatar";
-import { RemoveIcon } from "../Icons";
+import { RemoveIcon, EarthIcon, LockIcon, SocialIcon } from "../Icons";
 
 const Post = styled.div`
   ${props => props.theme.postBox};
 `;
 
 const Header = styled.header`
+  position: relative;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -22,6 +23,31 @@ const Header = styled.header`
 const UserColumn = styled.div`
   padding-left: 15px;
 `;
+
+const PermissionColumn = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 40px;
+  right: 35px;
+  font-size: 0.9em;
+  color: ${props => props.theme.darkGreyColor};
+  & svg {
+    fill: ${props => props.theme.darkGreyColor};
+    margin-right: 3px;
+  }
+`;
+
+const PermissionIcon = ({ permission }) => {
+  if (permission === "PRIVATE") {
+    return <LockIcon />;
+  } else if (permission === "FRIENDS") {
+    return <SocialIcon />;
+  } else {
+    return <EarthIcon />;
+  }
+};
 
 const Content = styled.div`
   padding: 10px 40px 20px;
@@ -169,6 +195,8 @@ const Pet = styled.li`
   }
 `;
 
+const upperFirstLetter = string => string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+
 export default ({
   user: { id: userId, username, avatar },
   pets,
@@ -177,6 +205,7 @@ export default ({
   caption,
   likeCount,
   isLiked,
+  permission,
   comments,
   commentCount,
   createdAt,
@@ -198,6 +227,10 @@ export default ({
             <DateText date={createdAt} />
           </p>
         </UserColumn>
+        <PermissionColumn>
+          <PermissionIcon permission={permission} />
+          {upperFirstLetter(permission)}
+        </PermissionColumn>
       </Header>
       <Content>
         <Caption>{caption}</Caption>

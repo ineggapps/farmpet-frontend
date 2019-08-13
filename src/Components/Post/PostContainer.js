@@ -16,6 +16,7 @@ const PostContainer = ({
   commentCount,
   comments,
   createdAt,
+  permission,
   me
 }) => {
   const [isLikedS, setIsLiked] = useState(isLiked);
@@ -112,6 +113,7 @@ const PostContainer = ({
       caption={caption}
       likeCount={likeCountS}
       isLiked={isLikedS}
+      permission={permission}
       commentCount={commentCountS}
       comments={commentsS}
       createdAt={createdAt}

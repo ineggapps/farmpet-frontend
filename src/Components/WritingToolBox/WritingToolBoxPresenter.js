@@ -153,6 +153,7 @@ export default ({
           caption={post.caption}
           likeCount={post.likeCount}
           isLiked={post.isLiked}
+          permission={post.permission}
           commentCount={post.commentCount}
           comments={post.comments}
           createdAt={post.createdAt}
