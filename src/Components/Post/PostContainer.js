@@ -123,6 +123,10 @@ const PostContainer = ({
     }
   };
 
+  const deletePost = () => {
+    console.log(id, "포스트를 삭제 시도");
+  };
+
   return (
     <PostPresenter
       id={id}
@@ -147,6 +151,7 @@ const PostContainer = ({
       openPermission={openPermission}
       setOpenPermission={setOpenPermission}
       setPermission={setPermission}
+      deletePost={deletePost}
     />
   );
 };

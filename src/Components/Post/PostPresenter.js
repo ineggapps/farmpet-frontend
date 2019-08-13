@@ -21,6 +21,9 @@ const Header = styled.header`
   flex-direction: row;
   align-items: center;
   padding: 40px 40px 0;
+  &:hover button {
+    visibility: visible;
+  }
 `;
 const UserColumn = styled.div`
   padding-left: 15px;
@@ -50,6 +53,26 @@ const PermissionIcon = ({ permission }) => {
     return <EarthIcon />;
   }
 };
+
+const DeleteComponent = styled.div`
+  & button {
+    visibility: hidden;
+    cursor: pointer;
+    span {
+      display: none;
+    }
+    padding: 0;
+    margin: 0;
+    border: 0 none;
+    background: 0 none;
+    &:focus {
+      outline: none;
+    }
+  }
+  & svg {
+    fill: ${props => props.theme.lightGreyColor};
+  }
+`;
 
 const Content = styled.div`
   padding: 10px 40px 20px;
@@ -129,23 +152,6 @@ const CommentComponents = styled.ul`
   & li:first-child {
     margin-right: 5px;
   }
-  & button {
-    visibility: hidden;
-    cursor: pointer;
-    span {
-      display: none;
-    }
-    padding: 0;
-    margin: 0;
-    border: 0 none;
-    background: 0 none;
-    &:focus {
-      outline: none;
-    }
-  }
-  & svg {
-    fill: ${props => props.theme.lightGreyColor};
-  }
 `;
 
 const CommentWriter = styled.div`
@@ -219,7 +225,8 @@ export default ({
   me,
   setPermission,
   openPermission,
-  setOpenPermission
+  setOpenPermission,
+  deletePost
 }) => {
   return (
     <Post>
@@ -233,6 +240,16 @@ export default ({
             <DateText date={createdAt} />
           </p>
         </UserColumn>
+        {userId === me.id && (
+          <div>
+            <DeleteComponent>
+              <button onClick={() => deletePost(id)}>
+                <span>삭제</span>
+                <RemoveIcon size="12" />
+              </button>
+            </DeleteComponent>
+          </div>
+        )}
         <PermissionColumn>
           {me.id === userId ? (
             <>
@@ -300,10 +317,12 @@ export default ({
                         {comment.user.id === userId && (
                           <CommentComponents>
                             <li>
-                              <button onClick={() => deleteComment(comment.id)}>
-                                <span>삭제</span>
-                                <RemoveIcon size="12" />
-                              </button>
+                              <DeleteComponent>
+                                <button onClick={() => deleteComment(comment.id)}>
+                                  <span>삭제</span>
+                                  <RemoveIcon size="12" />
+                                </button>
+                              </DeleteComponent>
                             </li>
                           </CommentComponents>
                         )}
@@ -328,10 +347,12 @@ export default ({
                         </div>
                         <CommentComponents>
                           <li>
-                            <button onClick={() => deleteComment(comment.id, true)}>
-                              <span>삭제</span>
-                              <RemoveIcon size="12" />
-                            </button>
+                            <DeleteComponent>
+                              <button onClick={() => deleteComment(comment.id, true)}>
+                                <span>삭제</span>
+                                <RemoveIcon size="12" />
+                              </button>
+                            </DeleteComponent>
                           </li>
                         </CommentComponents>
                       </CommentSubTitle>
