@@ -179,6 +179,7 @@ const EditPostTextArea = styled(TextareaAutosize)`
   width: 100%;
   border: 2px solid ${props => props.theme.superLightGreyColor};
   resize: none;
+  font-size: 1em;
   font-family: ${props => props.theme.fontFamily};
   &:focus {
     outline: none;
