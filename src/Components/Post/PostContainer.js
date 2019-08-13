@@ -108,15 +108,18 @@ const PostContainer = ({
     }
   };
 
-  const setPermission = async (postId, permission) => {
-    console.log(postId, permission, "changed");
+  const setPermission = async (postId, newPermission) => {
+    console.log(postId, newPermission, "changed");
+    setPermissionS(newPermission);
 
-    const result = updatePermissionMutation({
-      variables: { postId, permission }
+    const {
+      data: { updatePermission: result }
+    } = await updatePermissionMutation({
+      variables: { postId, permission: newPermission }
     });
-    if (result) {
+    if (!result) {
       setPermissionS(permission);
-      console.log("권한 변경 완료!");
+      console.log(result, "권한변경 실패해야 하는데");
     }
   };
 
