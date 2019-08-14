@@ -6,12 +6,10 @@ import { useMutation } from "react-apollo-hooks";
 import {
   TOGGLE_LIKE,
   CREATE_COMMENT,
-  DELETE_COMMENT,
   UPDATE_PERMISSION,
   DELETE_POST,
   UPDATE_POST
 } from "./PostQueries";
-import { PERMISSION_PRIVATE, PERMISSION_FRIENDS } from "../../SharedQueries";
 
 const PostContainer = ({
   id,
@@ -43,10 +41,21 @@ const PostContainer = ({
   const [createCommentMutation] = useMutation(CREATE_COMMENT, {
     variables: { postId: id, text: comment.value }
   });
-  const [deleteCommentMutation] = useMutation(DELETE_COMMENT);
   const [updatePermissionMutation] = useMutation(UPDATE_PERMISSION);
   const [deletePostMutation] = useMutation(DELETE_POST);
   const [updatePostMutation] = useMutation(UPDATE_POST);
+
+  const onCommentDeleted = commentId => {
+    //덧글이 삭제되면 삭제된 컴포넌트에서 이 이벤트를 호출함.
+    setCommentCount(commentCountS - 1);
+    console.log("덧글 정리", commentsS.filter(c => c.id !== commentId));
+    setComments(commentsS.filter(c => c.id !== commentId));
+    console.log("덧글 정리", selfComments.filter(c => c.id !== commentId));
+    setSelfComments(selfComments.filter(c => c.id !== commentId));
+
+    console.log(selfComments.length, commentsS.length, "길이", commentCountS);
+    console.log("삭제 이벤트가 발생해서 내가 호출되었습니다.");
+  };
 
   const onCommentKeyPress = async e => {
     const { which } = e;
@@ -101,23 +110,6 @@ const PostContainer = ({
       setIsLiked(isLiked);
       setLikeCount(likeCount);
       console.log(error);
-    }
-  };
-
-  const deleteComment = async (commentId, isSelfComment = false) => {
-    console.log(commentId, "삭제 요청하기");
-    const result = await deleteCommentMutation({ variables: { commentId } });
-    if (result) {
-      //지우기에 성공하면
-      console.log("댓글 지우기 성공");
-      setCommentCount(commentCountS - 1);
-      if (isSelfComment) {
-        setSelfComments(selfComments.filter(c => c.id !== commentId));
-      } else {
-        setComments(commentsS.filter(c => c.id !== commentId));
-      }
-    } else {
-      console.log("댓글 지우기 실패");
     }
   };
 
@@ -199,7 +191,6 @@ const PostContainer = ({
       setLikeCount={setLikeCount}
       onCommentKeyPress={onCommentKeyPress}
       selfComments={selfComments}
-      deleteComment={deleteComment}
       me={me}
       openPermission={openPermission}
       setOpenPermission={setOpenPermission}
@@ -209,6 +200,7 @@ const PostContainer = ({
       isEditMode={isEditMode}
       editPost={editPost}
       editCaptionInput={editCaptionInput}
+      onCommentDeleted={onCommentDeleted}
     />
   );
 };

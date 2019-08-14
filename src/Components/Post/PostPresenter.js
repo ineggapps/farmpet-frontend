@@ -216,7 +216,6 @@ export default ({
   toggleLike,
   onCommentKeyPress,
   selfComments,
-  deleteComment,
   me,
   setPermission,
   openPermission,
@@ -226,7 +225,7 @@ export default ({
   isEditMode,
   editPost,
   editCaptionInput,
-  onEditCaptionKeyPress
+  onCommentDeleted
 }) => {
   const user = { id: userId, username, avatar };
   return !isDeletedPost ? (
@@ -328,11 +327,23 @@ export default ({
             <Comments>
               {/* 실제 DB에서 불러오는 코멘트 */
               comments.map(comment => (
-                <PostComment id={id} user={user} comment={comment} />
+                <PostComment
+                  me={me}
+                  id={id}
+                  user={user}
+                  comment={comment}
+                  onCommentDeleted={onCommentDeleted}
+                />
               ))}
               {/* 실제 DB에서 불러오는 코멘트 */
               selfComments.map(comment => (
-                <PostComment id={id} user={user} comment={comment} />
+                <PostComment
+                  me={me}
+                  id={id}
+                  user={user}
+                  comment={comment}
+                  onCommentDeleted={onCommentDeleted}
+                />
               ))}
             </Comments>
           </CommentViewer>

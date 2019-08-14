@@ -12,6 +12,9 @@ const CommentList = styled.li`
 const CommentContainer = styled.div`
   padding: 5px 0;
   display: flex;
+  &:hover button {
+    visibility: visible;
+  }
 `;
 
 const CommentContent = styled.div`
@@ -37,20 +40,6 @@ const CommentSubTitle = styled.div`
   }
 `;
 
-const ControlComponents = styled.ul`
-  display: flex;
-  justify-content: center;
-  & li:first-child {
-    margin-right: 5px;
-  }
-`;
-
-const CommentWriter = styled.div`
-  border-top: 1px solid ${props => props.theme.superLightGreyColor};
-  padding: 15px 40px 15px;
-  display: flex;
-`;
-
 const ControlComponent = styled.li`
   & button {
     visibility: hidden;
@@ -71,12 +60,16 @@ const ControlComponent = styled.li`
   }
 `;
 
-const PostCommentPresenter = ({
-  id,
-  comment,
-  user: { id: userId, avatar, username },
-  deleteComment
-}) => {
+const ControlComponents = styled.ul`
+  display: flex;
+  justify-content: center;
+  & li:first-child {
+    margin-right: 5px;
+  }
+`;
+
+//userId === 원글 작성자 아이디임 헷갈리지 말자
+const PostCommentPresenter = ({ id, comment, user: { id: userId }, deleteComment, me }) => {
   return (
     <CommentList key={comment.id}>
       <CommentContainer>
@@ -87,7 +80,7 @@ const PostCommentPresenter = ({
               <FatText text={comment.user.username} />
               <DateText date={comment.createdAt} />
             </div>
-            {comment.user.id === userId && (
+            {comment.user.id === me.id && (
               <ControlComponents>
                 <ControlComponent>
                   <button onClick={() => deleteComment(comment.id)}>
