@@ -3,7 +3,8 @@ import styled from "styled-components";
 import Avatar from "../Avatar";
 import DateText from "../DateText";
 import FatText from "../FatText";
-import { RemoveIcon } from "../Icons";
+import { RemoveIcon, WriteIcon } from "../Icons";
+import TextareaAutosize from "react-autosize-textarea/lib";
 
 const CommentList = styled.li`
   margin-bottom: 10px;
@@ -68,8 +69,30 @@ const ControlComponents = styled.ul`
   }
 `;
 
+const EditCommentTextArea = styled(TextareaAutosize)`
+  width: 100%;
+  border: 2px solid ${props => props.theme.superLightGreyColor};
+  resize: none;
+  font-size: 1em;
+  font-family: ${props => props.theme.fontFamily};
+  &:focus {
+    outline: none;
+  }
+`;
+
 //userId === 원글 작성자 아이디임 헷갈리지 말자
-const PostCommentPresenter = ({ id, comment, user: { id: userId }, deleteComment, me }) => {
+const PostCommentPresenter = ({
+  id,
+  me,
+  comment,
+  user: { id: userId },
+  editComment,
+  editCommentInput,
+  deleteComment,
+  isEditState,
+  onKeyPress
+}) => {
+  //   console.log("덧글 뷰어", comment);
   return (
     <CommentList key={comment.id}>
       <CommentContainer>
@@ -83,7 +106,13 @@ const PostCommentPresenter = ({ id, comment, user: { id: userId }, deleteComment
             {comment.user.id === me.id && (
               <ControlComponents>
                 <ControlComponent>
-                  <button onClick={() => deleteComment(comment.id)}>
+                  <button onClick={() => editComment()}>
+                    <span>수정</span>
+                    <WriteIcon size="12" />
+                  </button>
+                </ControlComponent>
+                <ControlComponent>
+                  <button onClick={() => deleteComment()}>
                     <span>삭제</span>
                     <RemoveIcon size="12" />
                   </button>
@@ -92,7 +121,16 @@ const PostCommentPresenter = ({ id, comment, user: { id: userId }, deleteComment
             )}
           </CommentSubTitle>
           <CommentText>
-            <p>{comment.text}</p>
+            {isEditState ? (
+              <EditCommentTextArea
+                placeholder={"Edit your message."}
+                value={editCommentInput.value}
+                onChange={editCommentInput.onChange}
+                onKeyPress={onKeyPress}
+              />
+            ) : (
+              <p>{comment.text}</p>
+            )}
           </CommentText>
         </CommentContent>
       </CommentContainer>
