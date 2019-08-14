@@ -7,6 +7,7 @@ import DateText from "../DateText";
 import Slider from "../Slider";
 import HeartButton from "../HeartButton";
 import PetAvatar from "../PetAvatar";
+import PostComment from "../PostComment";
 import { RemoveIcon, EarthIcon, LockIcon, SocialIcon, WriteIcon } from "../Icons";
 import { PERMISSION_PUBLIC, PERMISSION_PRIVATE, PERMISSION_FRIENDS } from "../../SharedQueries";
 import { Select, MenuItem, Button } from "@material-ui/core";
@@ -121,38 +122,6 @@ const Comments = styled.ul`
   }
 `;
 
-const CommentList = styled.li`
-  margin-bottom: 10px;
-`;
-
-const CommentContainer = styled.div`
-  padding: 5px 0;
-  display: flex;
-`;
-
-const CommentContent = styled.div`
-  padding-left: 8px;
-  font-size: 0.8em;
-  & p {
-    line-height: 1.35;
-  }
-  &:hover button {
-    visibility: visible;
-  }
-`;
-
-const CommentText = styled.div``;
-
-const CommentSubTitle = styled.div`
-  display: flex;
-  /* justify-content: space-between; */
-  align-items: center;
-  padding: 5px 0;
-  & * {
-    margin-right: 5px;
-  }
-`;
-
 const ControlComponents = styled.ul`
   display: flex;
   justify-content: center;
@@ -259,6 +228,7 @@ export default ({
   editCaptionInput,
   onEditCaptionKeyPress
 }) => {
+  const user = { id: userId, username, avatar };
   return !isDeletedPost ? (
     <Post>
       <Header>
@@ -358,57 +328,11 @@ export default ({
             <Comments>
               {/* 실제 DB에서 불러오는 코멘트 */
               comments.map(comment => (
-                <CommentList key={comment.id}>
-                  <CommentContainer>
-                    <Avatar url={comment.user.avatar} size={"md"} />
-                    <CommentContent>
-                      <CommentSubTitle>
-                        <div>
-                          <FatText text={comment.user.username} />
-                          <DateText date={comment.createdAt} />
-                        </div>
-                        {comment.user.id === userId && (
-                          <ControlComponents>
-                            <ControlComponent>
-                              <button onClick={() => deleteComment(comment.id)}>
-                                <span>삭제</span>
-                                <RemoveIcon size="12" />
-                              </button>
-                            </ControlComponent>
-                          </ControlComponents>
-                        )}
-                      </CommentSubTitle>
-                      <CommentText>
-                        <p>{comment.text}</p>
-                      </CommentText>
-                    </CommentContent>
-                  </CommentContainer>
-                </CommentList>
+                <PostComment id={id} user={user} comment={comment} />
               ))}
               {/* 실제 DB에서 불러오는 코멘트 */
               selfComments.map(comment => (
-                <CommentList key={comment.id}>
-                  <CommentContainer>
-                    <Avatar url={comment.user.avatar} size={"md"} />
-                    <CommentContent>
-                      <CommentSubTitle>
-                        <div>
-                          <FatText text={comment.user.username} />
-                          <DateText date={comment.createdAt} />
-                        </div>
-                        <ControlComponents>
-                          <ControlComponent>
-                            <button onClick={() => deleteComment(comment.id, true)}>
-                              <span>삭제</span>
-                              <RemoveIcon size="12" />
-                            </button>
-                          </ControlComponent>
-                        </ControlComponents>
-                      </CommentSubTitle>
-                      <p>{comment.text}</p>
-                    </CommentContent>
-                  </CommentContainer>
-                </CommentList>
+                <PostComment id={id} user={user} comment={comment} />
               ))}
             </Comments>
           </CommentViewer>
