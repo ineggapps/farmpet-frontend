@@ -20,6 +20,7 @@ const CommentContainer = styled.div`
 `;
 
 const CommentContent = styled.div`
+  width: 100%;
   padding-left: 8px;
   font-size: 0.8em;
   & p {

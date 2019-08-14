@@ -117,6 +117,7 @@ const CommentInfo = styled.div`
 `;
 
 const Comments = styled.ul`
+  width: 100%;
   padding: 10px 0;
   &:last-child {
   }
