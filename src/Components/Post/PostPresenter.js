@@ -328,6 +328,7 @@ export default ({
               {/* 실제 DB에서 불러오는 코멘트 */
               comments.map(comment => (
                 <PostComment
+                  key={comment.id}
                   me={me}
                   id={id}
                   user={user}
@@ -338,6 +339,7 @@ export default ({
               {/* 실제 DB에서 불러오는 코멘트 */
               selfComments.map(comment => (
                 <PostComment
+                  key={comment.id}
                   me={me}
                   id={id}
                   user={user}
