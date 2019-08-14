@@ -5,6 +5,7 @@ import DateText from "../DateText";
 import FatText from "../FatText";
 import { RemoveIcon, WriteIcon } from "../Icons";
 import TextareaAutosize from "react-autosize-textarea/lib";
+import { Button } from "@material-ui/core";
 
 const CommentList = styled.li`
   margin-bottom: 10px;
@@ -89,7 +90,7 @@ const PostCommentPresenter = ({
   editComment,
   editCommentInput,
   deleteComment,
-  isEditState,
+  isEditMode,
   onKeyPress
 }) => {
   //   console.log("덧글 뷰어", comment);
@@ -103,7 +104,7 @@ const PostCommentPresenter = ({
               <FatText text={comment.user.username} />
               <DateText date={comment.createdAt} />
             </div>
-            {comment.user.id === me.id && (
+            {comment.user.id === me.id && !isEditMode && (
               <ControlComponents>
                 <ControlComponent>
                   <button onClick={() => editComment()}>
@@ -121,13 +122,21 @@ const PostCommentPresenter = ({
             )}
           </CommentSubTitle>
           <CommentText>
-            {isEditState ? (
-              <EditCommentTextArea
-                placeholder={"Edit your message."}
-                value={editCommentInput.value}
-                onChange={editCommentInput.onChange}
-                onKeyPress={onKeyPress}
-              />
+            {isEditMode ? (
+              <>
+                <EditCommentTextArea
+                  placeholder={"Edit your message."}
+                  value={editCommentInput.value}
+                  onChange={editCommentInput.onChange}
+                  onKeyPress={onKeyPress}
+                />
+                <Button variant="contained" color="secondary" onClick={() => editComment()}>
+                  Submit
+                </Button>
+                <Button variant="contained" onClick={() => editComment(true)}>
+                  Cancel
+                </Button>
+              </>
             ) : (
               <p>{comment.text}</p>
             )}

@@ -144,8 +144,12 @@ const PostContainer = ({
     }
   };
 
-  const editPost = async () => {
-    console.log(id, "수정 요청", editCaptionInput.value, caption);
+  const editPost = async (isCancel = false) => {
+    console.log(id, "수정 요청", isCancel);
+    if (isCancel) {
+      setIsEditMode(false);
+      return;
+    }
     if (isEditMode === true) {
       //이미 수정모드이므로 작성이 완료되었으면 수정사항을 전송한다.
       if (!(editCaptionInput.value === caption)) {
@@ -168,6 +172,7 @@ const PostContainer = ({
       }
     } else {
       //수정하기 전이라면 에딧 모드로 바꿔준다.
+      editCaptionInput.setValue(captionS);
       setIsEditMode(true);
     }
   };

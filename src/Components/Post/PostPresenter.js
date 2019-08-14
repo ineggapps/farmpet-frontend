@@ -240,17 +240,17 @@ export default ({
             <DateText date={createdAt} />
           </p>
         </UserColumn>
-        {userId === me.id && (
+        {userId === me.id && !isEditMode && (
           <div>
             <ControlComponents>
               <ControlComponent>
-                <button onClick={() => editPost(id)}>
+                <button onClick={() => editPost()}>
                   <span>수정</span>
                   <WriteIcon size="12" />
                 </button>
               </ControlComponent>
               <ControlComponent>
-                <button onClick={() => deletePost(id)}>
+                <button onClick={() => deletePost()}>
                   <span>삭제</span>
                   <RemoveIcon size="12" />
                 </button>
@@ -295,6 +295,9 @@ export default ({
             />
             <Button variant="contained" color="secondary" onClick={() => editPost()}>
               Submit
+            </Button>
+            <Button variant="contained" onClick={() => editPost(true)}>
+              Cancel
             </Button>
           </EditCaption>
         ) : (

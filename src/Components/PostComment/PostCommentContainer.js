@@ -9,7 +9,7 @@ const PostCommentContainer = ({ id, user, comment, onCommentDeleted, me }) => {
   const [deleteCommentMutation] = useMutation(DELETE_COMMENT);
   const [editCommentMutation] = useMutation(UPDATE_COMMENT);
   const [commentTextS, setCommentTextS] = useState(comment.text);
-  const [isEditState, setIsEditState] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
   const editCommentInput = useInput(comment.text);
 
   const onKeyPress = async e => {
@@ -21,8 +21,12 @@ const PostCommentContainer = ({ id, user, comment, onCommentDeleted, me }) => {
     }
   };
 
-  const editComment = async () => {
-    if (isEditState) {
+  const editComment = async (isCancel = false) => {
+    if (isCancel) {
+      setIsEditMode(false);
+      return;
+    }
+    if (isEditMode) {
       if (editCommentInput.value !== comment.text && editCommentInput.value !== "") {
         //덧글이 수정된 경우에만 서버에 전송 요청하기.
         const {
@@ -32,12 +36,13 @@ const PostCommentContainer = ({ id, user, comment, onCommentDeleted, me }) => {
         });
         if (result) {
           setCommentTextS(editCommentInput.value);
-          setIsEditState(false);
+          setIsEditMode(false);
         }
       }
     } else {
       //수정 버튼을 처음 누르면
-      setIsEditState(true);
+      editCommentInput.setValue(commentTextS);
+      setIsEditMode(true);
     }
   };
 
@@ -62,7 +67,7 @@ const PostCommentContainer = ({ id, user, comment, onCommentDeleted, me }) => {
       deleteComment={deleteComment}
       editComment={editComment}
       editCommentInput={editCommentInput}
-      isEditState={isEditState}
+      isEditMode={isEditMode}
       onKeyPress={onKeyPress}
     />
   );
