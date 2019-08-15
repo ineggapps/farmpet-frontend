@@ -1,9 +1,48 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import PostGalleryPresenter from "./PostGalleryPresenter";
 
 const PostGalleryContainer = ({ post, onBackgroundClick }) => {
-  return <PostGalleryPresenter post={post} onBackgroundClick={onBackgroundClick} />;
+  const filesLength = post.files.length;
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const getPrevImage = () => {
+    console.log("currentIndex===filesLength", currentIndex, filesLength - 1);
+    if (currentIndex === 0) {
+      setCurrentIndex(filesLength - 1);
+    } else {
+      setCurrentIndex(currentIndex - 1);
+    }
+  };
+
+  const getNextImage = () => {
+    console.log("currentIndex===filesLength", currentIndex, filesLength - 1);
+    if (currentIndex === filesLength - 1) {
+      setCurrentIndex(0);
+    } else {
+      setCurrentIndex(currentIndex + 1);
+    }
+  };
+
+  const onPrev = () => {
+    console.log("이전 버튼 클릭", filesLength);
+    getPrevImage();
+  };
+
+  const onNext = () => {
+    console.log("다음 버튼 클릭");
+    getNextImage();
+  };
+
+  return (
+    <PostGalleryPresenter
+      post={post}
+      currentIndex={currentIndex}
+      onPrev={onPrev}
+      onNext={onNext}
+      onBackgroundClick={onBackgroundClick}
+    />
+  );
 };
 
 PostGalleryContainer.propTypes = {

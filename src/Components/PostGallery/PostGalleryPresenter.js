@@ -65,33 +65,26 @@ const RightButton = styled(SideButton)`
   top: 0;
 `;
 
-const Images = styled.ul`
+const Images = styled.div`
   width: 100%;
   height: 100%;
-  display: inline-flex;
-  top: 0;
-  left: 0;
 `;
 
 const ImageList = styled.li``;
 
-const PostGalleryPresenter = ({ post, onBackgroundClick }) => {
+const PostGalleryPresenter = ({ post, onBackgroundClick, currentIndex, onPrev, onNext }) => {
   return (
     <Wrapper>
       <BackgroundWrapper onClick={onBackgroundClick} />
       <Viewer>
         <Images>
-          {post.files.map(p => (
-            <ImageList key={p.id}>
-              <img src={p.url} alt={p.id} />
-            </ImageList>
-          ))}
+          <img src={post.files[currentIndex].url} alt={post.files[currentIndex].id} />
         </Images>
       </Viewer>
-      <LeftButton>
+      <LeftButton onClick={onPrev}>
         <LeftArrowIcon />
       </LeftButton>
-      <RightButton>
+      <RightButton onClick={onNext}>
         <RightArrowIcon />
       </RightButton>
     </Wrapper>
