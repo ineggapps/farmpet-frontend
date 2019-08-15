@@ -1,8 +1,18 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { LeftArrowIcon, RightArrowIcon } from "../Icons";
 
+const FadeInAnimation = keyframes`
+  0%{
+    opacity:0
+  }
+  100%{
+    opacity:1
+  }
+`;
+
 const Wrapper = styled.div`
+  animation: ${FadeInAnimation} 0.1s linear 1;
   z-index: 3000;
   position: fixed;
   width: 100%;
@@ -31,10 +41,7 @@ const Viewer = styled.div`
     top: -${props => props.theme.headerHeight};
     position: relative;
     max-width: 1000px;
-    height: 80%;
     min-height:500px;
-    overflow: scroll;
-    background-color: red;
   }
 `;
 
