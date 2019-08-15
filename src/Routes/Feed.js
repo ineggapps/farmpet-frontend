@@ -61,7 +61,6 @@ const FEED_QUERY = gql`
 `;
 
 const Wrapper = styled.div`
-  padding-top: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -75,6 +74,10 @@ const SectionLeft = styled.section`
   margin-right: 20px;
 `;
 const SNB = styled.section``;
+
+const FeedLoader = styled.div`
+  margin-top: 20px;
+`;
 
 export default () => {
   const { data, loading } = useQuery(FEED_QUERY);
@@ -92,9 +95,17 @@ export default () => {
       }
     }
   };
+  const onBackgroundClick = () => {
+    console.log("백그라운드를 클릭하면 창을 다시 닫자");
+    setViewerContent({});
+  };
 
   console.log(meData);
-  const LoaderContents = <Loader />;
+  const LoaderContents = (
+    <FeedLoader>
+      <Loader />
+    </FeedLoader>
+  );
   const RealContents = (
     <>
       <SectionLeft>
@@ -143,7 +154,7 @@ export default () => {
       </Helmet>
       <Contents>{loading || meLoading ? LoaderContents : RealContents}</Contents>
       {viewerContent.id !== undefined && viewerContent.id !== null && (
-        <PostGallery post={viewerContent} />
+        <PostGallery post={viewerContent} onBackgroundClick={onBackgroundClick} />
       )}
     </Wrapper>
   );
