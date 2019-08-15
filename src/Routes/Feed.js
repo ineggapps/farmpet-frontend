@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Helmet from "react-helmet";
 import styled from "styled-components";
 import { gql } from "apollo-boost";
@@ -78,6 +78,12 @@ const SNB = styled.section``;
 export default () => {
   const { data, loading } = useQuery(FEED_QUERY);
   const { data: meData, loading: meLoading } = useQuery(ME);
+
+  const [viewerContent, setViewerContent] = useState({});
+  const onPostClick = () => {
+    console.log("post clicked");
+  };
+
   console.log(meData);
   const LoaderContents = <Loader />;
   const RealContents = (
@@ -103,6 +109,7 @@ export default () => {
               comments={post.comments}
               createdAt={post.createdAt}
               me={meData.me}
+              onPostClick={onPostClick}
             />
           ))}
       </SectionLeft>

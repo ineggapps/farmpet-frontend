@@ -137,6 +137,10 @@ const CommentWriter = styled.div`
   display: flex;
 `;
 
+const PostViewer = styled.div`
+  cursor: pointer;
+`;
+
 const EditCaption = styled.div`
   text-align: right;
   margin-bottom: 10px;
@@ -226,7 +230,8 @@ export default ({
   isEditMode,
   editPost,
   editCaptionInput,
-  onCommentDeleted
+  onCommentDeleted,
+  onPostClick
 }) => {
   const user = { id: userId, username, avatar };
   return !isDeletedPost ? (
@@ -304,8 +309,9 @@ export default ({
         ) : (
           <Caption>{caption}</Caption>
         )}
-
-        <Slider files={files} />
+        <PostViewer onClick={() => onPostClick()}>
+          <Slider files={files} />
+        </PostViewer>
         <ContentFooter>
           <Buttons>
             <HeartButton onClick={toggleLike} isLiked={isLiked} />

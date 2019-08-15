@@ -23,7 +23,8 @@ const PostContainer = ({
   comments,
   createdAt,
   permission,
-  me
+  me,
+  onPostClick
 }) => {
   const [captionS, setCaptionS] = useState(caption);
   const [isEditMode, setIsEditMode] = useState(false); //현재 포스트를 수정하고 있는지
@@ -206,6 +207,7 @@ const PostContainer = ({
       editPost={editPost}
       editCaptionInput={editCaptionInput}
       onCommentDeleted={onCommentDeleted}
+      onPostClick={onPostClick}
     />
   );
 };
