@@ -10,6 +10,7 @@ import { ME } from "../SharedQueries";
 import SideProfile from "../Components/SideProfile";
 import SideUsers from "../Components/SideUsers";
 import SidePets from "../Components/SidePets";
+import PostGallery from "../Components/PostGallery";
 
 const FEED_QUERY = gql`
   {
@@ -80,8 +81,16 @@ export default () => {
   const { data: meData, loading: meLoading } = useQuery(ME);
 
   const [viewerContent, setViewerContent] = useState({});
-  const onPostClick = () => {
+  const onPostClick = postId => {
     console.log("post clicked");
+    if (data && data.seeFeed) {
+      console.log("post 갤러리를 엽니다.");
+      if (viewerContent.id === undefined || viewerContent.id === null) {
+        const post = data.seeFeed.filter(p => p.id === postId)[0];
+        console.log("post갤러리가 설정되어 있지 않아서 새로 불러올 거예요.", postId, post);
+        setViewerContent(post);
+      }
+    }
   };
 
   console.log(meData);
@@ -126,12 +135,16 @@ export default () => {
     </>
   );
 
+  console.log(viewerContent.id, "<= viewerContent.id");
   return (
     <Wrapper>
       <Helmet>
         <title>Feed | Farmpet</title>
       </Helmet>
       <Contents>{loading || meLoading ? LoaderContents : RealContents}</Contents>
+      {viewerContent.id !== undefined && viewerContent.id !== null && (
+        <PostGallery post={viewerContent} />
+      )}
     </Wrapper>
   );
 };

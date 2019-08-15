@@ -309,7 +309,7 @@ export default ({
         ) : (
           <Caption>{caption}</Caption>
         )}
-        <PostViewer onClick={() => onPostClick()}>
+        <PostViewer onClick={() => onPostClick(id)}>
           <Slider files={files} />
         </PostViewer>
         <ContentFooter>
