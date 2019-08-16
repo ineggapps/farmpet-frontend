@@ -42,7 +42,7 @@ const PostGalleryContainer = () => {
     getNextImage();
   };
 
-  if (viewerContent === undefined) {
+  if (viewerContent === undefined || filesLength < 0) {
     return null;
   }
 

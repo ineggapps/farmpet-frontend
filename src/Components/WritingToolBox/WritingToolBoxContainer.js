@@ -15,18 +15,9 @@ const WritingToolBoxContainer = ({ pets, user }) => {
   const [selectedPets, setSelectedPets] = useState(pets);
   const [uploadPostMutation] = useMutation(UPLOAD_POST);
 
-  /* 확장 슬라이드 영역 */
-  const [viewerContent, setViewerContent] = useState({});
-  const onPostClick = postId => {
-    console.log("selfpost에서 클릭하면 슬라이드 쇼를 열어야 함.");
-  };
-  const onBackgroundClick = () => {
-    console.log("백그라운드를 클릭하면 창을 다시 닫자");
-    setViewerContent({});
-  };
-  /* 확장 슬라이드 영역 끝*/
+  const [photoUploaderRefresher, setPhotoUploaderRefresher] = useState(Math.random());
 
-  const resetWritingComponent = () => {
+  const resetWritingComponent = async () => {
     captionWriting.setValue("");
     setSelectedPets(
       pets.map(pet => {
@@ -34,6 +25,9 @@ const WritingToolBoxContainer = ({ pets, user }) => {
         return pet;
       })
     );
+    await setPhotoUploaderRefresher(0);
+    setPhotoUploaderRefresher(Math.random());
+    console.log(photoUploaderRefresher);
   };
 
   const onImageUploaded = imageUrls => {
@@ -115,6 +109,7 @@ const WritingToolBoxContainer = ({ pets, user }) => {
       uploadPost={uploadPost}
       selfPosts={selfPosts}
       onImageUploaded={onImageUploaded}
+      photoUploaderRefresher={photoUploaderRefresher}
     />
   );
 };

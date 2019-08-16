@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import ImagesUploader from "react-images-uploader";
 import "react-images-uploader/styles.css";
-import "react-images-uploader/font.css";
 
 const Container = styled.div``;
 
