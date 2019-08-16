@@ -3,17 +3,15 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useQuery } from "react-apollo-hooks";
 import { gql } from "apollo-boost";
-import { ThemeProvider } from "styled-components";
 import GlobalStyles from "../Styles/GlobalStyles";
-import Theme from "../Styles/Theme";
 import { HashRouter as Router } from "react-router-dom";
 import Routes from "./Routes";
 import Header from "./Header";
 import Footer from "./Footer";
 import styled from "styled-components";
-import PostGalleryContextProvider from "../PostGalleryContext";
 import PostGallery from "../Components/PostGallery";
 import { usePostGallery } from "../PostGalleryContext";
+import ContextProviders from "../ContextProviders";
 
 const QUERY = gql`
   {
@@ -38,21 +36,19 @@ export default () => {
   } = useQuery(QUERY);
 
   return (
-    <ThemeProvider theme={Theme}>
-      <PostGalleryContextProvider>
-        <PostGallery />
-        <Wrapper>
-          <GlobalStyles />
-          <Router>
-            {isLoggedIn && <Header />}
-            <Container>
-              <Routes isLoggedIn={isLoggedIn} />
-            </Container>
-            {!isLoggedIn && <Footer />}
-            <ToastContainer position={toast.POSITION.BOTTOM_RIGHT} />
-          </Router>
-        </Wrapper>
-      </PostGalleryContextProvider>
-    </ThemeProvider>
+    <ContextProviders>
+      <PostGallery />
+      <Wrapper>
+        <GlobalStyles />
+        <Router>
+          {isLoggedIn && <Header />}
+          <Container>
+            <Routes isLoggedIn={isLoggedIn} />
+          </Container>
+          {!isLoggedIn && <Footer />}
+          <ToastContainer position={toast.POSITION.BOTTOM_RIGHT} />
+        </Router>
+      </Wrapper>
+    </ContextProviders>
   );
 };
