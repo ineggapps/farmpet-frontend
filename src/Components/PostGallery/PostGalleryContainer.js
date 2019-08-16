@@ -37,6 +37,7 @@ const PostGalleryContainer = ({ post, onBackgroundClick }) => {
   return (
     <PostGalleryPresenter
       post={post}
+      filesLength={filesLength}
       currentIndex={currentIndex}
       onPrev={onPrev}
       onNext={onNext}

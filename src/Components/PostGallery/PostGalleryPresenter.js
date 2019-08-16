@@ -82,7 +82,14 @@ const Images = styled.div`
 
 const ImageList = styled.li``;
 
-const PostGalleryPresenter = ({ post, onBackgroundClick, currentIndex, onPrev, onNext }) => {
+const PostGalleryPresenter = ({
+  post,
+  onBackgroundClick,
+  currentIndex,
+  onPrev,
+  onNext,
+  filesLength
+}) => {
   return (
     <Wrapper>
       <BackgroundWrapper onClick={onBackgroundClick} />
@@ -91,12 +98,16 @@ const PostGalleryPresenter = ({ post, onBackgroundClick, currentIndex, onPrev, o
           <img src={post.files[currentIndex].url} alt={post.files[currentIndex].id} />
         </Images>
       </Viewer>
-      <LeftButton onClick={onPrev}>
-        <LeftArrowIcon />
-      </LeftButton>
-      <RightButton onClick={onNext}>
-        <RightArrowIcon />
-      </RightButton>
+      {filesLength > 1 && (
+        <>
+          <LeftButton onClick={onPrev}>
+            <LeftArrowIcon />
+          </LeftButton>
+          <RightButton onClick={onNext}>
+            <RightArrowIcon />
+          </RightButton>
+        </>
+      )}
     </Wrapper>
   );
 };
