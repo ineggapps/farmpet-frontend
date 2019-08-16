@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 import Sortable from "react-sortablejs";
 import PropTypes from "prop-types";
+import axios from "axios";
 import styled from "styled-components";
+import ImagesUploader from "react-images-uploader";
+import "react-images-uploader/styles.css";
+import "react-images-uploader/font.css";
+import ProgressButton from "react-progress-button";
 
 const Container = styled.div``;
 
@@ -33,6 +38,15 @@ const SortableTest = () => {
     "WaterMelon"
   ]);
 
+  const handleSubmit = async () => {
+    const formData = new FormData();
+    const photo = "[사진파일]"; //?
+    formData.append("file", photo);
+    axios.post("http://localhost:4000/api/upload", formData, {
+      "content-type": "multipart/form-data"
+    });
+  };
+
   return (
     <div>
       <SortableUl
@@ -44,17 +58,26 @@ const SortableTest = () => {
           </List>
         ))}
       </SortableUl>
+      <button onClick={() => handleSubmit()}>업로드</button>
     </div>
   );
 };
 
-const onFileLoad = (e, file) => console.log(e.target.result, file.name);
-
+//https://github.com/aleksei0807/react-images-uploader
 const Upload = () => {
   return (
     <Container>
-      <SortableTest />
-      <Upload label="Add" onFileLoad={this.onFileLoad} />
+      {/* <SortableTest /> */}
+      <ImagesUploader
+        url="http://localhost:4000/photos"
+        optimisticPreviews
+        onLoadEnd={err => {
+          if (err) {
+            console.error(err);
+          }
+        }}
+        label="Upload multiple images"
+      />
     </Container>
   );
 };
