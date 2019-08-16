@@ -37,15 +37,6 @@ const SortableTest = () => {
     "WaterMelon"
   ]);
 
-  const handleSubmit = async () => {
-    const formData = new FormData();
-    const photo = "[사진파일]"; //?
-    formData.append("file", photo);
-    axios.post("http://localhost:4000/api/upload", formData, {
-      "content-type": "multipart/form-data"
-    });
-  };
-
   return (
     <div>
       <SortableUl
