@@ -8,6 +8,7 @@ import Button from "@material-ui/core/Button";
 import { Select, MenuItem } from "@material-ui/core";
 import { PERMISSION_PUBLIC, PERMISSION_FRIENDS, PERMISSION_PRIVATE } from "../../SharedQueries";
 import PetAvatar from "../PetAvatar";
+import PhotoUploadSortable from "../PhotoUploadSortable";
 
 //Material Styles
 const useStyles = makeStyles(theme => ({
@@ -45,6 +46,7 @@ const TextArea = styled(TextareaAutosize)`
 
 const Photos = styled.div`
   color: ${props => props.theme.darkGreyColor};
+  margin: 20px 0;
 `;
 
 const Pets = styled.ul`
@@ -107,7 +109,9 @@ export default ({
             value={captionWriting.value}
             onChange={captionWriting.onChange}
           />
-          <Photos>포토프리뷰</Photos>
+          <Photos>
+            <PhotoUploadSortable />
+          </Photos>
           <Pets>
             {selectedPets &&
               selectedPets.map(pet => (

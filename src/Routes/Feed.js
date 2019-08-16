@@ -153,7 +153,6 @@ export default () => {
       <Helmet>
         <title>Feed | Farmpet</title>
       </Helmet>
-      <SortableTest />
       <Contents>{loading || meLoading ? LoaderContents : RealContents}</Contents>
       {viewerContent.id !== undefined && viewerContent.id !== null && (
         <PostGallery post={viewerContent} onBackgroundClick={onBackgroundClick} />
