@@ -11,6 +11,7 @@ import SideProfile from "../Components/SideProfile";
 import SideUsers from "../Components/SideUsers";
 import SidePets from "../Components/SidePets";
 import PostGallery from "../Components/PostGallery";
+import SortableTest from "../Components/SortableTest";
 
 const FEED_QUERY = gql`
   {
@@ -152,6 +153,7 @@ export default () => {
       <Helmet>
         <title>Feed | Farmpet</title>
       </Helmet>
+      <SortableTest />
       <Contents>{loading || meLoading ? LoaderContents : RealContents}</Contents>
       {viewerContent.id !== undefined && viewerContent.id !== null && (
         <PostGallery post={viewerContent} onBackgroundClick={onBackgroundClick} />
