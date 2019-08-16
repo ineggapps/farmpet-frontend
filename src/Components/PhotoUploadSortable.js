@@ -48,7 +48,6 @@ const SortableTest = () => {
           </List>
         ))}
       </SortableUl>
-      <button onClick={() => handleSubmit()}>업로드</button>
     </div>
   );
 };
