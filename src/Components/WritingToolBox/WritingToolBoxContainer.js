@@ -9,10 +9,22 @@ import useInput from "../../Hooks/useInput";
 const WritingToolBoxContainer = ({ pets, user }) => {
   const captionWriting = useInput("");
   const [selfPosts, setSelfPosts] = useState([]);
+  const [files, setFiles] = useState([]);
   const [permission, setPermission] = useState(`${PERMISSION_PUBLIC}`);
   const [open, setOpen] = useState(false);
   const [selectedPets, setSelectedPets] = useState(pets);
   const [uploadPostMutation] = useMutation(UPLOAD_POST);
+
+  /* 확장 슬라이드 영역 */
+  const [viewerContent, setViewerContent] = useState({});
+  const onPostClick = postId => {
+    console.log("selfpost에서 클릭하면 슬라이드 쇼를 열어야 함.");
+  };
+  const onBackgroundClick = () => {
+    console.log("백그라운드를 클릭하면 창을 다시 닫자");
+    setViewerContent({});
+  };
+  /* 확장 슬라이드 영역 끝*/
 
   const resetWritingComponent = () => {
     captionWriting.setValue("");
@@ -22,6 +34,11 @@ const WritingToolBoxContainer = ({ pets, user }) => {
         return pet;
       })
     );
+  };
+
+  const onImageUploaded = imageUrls => {
+    setFiles([...files, ...imageUrls]);
+    console.log("onImageUploaded 메서드 호출");
   };
 
   const uploadPost = async () => {
@@ -42,9 +59,12 @@ const WritingToolBoxContainer = ({ pets, user }) => {
       variables: {
         caption,
         permission,
+        files,
         pets: pets.filter(pet => (pet !== undefined && pet !== null ? true : false))
       }
     });
+    console.log(result);
+
     //서버에 올린 글 피드 밑에 반영하기
     //console.log(result);
     setSelfPosts([
@@ -94,6 +114,7 @@ const WritingToolBoxContainer = ({ pets, user }) => {
       captionWriting={captionWriting}
       uploadPost={uploadPost}
       selfPosts={selfPosts}
+      onImageUploaded={onImageUploaded}
     />
   );
 };

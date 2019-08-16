@@ -11,7 +11,6 @@ import SideProfile from "../Components/SideProfile";
 import SideUsers from "../Components/SideUsers";
 import SidePets from "../Components/SidePets";
 import PostGallery from "../Components/PostGallery";
-import SortableTest from "../Components/SortableTest";
 
 const FEED_QUERY = gql`
   {

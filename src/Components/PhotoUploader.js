@@ -25,16 +25,18 @@ const List = styled.li`
 `;
 
 //https://github.com/aleksei0807/react-images-uploader
-const Upload = () => {
+const PhotoUploader = ({ onImageUploaded }) => {
   return (
     <Container>
       {/* <SortableTest /> */}
       <ImagesUploader
         url="http://localhost:4000/photos"
         optimisticPreviews
-        onLoadEnd={err => {
+        onLoadEnd={(err, res) => {
           if (err) {
             console.error(err);
+          } else {
+            onImageUploaded(res);
           }
         }}
       />
@@ -42,6 +44,8 @@ const Upload = () => {
   );
 };
 
-Upload.propTypes = {};
+PhotoUploader.propTypes = {
+  onImageUploaded: PropTypes.func.isRequired
+};
 
-export default Upload;
+export default PhotoUploader;

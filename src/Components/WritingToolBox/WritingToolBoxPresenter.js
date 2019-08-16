@@ -8,7 +8,7 @@ import Button from "@material-ui/core/Button";
 import { Select, MenuItem } from "@material-ui/core";
 import { PERMISSION_PUBLIC, PERMISSION_FRIENDS, PERMISSION_PRIVATE } from "../../SharedQueries";
 import PetAvatar from "../PetAvatar";
-import PhotoUploadSortable from "../PhotoUploadSortable";
+import PhotoUploader from "../PhotoUploader";
 
 //Material Styles
 const useStyles = makeStyles(theme => ({
@@ -96,10 +96,10 @@ export default ({
   uploadPostMutation,
   captionWriting,
   uploadPost,
-  selfPosts
+  selfPosts,
+  onImageUploaded
 }) => {
   const classes = useStyles();
-
   return (
     <>
       <Container>
@@ -110,7 +110,7 @@ export default ({
             onChange={captionWriting.onChange}
           />
           <Photos>
-            <PhotoUploadSortable />
+            <PhotoUploader onImageUploaded={onImageUploaded} />
           </Photos>
           <Pets>
             {selectedPets &&
