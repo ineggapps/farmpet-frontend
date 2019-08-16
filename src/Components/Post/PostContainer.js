@@ -10,6 +10,7 @@ import {
   DELETE_POST,
   UPDATE_POST
 } from "./PostQueries";
+import { usePostGallery } from "../../PostGalleryContext";
 
 const PostContainer = ({
   id,
@@ -23,8 +24,7 @@ const PostContainer = ({
   comments,
   createdAt,
   permission,
-  me,
-  onPostClick
+  me
 }) => {
   const [captionS, setCaptionS] = useState(caption);
   const [isEditMode, setIsEditMode] = useState(false); //현재 포스트를 수정하고 있는지
@@ -45,6 +45,26 @@ const PostContainer = ({
   const [updatePermissionMutation] = useMutation(UPDATE_PERMISSION);
   const [deletePostMutation] = useMutation(DELETE_POST);
   const [updatePostMutation] = useMutation(UPDATE_POST);
+
+  const {  setViewerContent } = usePostGallery();
+  const onPostClick = () => {
+    console.log("PostContainer에서 자체적으로 PostGallery를 열어도 되겠다!");
+    const post = {
+      id,
+      user,
+      pets,
+      files,
+      caption,
+      likeCount,
+      isLiked,
+      commentCount,
+      comments,
+      createdAt,
+      permission,
+      me
+    };
+    setViewerContent(post);
+  };
 
   const onCommentDeleted = commentId => {
     //덧글이 삭제되면 삭제된 컴포넌트에서 이 이벤트를 호출함.

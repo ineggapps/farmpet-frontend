@@ -1,10 +1,18 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import PostGalleryPresenter from "./PostGalleryPresenter";
+import { usePostGallery } from "../../PostGalleryContext";
 
-const PostGalleryContainer = ({ post, onBackgroundClick }) => {
-  const filesLength = post.files.length;
+const PostGalleryContainer = () => {
+  const { viewerContent } = usePostGallery();
+  const filesLength =
+    viewerContent !== undefined && viewerContent !== null ? viewerContent.files.length : -1;
   const [currentIndex, setCurrentIndex] = useState(0);
+  const { setViewerContent } = usePostGallery();
+
+  const onBackgroundClick = () => {
+    setViewerContent(null);
+  };
 
   const getPrevImage = () => {
     console.log("currentIndex===filesLength", currentIndex, filesLength - 1);
@@ -34,9 +42,13 @@ const PostGalleryContainer = ({ post, onBackgroundClick }) => {
     getNextImage();
   };
 
+  if (viewerContent === undefined) {
+    return null;
+  }
+
   return (
     <PostGalleryPresenter
-      post={post}
+      post={viewerContent}
       filesLength={filesLength}
       currentIndex={currentIndex}
       onPrev={onPrev}

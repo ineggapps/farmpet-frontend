@@ -26,7 +26,7 @@ const BackgroundWrapper = styled.div`
   background-color: #000;
   opacity: 0.8;
   position: absolute;
-  top: -${props => props.theme.headerHeight};
+  top: 0;
   width: 100%;
   height: 100%;
 `;
@@ -38,7 +38,7 @@ const Viewer = styled.div`
     flex-basis: ${props => props.theme.headerHeight};
   } */
   & {
-    top: -${props => props.theme.headerHeight};
+    top:0;
     position: relative;
     max-width: 1000px;
     min-height:500px;
@@ -90,6 +90,9 @@ const PostGalleryPresenter = ({
   onNext,
   filesLength
 }) => {
+  if (post === null || post === undefined) {
+    return null;
+  }
   return (
     <Wrapper>
       <BackgroundWrapper onClick={onBackgroundClick} />
