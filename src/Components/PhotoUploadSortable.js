@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Sortable from "react-sortablejs";
 import PropTypes from "prop-types";
-import axios from "axios";
 import styled from "styled-components";
 import ImagesUploader from "react-images-uploader";
 import "react-images-uploader/styles.css";
