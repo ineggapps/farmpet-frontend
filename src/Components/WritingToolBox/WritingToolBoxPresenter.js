@@ -9,6 +9,7 @@ import { Select, MenuItem } from "@material-ui/core";
 import { PERMISSION_PUBLIC, PERMISSION_FRIENDS, PERMISSION_PRIVATE } from "../../SharedQueries";
 import PetAvatar from "../PetAvatar";
 import PhotoUploader from "../PhotoUploader";
+import PhotoUploadSortable from "../PhotoUploadSortable";
 
 //Material Styles
 const useStyles = makeStyles(theme => ({
@@ -120,6 +121,11 @@ export default ({
                 onImageUploaded={onImageUploaded}
               />
             )}
+            <PhotoUploadSortable
+              onUploadStart={onUploadStart}
+              onUploadEnd={onUploadEnd}
+              onImageUploaded={onImageUploaded}
+            />
           </Photos>
           <Pets>
             {selectedPets &&
