@@ -6,6 +6,7 @@ import { SortableContainer, SortableElement } from "react-sortable-hoc";
 import arrayMove from "array-move";
 import { UPLOAD_API_NAME } from "../SharedQueries";
 import uuidv4 from "uuid/v4";
+import HashMap from "hashmap";
 
 const Container = styled.div``;
 const SortableUl = styled.ul`
@@ -23,30 +24,37 @@ const List = styled.li`
   height: 75px;
   border-radius: 15px;
   border: 1px solid ${props => props.theme.lightGreyColor};
-  background-image: url(${props => (props.info.thumbnail ? props.info.thumbnail : "")});
+  background-image: url(${props =>
+    props.info && props.info.thumbnail
+      ? props.info.thumbnail
+      : "http://localhost:4000/upload/loading.gif"});
   background-size: cover;
   background-position: center;
 `;
 
 const SortableItem = SortableElement(({ value, info }) => {
   console.log(info, "가 보이나 보자");
-  return <List info={info}>{value}</List>;
+  console.log(fileMap.get(info), "해시 함수에서 꺼내보니");
+  return <List info={fileMap.get(info)} />;
 });
 
 const SortableList = SortableContainer(({ items, info }) => {
+  console.log("SortableList", items, info);
   return (
     <SortableUl>
-      {items.map((value, index) => (
-        <SortableItem key={`item-${index}`} index={index} value={value} info={info[index]} />
-      ))}
+      {items &&
+        items.map((value, index) => (
+          <SortableItem key={`item-${index}`} index={index} value={value} info={info[index]} />
+        ))}
     </SortableUl>
   );
 });
 
+const fileMap = new HashMap();
 const PhotoUploadSortable = ({ onUploadStart, onUploadEnd, onImageUploaded }) => {
-  const [fileList, setFileList] = useState([]);
-  const [fileInfo, setFileInfo] = useState([]);
+  const [files, setFiles] = useState([]);
   const [result, setResult] = useState([]);
+  const [resultId, setResultId] = useState([]);
   const useForceUpdate = () => useState()[1];
   const fileInput = useRef(null);
   const forceUpdate = useForceUpdate();
@@ -57,48 +65,42 @@ const PhotoUploadSortable = ({ onUploadStart, onUploadEnd, onImageUploaded }) =>
   };
 
   useEffect(() => {
-    console.log("호출되었음");
+    console.log("결괏값을 받아서 호출되었음");
     if (result) {
-      // console.log(result, "result 내용이 존재함. ");
-      const info = fileInfo;
-      // console.log("info", info, info === fileInfo);
-      for (let i = 0; i < info.length; i++) {
-        const target = info[i];
-        if (target.name !== target.id) continue;
-        for (let j = 0; j < result.length; j++) {
-          info[i] = result[j];
-        }
+      console.log("result가 내용이 있어서 저장 중");
+      for (let i = 0; i < result.length; i++) {
+        console.log(resultId[i], "를 키값으로 하여", result[i], "저장");
+        fileMap.set(resultId[i], result[i]);
       }
-      setFileInfo(info);
+      setResultId([]);
+      console.log("저장 완료!");
     }
   }, [result]);
 
-  // useEffect(() => {
-  //   //강제 변화주기
-  //   // forceUpdate();
-  //   setFileList([...fileList]);
-  // }, [fileInfo]);
+  /*
+  ID가 없는 빈 객체로 만들어 뒀다가,
+  모두 삭제하고 일괄적으로 다시 삽입?
+  */
 
   //https://codesandbox.io/s/7m66w7xn90
   const handleSubmit = async () => {
     const formData = new FormData();
-    const newFiles = fileInput.current.files;
-    console.log(newFiles);
-    let newFileList = [],
-      newFileInfo = [];
-    for (let i = 0; i < newFiles.length; i++) {
-      const name = newFiles[i].name;
-      newFileInfo.push({ id: name, name, url: "", thumbnail: "" });
-      newFileList.push(name);
-      formData.append(UPLOAD_API_NAME, newFiles[i]);
+    const attaches = fileInput.current.files;
+
+    const newFiles = [];
+    const uuids = [];
+    for (let i = 0; i < attaches.length; i++) {
+      const uuid = uuidv4();
+      formData.append(UPLOAD_API_NAME, attaches[i]);
+      newFiles.push(uuid);
+      uuids.push(uuid);
     }
-    setFileList([...fileList, ...newFileList]);
-    setFileInfo([...fileInfo, ...newFileInfo]);
+    setFiles([...files, ...newFiles]);
+    setResultId(uuids);
 
     const { data } = await axios.post("http://localhost:4000/api/upload", formData, {
       "content-type": "multipart/form-data"
     });
-
     setResult(data);
   };
 
@@ -107,14 +109,12 @@ const PhotoUploadSortable = ({ onUploadStart, onUploadEnd, onImageUploaded }) =>
   };
 
   const onSortEnd = ({ oldIndex, newIndex }) => {
-    setFileList(arrayMove(fileList, oldIndex, newIndex));
+    setFiles(arrayMove(files, oldIndex, newIndex));
   };
   return (
     <Container>
       <input type="file" ref={fileInput} multiple onChange={onFileChange} />
-      {fileList && (
-        <SortableList axis={"xy"} items={fileList} info={fileInfo} onSortEnd={onSortEnd} />
-      )}
+      {files && <SortableList axis={"xy"} items={files} info={files} onSortEnd={onSortEnd} />}
     </Container>
   );
 };
