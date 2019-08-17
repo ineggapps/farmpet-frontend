@@ -121,11 +121,13 @@ export default ({
                 onImageUploaded={onImageUploaded}
               />
             )} */}
-            <PhotoUploadSortable
-              onUploadStart={onUploadStart}
-              onUploadEnd={onUploadEnd}
-              onImageUploaded={onImageUploaded}
-            />
+            {photoUploaderRefresher && (
+              <PhotoUploadSortable
+                onUploadStart={onUploadStart}
+                onUploadEnd={onUploadEnd}
+                onImageUploaded={onImageUploaded}
+              />
+            )}
           </Photos>
           <Pets>
             {selectedPets &&

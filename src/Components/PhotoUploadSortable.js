@@ -33,25 +33,23 @@ const List = styled.li`
 `;
 
 const SortableItem = SortableElement(({ value, info }) => {
-  console.log(info, "가 보이나 보자");
-  console.log(fileMap.get(info), "해시 함수에서 꺼내보니");
+  // console.log(info, "가 보이나 보자");
+  // console.log(fileMap.get(info), "해시 함수에서 꺼내보니");
   return <List info={fileMap.get(info)} />;
 });
 
-const SortableList = SortableContainer(({ items, info }) => {
-  console.log("SortableList", items, info);
-  return (
-    <SortableUl>
-      {items &&
-        items.map((value, index) => (
-          <SortableItem key={`item-${index}`} index={index} value={value} info={info[index]} />
-        ))}
-    </SortableUl>
-  );
-});
+const SortableList = SortableContainer(({ items, info }) => (
+  <SortableUl>
+    {items &&
+      items.map((value, index) => (
+        <SortableItem key={`item-${index}`} index={index} value={value} info={info[index]} />
+      ))}
+  </SortableUl>
+));
 
 const fileMap = new HashMap();
 const PhotoUploadSortable = ({ onUploadStart, onUploadEnd, onImageUploaded }) => {
+  const [isUploading, setIsUploading] = useState(false);
   const [files, setFiles] = useState([]);
   const [result, setResult] = useState([]);
   const [resultId, setResultId] = useState([]);
@@ -64,6 +62,16 @@ const PhotoUploadSortable = ({ onUploadStart, onUploadEnd, onImageUploaded }) =>
     caption: "사진별 캡션 기능도 추가될 예정입니다."
   };
 
+  //업로드 중인지 여부
+  useEffect(() => {
+    if (isUploading && onUploadStart) {
+      onUploadStart();
+    } else if (onUploadEnd) {
+      onUploadEnd();
+    }
+  }, [isUploading]);
+
+  //결괏값을 받아왔을 때 트리거
   useEffect(() => {
     console.log("결괏값을 받아서 호출되었음");
     if (result) {
@@ -73,7 +81,12 @@ const PhotoUploadSortable = ({ onUploadStart, onUploadEnd, onImageUploaded }) =>
         fileMap.set(resultId[i], result[i]);
       }
       setResultId([]);
-      console.log("저장 완료!");
+      if (onImageUploaded) {
+        onImageUploaded(result.map(r => r.url));
+      } else {
+        throw Error("onImageUploaded 핸들러 안 붙였다. 그럼 파일 업로드를 못 하는데.");
+      }
+      setIsUploading(false);
     }
   }, [result]);
 
@@ -84,6 +97,12 @@ const PhotoUploadSortable = ({ onUploadStart, onUploadEnd, onImageUploaded }) =>
 
   //https://codesandbox.io/s/7m66w7xn90
   const handleSubmit = async () => {
+    if (isUploading) {
+      console.log("지금 업로드 중이라 막았음.");
+      return;
+      //이미 업로드 중이라면 메서드 진행을 막는다.
+    }
+    setIsUploading(true);
     const formData = new FormData();
     const attaches = fileInput.current.files;
 
