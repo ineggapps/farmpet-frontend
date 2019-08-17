@@ -8,13 +8,13 @@ import useInput from "../../Hooks/useInput";
 
 const WritingToolBoxContainer = ({ pets, user }) => {
   const captionWriting = useInput("");
+  const [isUploading, setIsUploading] = useState(false);
   const [selfPosts, setSelfPosts] = useState([]);
   const [files, setFiles] = useState([]);
   const [permission, setPermission] = useState(`${PERMISSION_PUBLIC}`);
   const [open, setOpen] = useState(false);
   const [selectedPets, setSelectedPets] = useState(pets);
   const [uploadPostMutation] = useMutation(UPLOAD_POST);
-
   const [photoUploaderRefresher, setPhotoUploaderRefresher] = useState(Math.random());
 
   const resetWritingComponent = async () => {
@@ -36,6 +36,9 @@ const WritingToolBoxContainer = ({ pets, user }) => {
   };
 
   const uploadPost = async () => {
+    if (isUploading) {
+      return;
+    }
     const pets = selectedPets.map(pet => {
       if (pet.selected) {
         return pet.id;
@@ -94,6 +97,14 @@ const WritingToolBoxContainer = ({ pets, user }) => {
     // console.log("onSelected 이벤트 발생", newPets);
   };
 
+  const onUploadStart = () => {
+    setIsUploading(true);
+  };
+
+  const onUploadEnd = () => {
+    setIsUploading(false);
+  };
+
   return (
     <WritingToolBoxPresenter
       pets={pets}
@@ -110,6 +121,8 @@ const WritingToolBoxContainer = ({ pets, user }) => {
       selfPosts={selfPosts}
       onImageUploaded={onImageUploaded}
       photoUploaderRefresher={photoUploaderRefresher}
+      onUploadStart={onUploadStart}
+      onUploadEnd={onUploadEnd}
     />
   );
 };

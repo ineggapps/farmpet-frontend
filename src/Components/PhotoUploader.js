@@ -16,13 +16,17 @@ const List = styled.li`
 `;
 
 //https://github.com/aleksei0807/react-images-uploader
-const PhotoUploader = ({ onImageUploaded }) => {
+const PhotoUploader = ({ onImageUploaded, onUploadStart, onUploadEnd }) => {
   return (
     <Container>
       <ImagesUploader
         url="http://localhost:4000/photos"
         optimisticPreviews
+        onLoadStart={() => {
+          onUploadStart();
+        }}
         onLoadEnd={(err, res) => {
+          onUploadEnd();
           if (err) {
             console.error(err);
           } else {

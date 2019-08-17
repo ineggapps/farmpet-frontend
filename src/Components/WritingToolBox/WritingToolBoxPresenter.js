@@ -98,7 +98,9 @@ export default ({
   uploadPost,
   selfPosts,
   onImageUploaded,
-  photoUploaderRefresher
+  photoUploaderRefresher,
+  onUploadStart,
+  onUploadEnd
 }) => {
   const classes = useStyles();
   return (
@@ -111,7 +113,13 @@ export default ({
             onChange={captionWriting.onChange}
           />
           <Photos>
-            {photoUploaderRefresher > 0 && <PhotoUploader onImageUploaded={onImageUploaded} />}
+            {photoUploaderRefresher > 0 && (
+              <PhotoUploader
+                onUploadStart={onUploadStart}
+                onUploadEnd={onUploadEnd}
+                onImageUploaded={onImageUploaded}
+              />
+            )}
           </Photos>
           <Pets>
             {selectedPets &&
