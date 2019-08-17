@@ -5,7 +5,7 @@ import { FOLLOW, UNFOLLOW } from "./FollowButtonQueries";
 import { useMutation } from "react-apollo-hooks";
 
 const FollowButtonContainer = ({ isFollowing, id }) => {
-  console.log(isFollowing, id);
+  // console.log(isFollowing, id);
   const [isFollowingS, setIsFollowingS] = useState(isFollowing);
   const [followMutation] = useMutation(FOLLOW);
   const [unFollowMutation] = useMutation(UNFOLLOW);

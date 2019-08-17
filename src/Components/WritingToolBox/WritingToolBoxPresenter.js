@@ -114,13 +114,13 @@ export default ({
             onChange={captionWriting.onChange}
           />
           <Photos>
-            {photoUploaderRefresher > 0 && (
+            {/* {photoUploaderRefresher > 0 && (
               <PhotoUploader
                 onUploadStart={onUploadStart}
                 onUploadEnd={onUploadEnd}
                 onImageUploaded={onImageUploaded}
               />
-            )}
+            )} */}
             <PhotoUploadSortable
               onUploadStart={onUploadStart}
               onUploadEnd={onUploadEnd}

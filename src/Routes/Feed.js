@@ -84,9 +84,9 @@ export default () => {
   const { data: meData, loading: meLoading } = useQuery(ME);
 
   const { viewerContent, setViewerContent } = usePostGallery();
-  console.log(viewerContent, setViewerContent, "feed page content");
+  // console.log(viewerContent, setViewerContent, "feed page content");
+  // console.log(meData);
 
-  console.log(meData);
   const LoaderContents = (
     <FeedLoader>
       <Loader />

@@ -59,12 +59,12 @@ const PostGalleryContainer = () => {
 };
 
 PostGalleryContainer.propTypes = {
-  id: PropTypes.string.isRequired,
+  id: PropTypes.string,
   user: PropTypes.shape({
     id: PropTypes.string.isRequired,
     avatar: PropTypes.string,
     username: PropTypes.string.isRequired
-  }).isRequired,
+  }),
   pets: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.string,
@@ -79,10 +79,10 @@ PostGalleryContainer.propTypes = {
       file: PropTypes.string
     })
   ),
-  caption: PropTypes.string.isRequired,
-  likeCount: PropTypes.number.isRequired,
-  isLiked: PropTypes.bool.isRequired,
-  commentCount: PropTypes.number.isRequired,
+  caption: PropTypes.string,
+  likeCount: PropTypes.number,
+  isLiked: PropTypes.bool,
+  commentCount: PropTypes.number,
   comments: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.string.isRequired,
@@ -95,7 +95,7 @@ PostGalleryContainer.propTypes = {
       updatedAt: PropTypes.string.isRequired
     })
   ),
-  createdAt: PropTypes.string.isRequired
+  createdAt: PropTypes.string
 };
 
 export default PostGalleryContainer;

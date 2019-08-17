@@ -1,11 +1,14 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import Sortable from "react-sortablejs";
 import axios from "axios";
+import { SortableContainer, SortableElement } from "react-sortable-hoc";
+import arrayMove from "array-move";
+import { UPLOAD_API_NAME } from "../SharedQueries";
+import uuidv4 from "uuid/v4";
 
 const Container = styled.div``;
-const SortableUl = styled(Sortable)`
+const SortableUl = styled.ul`
   width: 100%;
   display: grid;
   grid-template-columns: repeat(6, 0.1fr);
@@ -16,25 +19,34 @@ const SortableUl = styled(Sortable)`
 const List = styled.li`
   cursor: move;
   margin-right: 10px;
-  ${props => props.theme.photoUploadGrid};
   width: 75px;
   height: 75px;
   border-radius: 15px;
   border: 1px solid ${props => props.theme.lightGreyColor};
+  background-image: url(${props => (props.info.thumbnail ? props.info.thumbnail : "")});
+  background-size: cover;
+  background-position: center;
 `;
 
-const AddButton = styled.button`
-  &:focus {
-    outline: none;
-  }
-  border: 0;
-`;
+const SortableItem = SortableElement(({ value, info }) => {
+  console.log(info, "가 보이나 보자");
+  return <List info={info}>{value}</List>;
+});
 
-const File = styled.input``;
+const SortableList = SortableContainer(({ items, info }) => {
+  return (
+    <SortableUl>
+      {items.map((value, index) => (
+        <SortableItem key={`item-${index}`} index={index} value={value} info={info[index]} />
+      ))}
+    </SortableUl>
+  );
+});
 
 const PhotoUploadSortable = ({ onUploadStart, onUploadEnd, onImageUploaded }) => {
-  const [files, setFiles] = useState([]);
-  const [newFiles, setNewFiles] = useState(null);
+  const [fileList, setFileList] = useState([]);
+  const [fileInfo, setFileInfo] = useState([]);
+  const [result, setResult] = useState([]);
   const useForceUpdate = () => useState()[1];
   const fileInput = useRef(null);
   const forceUpdate = useForceUpdate();
@@ -43,58 +55,66 @@ const PhotoUploadSortable = ({ onUploadStart, onUploadEnd, onImageUploaded }) =>
     url: "https://cdn.pixabay.com/photo/2017/09/25/13/12/dog-2785074_960_720.jpg",
     caption: "사진별 캡션 기능도 추가될 예정입니다."
   };
-  const [items, setItems] = useState([
-    "Apple",
-    "Banana",
-    "Cherry",
-    "Guava",
-    "Peach",
-    "Strawberry",
-    "Watermelon",
-    "Grapes",
-    "Tomato",
-    "Vegetables",
-    "Cheeze",
-    "Pizza",
-    "Chicken",
-    "Rice cake",
-    "Fish cake"
-  ]);
+
+  useEffect(() => {
+    console.log("호출되었음");
+    if (result) {
+      // console.log(result, "result 내용이 존재함. ");
+      const info = fileInfo;
+      // console.log("info", info, info === fileInfo);
+      for (let i = 0; i < info.length; i++) {
+        const target = info[i];
+        if (target.name !== target.id) continue;
+        for (let j = 0; j < result.length; j++) {
+          info[i] = result[j];
+        }
+      }
+      setFileInfo(info);
+    }
+  }, [result]);
+
+  // useEffect(() => {
+  //   //강제 변화주기
+  //   // forceUpdate();
+  //   setFileList([...fileList]);
+  // }, [fileInfo]);
 
   //https://codesandbox.io/s/7m66w7xn90
   const handleSubmit = async () => {
-    console.log("제출 시도");
     const formData = new FormData();
-    console.log(newFiles, newFiles.length);
-
+    const newFiles = fileInput.current.files;
+    console.log(newFiles);
+    let newFileList = [],
+      newFileInfo = [];
     for (let i = 0; i < newFiles.length; i++) {
-      formData.append("file", newFiles[i]);
+      const name = newFiles[i].name;
+      newFileInfo.push({ id: name, name, url: "", thumbnail: "" });
+      newFileList.push(name);
+      formData.append(UPLOAD_API_NAME, newFiles[i]);
     }
+    setFileList([...fileList, ...newFileList]);
+    setFileInfo([...fileInfo, ...newFileInfo]);
 
-    axios.post("http://localhost:4000/api/upload", formData, {
+    const { data } = await axios.post("http://localhost:4000/api/upload", formData, {
       "content-type": "multipart/form-data"
     });
+
+    setResult(data);
   };
 
   const onFileChange = async () => {
-    setNewFiles(fileInput.current.files);
+    handleSubmit();
   };
 
+  const onSortEnd = ({ oldIndex, newIndex }) => {
+    setFileList(arrayMove(fileList, oldIndex, newIndex));
+  };
   return (
     <Container>
-      <form>
-        <input type="file" ref={fileInput} multiple onChange={onFileChange} />
-        <input type="button" onClick={() => handleSubmit()} value="제출" />
-      </form>
-      <SortableUl
-        tag="ul" // Defaults to "div"
-      >
-        {files.map(file => (
-          <List key={`random${Math.random()}`} data-id={file.id}>
-            {file.caption}
-          </List>
-        ))}
-      </SortableUl>
+      <input type="file" ref={fileInput} multiple onChange={onFileChange} />
+      {fileList && (
+        <SortableList axis={"xy"} items={fileList} info={fileInfo} onSortEnd={onSortEnd} />
+      )}
     </Container>
   );
 };
