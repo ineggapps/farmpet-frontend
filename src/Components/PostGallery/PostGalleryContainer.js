@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import PostGalleryPresenter from "./PostGalleryPresenter";
-import { usePostGallery } from "../../PostGalleryContext";
+import { usePostGallery, OPTION_START_INDEX } from "../../PostGalleryContext";
 
 const PostGalleryContainer = () => {
-  const { viewerContent } = usePostGallery();
+  const { viewerContent, options } = usePostGallery();
   const filesLength =
     viewerContent !== undefined && viewerContent !== null ? viewerContent.files.length : -1;
   const [currentIndex, setCurrentIndex] = useState(0);
   const { setViewerContent } = usePostGallery();
 
   useEffect(() => {
-    if (viewerContent && viewerContent.startIndex) {
-      setCurrentIndex(viewerContent.startIndex);
+    if (viewerContent && options.has(OPTION_START_INDEX)) {
+      setCurrentIndex(options.get(OPTION_START_INDEX));
     }
   }, [viewerContent]);
 

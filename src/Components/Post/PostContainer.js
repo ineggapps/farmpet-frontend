@@ -10,7 +10,7 @@ import {
   DELETE_POST,
   UPDATE_POST
 } from "./PostQueries";
-import { usePostGallery } from "../../PostGalleryContext";
+import { usePostGallery, OPTION_START_INDEX } from "../../PostGalleryContext";
 
 const PostContainer = ({
   id,
@@ -61,9 +61,9 @@ const PostContainer = ({
       comments,
       createdAt,
       permission,
-      me,
-      startIndex: index
+      me
     };
+    options.set(OPTION_START_INDEX, index);
     setViewerContent(post);
   };
 
