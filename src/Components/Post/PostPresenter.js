@@ -4,13 +4,13 @@ import styled from "styled-components";
 import FatText from "../FatText";
 import Avatar from "../Avatar";
 import DateText from "../DateText";
-import Slider from "../Slider";
 import HeartButton from "../HeartButton";
 import PetAvatar from "../PetAvatar";
 import PostComment from "../PostComment";
 import { RemoveIcon, EarthIcon, LockIcon, SocialIcon, WriteIcon } from "../Icons";
 import { PERMISSION_PUBLIC, PERMISSION_PRIVATE, PERMISSION_FRIENDS } from "../../SharedQueries";
 import { Select, MenuItem, Button } from "@material-ui/core";
+import PostSlider from "../PostSlider";
 
 const Post = styled.div`
   ${props => props.theme.postBox};
@@ -139,6 +139,7 @@ const CommentWriter = styled.div`
 
 const PostViewer = styled.div`
   cursor: pointer;
+  margin: 20px 0;
 `;
 
 const EditCaption = styled.div`
@@ -309,8 +310,9 @@ export default ({
         ) : (
           <Caption>{caption}</Caption>
         )}
-        <PostViewer onClick={() => onPostClick(id)}>
-          <Slider files={files} />
+        <PostViewer>
+          <PostSlider files={files} onPostClick={onPostClick} />
+          {/* <Slider files={files} /> */}
         </PostViewer>
         <ContentFooter>
           <Buttons>

@@ -46,7 +46,7 @@ const PostContainer = ({
   const [deletePostMutation] = useMutation(DELETE_POST);
   const [updatePostMutation] = useMutation(UPDATE_POST);
 
-  const {  setViewerContent } = usePostGallery();
+  const { setViewerContent } = usePostGallery();
   const onPostClick = () => {
     console.log("PostContainer에서 자체적으로 PostGallery를 열어도 되겠다!");
     const post = {
