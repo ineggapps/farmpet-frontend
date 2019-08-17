@@ -46,8 +46,8 @@ const PostContainer = ({
   const [deletePostMutation] = useMutation(DELETE_POST);
   const [updatePostMutation] = useMutation(UPDATE_POST);
 
-  const { setViewerContent } = usePostGallery();
-  const onPostClick = () => {
+  const { setViewerContent, options } = usePostGallery();
+  const onPostClick = index => {
     console.log("PostContainer에서 자체적으로 PostGallery를 열어도 되겠다!");
     const post = {
       id,
@@ -61,7 +61,8 @@ const PostContainer = ({
       comments,
       createdAt,
       permission,
-      me
+      me,
+      startIndex: index
     };
     setViewerContent(post);
   };

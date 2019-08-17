@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import PostGalleryPresenter from "./PostGalleryPresenter";
 import { usePostGallery } from "../../PostGalleryContext";
@@ -9,6 +9,12 @@ const PostGalleryContainer = () => {
     viewerContent !== undefined && viewerContent !== null ? viewerContent.files.length : -1;
   const [currentIndex, setCurrentIndex] = useState(0);
   const { setViewerContent } = usePostGallery();
+
+  useEffect(() => {
+    if (viewerContent && viewerContent.startIndex) {
+      setCurrentIndex(viewerContent.startIndex);
+    }
+  }, [viewerContent]);
 
   const onBackgroundClick = () => {
     setViewerContent(null);

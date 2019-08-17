@@ -122,7 +122,12 @@ const PostSlider = ({ size = 520, files, onPostClick, interval = 10000 }) => {
       <Container size={size}>
         <Images currentIndex={currentIndex} size={size}>
           {files.map(file => (
-            <Slice key={file.url} size={size} background={file.url} onClick={() => onPostClick()}>
+            <Slice
+              key={file.url}
+              size={size}
+              background={file.url}
+              onClick={() => onPostClick(currentIndex)}
+            >
               <span>{file.url}</span>
             </Slice>
           ))}
