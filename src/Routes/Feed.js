@@ -98,7 +98,10 @@ export default () => {
         {!meLoading && meData && meData.me && meData.me.pets && (
           <WritingToolBox pets={meData.me.pets ? meData.me.pets : null} />
         )}
-        {data &&
+        {!meLoading &&
+          meData &&
+          meData.me &&
+          data &&
           data.seeFeed &&
           data.seeFeed.map(post => (
             <Post
