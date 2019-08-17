@@ -81,14 +81,21 @@ const PhotoUploadSortable = ({ onUploadStart, onUploadEnd, onImageUploaded }) =>
         fileMap.set(resultId[i], result[i]);
       }
       setResultId([]);
-      if (onImageUploaded) {
-        onImageUploaded(result.map(r => r.url));
-      } else {
-        throw Error("onImageUploaded 핸들러 안 붙였다. 그럼 파일 업로드를 못 하는데.");
-      }
       setIsUploading(false);
     }
   }, [result]);
+
+  //files배열이 변경될 때 순서 전송
+  useEffect(() => {
+    if (!isUploading && resultId.length === 0) {
+      //업로드가 완료되었을 때만 전송한다.
+      if (onImageUploaded) {
+        onImageUploaded(files.map(f => fileMap.get(f).url));
+      } else {
+        throw Error("onImageUploaded 핸들러 부착 안 됐음");
+      }
+    }
+  }, [files]);
 
   /*
   ID가 없는 빈 객체로 만들어 뒀다가,

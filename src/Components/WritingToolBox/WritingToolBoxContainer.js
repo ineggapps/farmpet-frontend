@@ -27,11 +27,13 @@ const WritingToolBoxContainer = ({ pets, user }) => {
     );
     await setPhotoUploaderRefresher(0);
     setPhotoUploaderRefresher(Math.random());
+    setFiles([]);
+    setPermission(`${PERMISSION_PUBLIC}`);
     console.log(photoUploaderRefresher);
   };
 
   const onImageUploaded = imageUrls => {
-    setFiles([...files, ...imageUrls]);
+    setFiles(imageUrls);
     console.log("onImageUploaded 메서드 호출");
   };
 
