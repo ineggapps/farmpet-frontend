@@ -82,6 +82,7 @@ const PhotoUploadSortable = ({ onUploadStart, onUploadEnd, onImageUploaded }) =>
       }
       setResultId([]);
       setIsUploading(false);
+      triggerImageUpload();
     }
   }, [result]);
 
@@ -89,13 +90,17 @@ const PhotoUploadSortable = ({ onUploadStart, onUploadEnd, onImageUploaded }) =>
   useEffect(() => {
     if (!isUploading && resultId.length === 0) {
       //업로드가 완료되었을 때만 전송한다.
-      if (onImageUploaded) {
-        onImageUploaded(files.map(f => fileMap.get(f).url));
-      } else {
-        throw Error("onImageUploaded 핸들러 부착 안 됐음");
-      }
+      triggerImageUpload();
     }
   }, [files]);
+
+  const triggerImageUpload = () => {
+    if (onImageUploaded) {
+      onImageUploaded(files.map(f => fileMap.get(f).url));
+    } else {
+      throw Error("onImageUploaded 핸들러 부착 안 됐음");
+    }
+  };
 
   /*
   ID가 없는 빈 객체로 만들어 뒀다가,
