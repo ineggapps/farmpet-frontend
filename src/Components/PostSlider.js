@@ -9,6 +9,7 @@ const Container = styled.div`
   overflow: hidden;
   position: relative;
   user-select: none;
+  border-radius: 15px;
 `;
 
 const Images = styled.ul`
@@ -23,6 +24,9 @@ const Slice = styled.li`
   background-image: url(${props => props.background});
   background-size: cover;
   background-position: center;
+  & span {
+    visibility: hidden;
+  }
 `;
 
 const SideButton = styled.div`
@@ -52,7 +56,17 @@ const RightButton = styled(SideButton)`
   top: 0;
 `;
 
-const PostSlider = ({ size = 520, files, onPostClick }) => {
+const Navigator = styled.div`
+margin-top:10px
+  width: 100%;
+  text-align: center;
+  & span{
+      color:${props => props.theme.darkGreyColor};
+      font-size:0.95em;
+  }
+`;
+
+const PostSlider = ({ size = 520, files, onPostClick, interval = 10000 }) => {
   const fileLength = files ? files.length : -1;
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -73,22 +87,65 @@ const PostSlider = ({ size = 520, files, onPostClick }) => {
     }
   };
 
+  /////오토 슬라이드
+  // 너무 많은 사진들이 동시에 움직이면 저사양 PC에서는 버벅일 수 있을 듯.
+  // 그러한 이유에서 카카오스토리나 인스타에서 자동으로 넘기는 함수를 굳이 만들지 않은 듯.
+  //   useInterval(() => {
+  //     // Your custom logic here
+  //     if (interval > 0) {
+  //       onNext();
+  //     }
+  //   }, interval);
+
+  //   function useInterval(callback, delay) {
+  //     const savedCallback = useRef();
+
+  //     // Remember the latest callback.
+  //     useEffect(() => {
+  //       savedCallback.current = callback;
+  //     }, [callback]);
+
+  //     // Set up the interval.
+  //     useEffect(() => {
+  //       function tick() {
+  //         savedCallback.current();
+  //       }
+  //       if (delay !== null) {
+  //         let id = setInterval(tick, delay);
+  //         return () => clearInterval(id);
+  //       }
+  //     }, [delay]);
+  //   }
+
   return (
-    <Container size={size}>
-      <Images currentIndex={currentIndex} size={size}>
-        {files.map(file => (
-          <Slice size={size} background={file.url} onClick={() => onPostClick()}>
-            {file.id}
-          </Slice>
-        ))}
-      </Images>
-      <LeftButton onMouseDown={() => onPrev()}>
-        <LeftArrowIcon />
-      </LeftButton>
-      <RightButton onMouseDown={() => onNext()}>
-        <RightArrowIcon />
-      </RightButton>
-    </Container>
+    <>
+      <Container size={size}>
+        <Images currentIndex={currentIndex} size={size}>
+          {files.map(file => (
+            <Slice size={size} background={file.url} onClick={() => onPostClick()}>
+              <span>{file.url}</span>
+            </Slice>
+          ))}
+        </Images>
+        {fileLength > 1 && (
+          <>
+            <LeftButton onMouseDown={() => onPrev()}>
+              <LeftArrowIcon />
+            </LeftButton>
+            <RightButton onMouseDown={() => onNext()}>
+              <RightArrowIcon />
+            </RightButton>
+          </>
+        )}
+      </Container>
+      {fileLength > 0 && (
+        <Navigator>
+          <span>
+            {currentIndex + 1}/{fileLength}
+          </span>
+        </Navigator>
+      )}
+    </>
   );
 };
 
