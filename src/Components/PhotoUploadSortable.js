@@ -102,11 +102,12 @@ const PhotoUploadSortable = ({ onUploadStart, onUploadEnd, onImageUploaded }) =>
 
   //결괏값을 받아왔을 때 트리거
   useEffect(() => {
-    console.log("결괏값을 받아서 호출되었음");
+    // console.log("결괏값을 받아서 호출되었음");
     if (result) {
-      console.log("result가 내용이 있어서 저장 중");
+      // console.log("result가 내용이 있어서 저장 중");
       for (let i = 0; i < result.length; i++) {
-        console.log(resultId[i], "를 키값으로 하여", result[i], "저장");
+        // console.log(resultId[i], "를 키값으로 하여", result[i], "저장");
+        result[i].caption = "캡션 시범 저장" + Math.random();
         fileMap.set(resultId[i], result[i]);
       }
       setResultId([]);
@@ -125,7 +126,9 @@ const PhotoUploadSortable = ({ onUploadStart, onUploadEnd, onImageUploaded }) =>
 
   const triggerImageUpload = () => {
     if (onImageUploaded) {
-      onImageUploaded(files.map(f => fileMap.get(f).url));
+      // 단일 url만 전송할 경우
+      // onImageUploaded(files.map(f => fileMap.get(f).url));
+      onImageUploaded(files.map(f => fileMap.get(f)));
     } else {
       throw Error("onImageUploaded 핸들러 부착 안 됐음");
     }
@@ -149,7 +152,7 @@ const PhotoUploadSortable = ({ onUploadStart, onUploadEnd, onImageUploaded }) =>
 
     const newFiles = [];
     const uuids = [];
-    for (let i = 0; i < attaches.length; i++) {
+    for (let i = 0; i < (attaches.length <= 20 ? attaches.length : 20); i++) {
       const uuid = uuidv4();
       formData.append(UPLOAD_API_NAME, attaches[i]);
       newFiles.push(uuid);

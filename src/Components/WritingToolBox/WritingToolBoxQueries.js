@@ -2,7 +2,7 @@ import { gql } from "apollo-boost";
 
 export const UPLOAD_POST = gql`
   mutation uploadPost(
-    $files: [String]
+    $files: [FileInput]
     $caption: String!
     $permission: PostPermission!
     $pets: [String]
@@ -12,6 +12,8 @@ export const UPLOAD_POST = gql`
       files {
         id
         url
+        thumbnail
+        caption
       }
       caption
       permission

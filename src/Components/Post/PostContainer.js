@@ -251,7 +251,9 @@ PostContainer.propTypes = {
   files: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.string,
-      file: PropTypes.string
+      url: PropTypes.string,
+      thumbnail: PropTypes.string,
+      caption: PropTypes.string
     })
   ),
   caption: PropTypes.string.isRequired,

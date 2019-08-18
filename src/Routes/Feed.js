@@ -24,6 +24,8 @@ const FEED_QUERY = gql`
       files {
         id
         url
+        thumbnail
+        caption
       }
       caption
       pets {
