@@ -107,7 +107,7 @@ const PhotoUploadSortable = ({ onUploadStart, onUploadEnd, onImageUploaded }) =>
       // console.log("result가 내용이 있어서 저장 중");
       for (let i = 0; i < result.length; i++) {
         // console.log(resultId[i], "를 키값으로 하여", result[i], "저장");
-        result[i].caption = "캡션 시범 저장" + Math.random();
+        // result[i].caption = "캡션 시범 저장" + Math.random();
         fileMap.set(resultId[i], result[i]);
       }
       setResultId([]);
@@ -145,6 +145,11 @@ const PhotoUploadSortable = ({ onUploadStart, onUploadEnd, onImageUploaded }) =>
       console.log("지금 업로드 중이라 막았음.");
       return;
       //이미 업로드 중이라면 메서드 진행을 막는다.
+    }
+    if (files.length === 20) {
+      throw Error(
+        "파일 첨부 개수 20개로 제한. 20개 이상 업로드 시 오류 뜨게끔 설계. 나중에 메시지로 대체할 것!"
+      );
     }
     setIsUploading(true);
     const formData = new FormData();
