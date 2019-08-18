@@ -32,17 +32,17 @@ const List = styled.li`
   background-position: center;
 `;
 
-const SortableItem = SortableElement(({ value, info }) => {
+const SortableItem = SortableElement(({ value }) => {
   // console.log(info, "가 보이나 보자");
   // console.log(fileMap.get(info), "해시 함수에서 꺼내보니");
-  return <List info={fileMap.get(info)} />;
+  return <List info={fileMap.get(value)} />;
 });
 
-const SortableList = SortableContainer(({ items, info }) => (
+const SortableList = SortableContainer(({ items }) => (
   <SortableUl>
     {items &&
       items.map((value, index) => (
-        <SortableItem key={`item-${index}`} index={index} value={value} info={info[index]} />
+        <SortableItem key={`item-${index}`} index={index} value={value} />
       ))}
   </SortableUl>
 ));
@@ -53,14 +53,7 @@ const PhotoUploadSortable = ({ onUploadStart, onUploadEnd, onImageUploaded }) =>
   const [files, setFiles] = useState([]);
   const [result, setResult] = useState([]);
   const [resultId, setResultId] = useState([]);
-  const useForceUpdate = () => useState()[1];
   const fileInput = useRef(null);
-  const forceUpdate = useForceUpdate();
-  const sampleFile = {
-    id: `${Math.random()}-image-sample`,
-    url: "https://cdn.pixabay.com/photo/2017/09/25/13/12/dog-2785074_960_720.jpg",
-    caption: "사진별 캡션 기능도 추가될 예정입니다."
-  };
 
   //업로드 중인지 여부
   useEffect(() => {
@@ -145,7 +138,7 @@ const PhotoUploadSortable = ({ onUploadStart, onUploadEnd, onImageUploaded }) =>
   return (
     <Container>
       <input type="file" ref={fileInput} multiple onChange={onFileChange} />
-      {files && <SortableList axis={"xy"} items={files} info={files} onSortEnd={onSortEnd} />}
+      {files && <SortableList axis={"xy"} items={files} onSortEnd={onSortEnd} />}
     </Container>
   );
 };
