@@ -62,14 +62,18 @@ const Slice = styled.li`
 `;
 
 const SideButton = styled.div`
-  width: 10%;
+  width: 8%;
+  height: 8%;
+  margin: 15px;
   /* height: 100%; */
   position: absolute;
-  top: 50%;
+  top: 45%;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  border-radius: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
   & svg {
     fill: white;
     opacity: 0.7;
@@ -90,12 +94,12 @@ const RightButton = styled(SideButton)`
 `;
 
 const Navigator = styled.div`
-margin-top:10px
+  margin-top: 10px;
   width: 100%;
   text-align: center;
-  & span{
-      color:${props => props.theme.darkGreyColor};
-      font-size:0.95em;
+  & span {
+    color: ${props => props.theme.darkGreyColor};
+    font-size: 0.95em;
   }
 `;
 
@@ -146,10 +150,10 @@ const PostSlider = ({ size = 520, files, onPostClick, interval = 10000 }) => {
         {fileLength > 1 && (
           <>
             <LeftButton onMouseDown={() => onPrev()}>
-              <LeftArrowIcon />
+              <LeftArrowIcon size={14} fill={"white"} />
             </LeftButton>
             <RightButton onMouseDown={() => onNext()}>
-              <RightArrowIcon />
+              <RightArrowIcon size={14} fill={"white"} />
             </RightButton>
           </>
         )}

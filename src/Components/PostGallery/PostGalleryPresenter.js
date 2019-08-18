@@ -90,7 +90,7 @@ const PostGalleryPresenter = ({
   onNext,
   filesLength
 }) => {
-  if (post === null || post === undefined) {
+  if (post === null || post === undefined || post.files === undefined || post.files === null) {
     return null;
   }
   return (
