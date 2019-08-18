@@ -19,14 +19,11 @@ const SortableUl = styled.ul`
   user-select: none;
 `;
 
-const ListParent = styled.li`
+const SortableComponent = styled.li`
   position: relative;
-  &:hover span {
-    visibility: visible;
-  }
 `;
 
-const List = styled.div`
+const Slice = styled.div`
   cursor: move;
   width: 95px;
   height: 95px;
@@ -40,37 +37,73 @@ const List = styled.div`
   background-position: center;
 `;
 
-const DeleteButton = styled.span`
-  visibility: hidden;
+const DeleteButton = styled.button`
+  border: 2px solid transparent;
   cursor: pointer;
   position: absolute;
-  right: 5px;
-  top: 5px;
-  padding: 0 3px 2px;
-  background-color: black;
+  right: 3px;
+  top: 3px;
+  padding: 2px 4px;
+  background-color: #666;
   opacity: 0.8;
   & svg {
     fill: #fff;
   }
+  &:focus {
+    outline: none;
+    background-color: #333;
+    opacity: 1;
+  }
 `;
 
 const fileMap = new HashMap();
-const SortableItem = SortableElement(({ value, deleteItem }) => {
-  console.log(value, "가 보이나 보자");
-  console.log(fileMap.get(value), "해시 함수에서 꺼내보니");
-  return <List file={fileMap.get(value)} />;
+const SortableItem = SortableElement(({ value, deleteItem, triggerImageUpload }) => {
+  // console.log(value, "가 보이나 보자");
+  // console.log(fileMap.get(value), "해시 함수에서 꺼내보니");
+  return (
+    <div>
+      <Slice file={fileMap.get(value)} />
+      <DeleteButton
+        onClick={e => {
+          e.preventDefault();
+          deleteItem(value);
+        }}
+      >
+        <RemoveIcon size={10} />
+      </DeleteButton>
+      <div>
+        <button
+          onClick={e => {
+            e.preventDefault();
+            fileMap.set(value, { ...fileMap.get(value), caption: "설명을 추가해보세요 ^^" });
+            console.log(
+              { ...fileMap.get(value), caption: "설명을 추가해보세요 ^^" },
+              "이벤트 발생해서 데이터 삽입하였음."
+            );
+            triggerImageUpload();
+          }}
+        >
+          추가 매크로{" "}
+        </button>
+        설명 추가 컴포넌트 추가할 자리
+      </div>
+    </div>
+  );
 });
 
-const SortableList = SortableContainer(({ items, deleteItem }) => (
+const SortableList = SortableContainer(({ items, deleteItem, triggerImageUpload }) => (
   <SortableUl>
     {items &&
       items.map((value, index) => (
-        <ListParent>
-          <DeleteButton onClick={() => deleteItem(value)}>
-            <RemoveIcon size={10} />
-          </DeleteButton>
-          <SortableItem key={`item-${index}`} index={index} value={value} deleteItem={deleteItem} />
-        </ListParent>
+        <SortableComponent>
+          <SortableItem
+            key={`item-${index}`}
+            index={index}
+            value={value}
+            deleteItem={deleteItem}
+            triggerImageUpload={triggerImageUpload}
+          />
+        </SortableComponent>
       ))}
   </SortableUl>
 ));
@@ -183,7 +216,13 @@ const PhotoUploadSortable = ({ onUploadStart, onUploadEnd, onImageUploaded }) =>
     <Container>
       <input type="file" ref={fileInput} multiple onChange={onFileChange} />
       {files && (
-        <SortableList axis={"xy"} items={files} onSortEnd={onSortEnd} deleteItem={deleteItem} />
+        <SortableList
+          axis={"xy"}
+          items={files}
+          onSortEnd={onSortEnd}
+          deleteItem={deleteItem}
+          triggerImageUpload={triggerImageUpload}
+        />
       )}
     </Container>
   );
