@@ -37,39 +37,59 @@ const Slice = styled.div`
   background-position: center;
 `;
 
-const DeleteButton = styled.button`
-  border: 2px solid transparent;
-  cursor: pointer;
-  position: absolute;
-  right: 3px;
-  top: 3px;
-  padding: 2px 4px;
-  background-color: #666;
-  opacity: 0.8;
+const DeleteArea = styled.button`
+  background-color: #333;
+  width: 15px;
+  height: 15px;
+  border: 0 none;
+  display: block;
+  opacity: 0.7;
+  &:focus {
+    outline: none;
+    opacity: 1;
+  }
+  background-image: url("data:image/svg+xml;base64,PHN2ZyBmaWxsPSJ3aGl0ZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMTAiIGhlaWdodD0iMTAiIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZD0iTTIzLjk1NCAyMS4wM2wtOS4xODQtOS4wOTUgOS4wOTItOS4xNzQtMi44MzItMi44MDctOS4wOSA5LjE3OS05LjE3Ni05LjA4OC0yLjgxIDIuODEgOS4xODYgOS4xMDUtOS4wOTUgOS4xODQgMi44MSAyLjgxIDkuMTEyLTkuMTkyIDkuMTggOS4xeiIvPjwvc3ZnPg==");
+  background-repeat: no-repeat;
+  background-position: center;
+`;
+const DeleteButton = styled.div`
+  & ${DeleteArea} {
+    cursor: pointer;
+    right: 3px;
+    top: 3px;
+    position: absolute;
+    padding: 2px 4px;
+  }
   & svg {
     fill: #fff;
   }
-  &:focus {
-    outline: none;
-    background-color: #333;
-    opacity: 1;
-  }
+`;
+
+const DeleteBackground = styled.div`
+  z-index: 10;
+  width: 10px;
+  height: 10px;
+  background-image: url("data:image/svg+xml;base64,PHN2ZyBmaWxsPSJ3aGl0ZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMTAiIGhlaWdodD0iMTAiIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZD0iTTIzLjk1NCAyMS4wM2wtOS4xODQtOS4wOTUgOS4wOTItOS4xNzQtMi44MzItMi44MDctOS4wOSA5LjE3OS05LjE3Ni05LjA4OC0yLjgxIDIuODEgOS4xODYgOS4xMDUtOS4wOTUgOS4xODQgMi44MSAyLjgxIDkuMTEyLTkuMTkyIDkuMTggOS4xeiIvPjwvc3ZnPg==");
 `;
 
 const fileMap = new HashMap();
 const SortableItem = SortableElement(({ value, deleteItem, triggerImageUpload }) => {
   // console.log(value, "가 보이나 보자");
   // console.log(fileMap.get(value), "해시 함수에서 꺼내보니");
+  const onDelete = value => {
+    deleteItem(value);
+  };
   return (
     <div>
       <Slice file={fileMap.get(value)} />
-      <DeleteButton
-        onClick={e => {
-          e.preventDefault();
-          deleteItem(value);
-        }}
-      >
-        <RemoveIcon size={10} />
+      <DeleteButton>
+        <DeleteBackground size={10} />
+        <DeleteArea
+          onClick={e => {
+            e.preventDefault();
+            onDelete(value);
+          }}
+        />
       </DeleteButton>
       <div>
         <button

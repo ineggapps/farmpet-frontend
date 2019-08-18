@@ -131,11 +131,13 @@ const PostSlider = ({ size = 520, files, onPostClick, interval = 10000 }) => {
               background={file.url}
               onClick={() => onPostClick(currentIndex)}
             >
-              <Caption size={size} currentIndex={currentIndex}>
-                <p>
-                  <SpeechBubble /> {file.caption}
-                </p>
-              </Caption>
+              {file.caption && (
+                <Caption size={size} currentIndex={currentIndex}>
+                  <p>
+                    <SpeechBubble /> {file.caption}
+                  </p>
+                </Caption>
+              )}
             </Slice>
           ))}
         </Images>
