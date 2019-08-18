@@ -74,14 +74,16 @@ const PureButton = styled.button`
 `;
 
 const Wrapper = styled(PureButton)`
+  padding: 5px 0;
   width: 100%;
   cursor: pointer;
   position: relative;
   text-align: center;
-`;
-
-const CaptionStateRed = styled.span`
-  color: ${props => props.theme.redColor};
+  & svg {
+    position: relative;
+    top: 4px;
+    margin-right: 4px;
+  }
 `;
 
 const fileMap = new HashMap();
@@ -94,14 +96,17 @@ const SortableItem = SortableElement(({ value, deleteItem, triggerImageUpload, f
     deleteItem(value);
   };
 
-  const onCaptionWrittenListener = caption => {
+  const onCaptionWrittenListener = ({ caption }) => {
     //해시맵에 캡션 저장하기
     // console.log(fileMap, "fileMap", value, "value", caption, "caption");
-    fileMap.set(value, { ...fileMap.get(value), ...caption });
-    console.log(value, fileMap.get(value));
+    fileMap.set(value, { ...fileMap.get(value), caption });
     triggerImageUpload();
     toggleInput();
-    setIsLabeled(true);
+    if (caption !== "") {
+      setIsLabeled(true);
+    } else {
+      setIsLabeled(false);
+    }
   };
 
   const toggleInput = () => {
@@ -118,36 +123,17 @@ const SortableItem = SortableElement(({ value, deleteItem, triggerImageUpload, f
         }}
       />
       {isLabeled ? (
-        <Wrapper onClick={() => toggleInput()}>
-          <CaptionStateRed>
-            <SpeechBubbleIcon />
-            Edit Caption
-          </CaptionStateRed>
+        <Wrapper onClick={() => setIsInput(!isInput)} style={{ color: `#ED4956` }}>
+          <SpeechBubbleIcon />
+          Edit Caption
         </Wrapper>
       ) : (
-        <Wrapper onClick={() => toggleInput()}>
+        <Wrapper onClick={() => setIsInput(!isInput)}>
           <SpeechBubbleIcon />
           Add Caption
         </Wrapper>
       )}
-
       {isInput ? <PhotoUploadCaption onCaptionWrittenListener={onCaptionWrittenListener} /> : null}
-
-      <div>
-        {/* <button
-          onClick={e => {
-            e.preventDefault();
-            fileMap.set(value, { ...fileMap.get(value), caption: "설명을 추가해보세요 ^^" });
-            console.log(
-              { ...fileMap.get(value), caption: "설명을 추가해보세요 ^^" },
-              "이벤트 발생해서 데이터 삽입하였음."
-            );
-            triggerImageUpload();
-          }}
-        >
-          추가 매크로{" "}
-        </button> */}
-      </div>
     </div>
   );
 });

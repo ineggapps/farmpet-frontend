@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import { SpeechBubbleIcon } from "./Icons";
 import TextareaAutosize from "react-autosize-textarea/lib";
 import useInput from "../Hooks/useInput";
 
@@ -15,18 +14,6 @@ const PureButton = styled.button`
   border: 0 none;
   margin: 0;
   padding: 0;
-`;
-
-const CaptionButton = styled(PureButton)`
-  background-color: white;
-  width: 100%;
-  height: 30px;
-  & svg {
-    fill: ${props => props.theme.darkGreyColor};
-    position: relative;
-    top: 2px;
-    margin-right: 4px;
-  }
 `;
 
 /////////////////////////////////////////////////////////////////
@@ -44,6 +31,7 @@ const WritingComponent = styled.div`
 
 const Textarea = styled(TextareaAutosize)`
   font-family: ${props => props.theme.fontFamily};
+  color: ${props => props.theme.blackColor};
   width: 100%;
   height: 80px;
   border: 0 none;
@@ -51,6 +39,8 @@ const Textarea = styled(TextareaAutosize)`
   &:focus {
     outline: none;
   }
+  padding: 10px;
+  margin-bottom: 5px;
 `;
 
 const ButtonComponent = styled.div`
@@ -73,7 +63,15 @@ const WriteButton = styled(PureButton)`
 `;
 
 const PhotoUploadCaption = ({ onCaptionWrittenListener }) => {
+  const [isTextFocused, setIsTextFocused] = useState(false);
   const caption = useInput("");
+  const ref = useRef(null);
+
+  useEffect(() => {
+    if (ref !== null) {
+      ref.current.focus();
+    }
+  }, [ref]);
 
   const onWritten = () => {
     if (onCaptionWrittenListener) {
@@ -87,13 +85,28 @@ const PhotoUploadCaption = ({ onCaptionWrittenListener }) => {
   const onKeyPress = e => {
     const { which } = e;
     if (which === 13) {
+      e.preventDefault();
       onWritten();
     }
   };
 
   return (
     <WritingComponent>
-      <Textarea maxLength={100} value={caption.value} onChange={caption.onChange} />
+      <Textarea
+        maxLength={100}
+        value={caption.value}
+        onChange={caption.onChange}
+        onKeyPress={onKeyPress}
+        onFocus={() => setIsTextFocused(true)}
+        onBlur={() => {
+          if (isTextFocused) {
+            onWritten();
+            setIsTextFocused(false);
+          }
+        }}
+        ref={ref}
+        placeholder={"Input your memorized thinking about this picture!"}
+      />
       <ButtonComponent>
         <WriteButton onClick={() => onWritten()}>Write</WriteButton>
       </ButtonComponent>
