@@ -95,9 +95,8 @@ const SortableList = SortableContainer(({ items, deleteItem, triggerImageUpload 
   <SortableUl>
     {items &&
       items.map((value, index) => (
-        <SortableComponent>
+        <SortableComponent key={`item-${index}`}>
           <SortableItem
-            key={`item-${index}`}
             index={index}
             value={value}
             deleteItem={deleteItem}
