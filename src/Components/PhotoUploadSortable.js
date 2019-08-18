@@ -7,7 +7,8 @@ import arrayMove from "array-move";
 import { UPLOAD_API_NAME } from "../SharedQueries";
 import uuidv4 from "uuid/v4";
 import HashMap from "hashmap";
-import { RemoveIcon, SpeechBubbleIcon } from "./Icons";
+import PhotoUploadCaption from "./PhotoUploadCaption";
+import { SpeechBubbleIcon } from "./Icons";
 
 const Container = styled.div``;
 const SortableUl = styled.ul`
@@ -58,31 +59,55 @@ const DeleteButton = styled.button`
   padding: 2px 4px;
 `;
 
-const CaptionButton = styled.button`
+const PureButton = styled.button`
   background-color: transparent;
-  width: 100%;
-  height: 20px;
-  border: 0 none;
-  cursor: pointer;
+  color: ${props => props.theme.darkGreyColor};
   &:focus {
     outline: none;
   }
   & svg {
     fill: ${props => props.theme.darkGreyColor};
-    position: relative;
-    top: 2px;
-    margin-right: 4px;
   }
+  border: 0 none;
+  margin: 0;
+  padding: 0;
+`;
+
+const Wrapper = styled(PureButton)`
+  width: 100%;
+  cursor: pointer;
+  position: relative;
+  text-align: center;
+`;
+
+const CaptionStateRed = styled.span`
+  color: ${props => props.theme.redColor};
 `;
 
 const fileMap = new HashMap();
-const SortableItem = SortableElement(({ value, deleteItem, triggerImageUpload }) => {
+const SortableItem = SortableElement(({ value, deleteItem, triggerImageUpload, fileMap }) => {
+  const [isInput, setIsInput] = useState(false);
+  const [isLabeled, setIsLabeled] = useState(false);
   // console.log(value, "가 보이나 보자");
   // console.log(fileMap.get(value), "해시 함수에서 꺼내보니");
   const onDelete = value => {
     deleteItem(value);
   };
-  const onAddCaption = value => {};
+
+  const onCaptionWrittenListener = caption => {
+    //해시맵에 캡션 저장하기
+    // console.log(fileMap, "fileMap", value, "value", caption, "caption");
+    fileMap.set(value, { ...fileMap.get(value), ...caption });
+    console.log(value, fileMap.get(value));
+    triggerImageUpload();
+    toggleInput();
+    setIsLabeled(true);
+  };
+
+  const toggleInput = () => {
+    setIsInput(!isInput);
+  };
+
   return (
     <div>
       <Slice file={fileMap.get(value)} />
@@ -92,21 +117,23 @@ const SortableItem = SortableElement(({ value, deleteItem, triggerImageUpload })
           onDelete(value);
         }}
       />
-      <div>
-        <CaptionButton
-          onClick={e => {
-            e.preventDefault();
-            fileMap.set(value, { ...fileMap.get(value), caption: "설명을 추가해보세요 ^^" });
-            console.log(
-              { ...fileMap.get(value), caption: "설명을 추가해보세요 ^^" },
-              "이벤트 발생해서 데이터 삽입하였음."
-            );
-            triggerImageUpload();
-          }}
-        >
+      {isLabeled ? (
+        <Wrapper onClick={() => toggleInput()}>
+          <CaptionStateRed>
+            <SpeechBubbleIcon />
+            Edit Caption
+          </CaptionStateRed>
+        </Wrapper>
+      ) : (
+        <Wrapper onClick={() => toggleInput()}>
           <SpeechBubbleIcon />
-          설명 추가
-        </CaptionButton>
+          Add Caption
+        </Wrapper>
+      )}
+
+      {isInput ? <PhotoUploadCaption onCaptionWrittenListener={onCaptionWrittenListener} /> : null}
+
+      <div>
         {/* <button
           onClick={e => {
             e.preventDefault();
@@ -125,7 +152,7 @@ const SortableItem = SortableElement(({ value, deleteItem, triggerImageUpload })
   );
 });
 
-const SortableList = SortableContainer(({ items, deleteItem, triggerImageUpload }) => (
+const SortableList = SortableContainer(({ items, deleteItem, triggerImageUpload, fileMap }) => (
   <SortableUl>
     {items &&
       items.map((value, index) => (
@@ -135,6 +162,7 @@ const SortableList = SortableContainer(({ items, deleteItem, triggerImageUpload 
             value={value}
             deleteItem={deleteItem}
             triggerImageUpload={triggerImageUpload}
+            fileMap={fileMap}
           />
         </SortableComponent>
       ))}
@@ -255,6 +283,7 @@ const PhotoUploadSortable = ({ onUploadStart, onUploadEnd, onImageUploaded }) =>
           onSortEnd={onSortEnd}
           deleteItem={deleteItem}
           triggerImageUpload={triggerImageUpload}
+          fileMap={fileMap}
         />
       )}
     </Container>
