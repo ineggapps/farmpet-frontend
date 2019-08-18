@@ -183,3 +183,9 @@ export const RightArrowIcon = ({ size = 24 }) => (
     <path d="M5 3l3.057-3 11.943 12-11.943 12-3.057-3 9-9z" />
   </svg>
 );
+
+export const SpeechBubble = ({ size = 14 }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24">
+    <path d="M0 1v16.981h4v5.019l7-5.019h13v-16.981h-24zm13 12h-8v-1h8v1zm6-3h-14v-1h14v1zm0-3h-14v-1h14v1z" />
+  </svg>
+);

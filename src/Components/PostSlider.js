@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import { LeftArrowIcon, RightArrowIcon } from "./Icons";
+import { LeftArrowIcon, RightArrowIcon, SpeechBubble } from "./Icons";
 
 const Container = styled.div`
   width: ${props => props.size}px;
@@ -18,14 +18,45 @@ const Images = styled.ul`
   transition: transform 0.2s;
 `;
 
+const Caption = styled.div`
+  display: none;
+  font-size: 0.9em;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: ${props => props.size}px;
+  height: 200px;
+  /* padding-top: 100px; */
+  & p {
+    color: #fff;
+    width: 100%;
+    padding: 10px 15px 20px;
+    line-height: 18px;
+  }
+  & svg {
+    position: relative;
+    top: 2px;
+    fill: ${props => props.theme.lightGreyColor};
+    margin-right: 8px;
+  }
+`;
+
 const Slice = styled.li`
+  position: relative;
   width: ${props => props.size}px;
   height: ${props => props.size}px;
   background-image: url(${props => props.background});
   background-size: cover;
   background-position: center;
-  & span {
-    visibility: hidden;
+  &:hover ${Caption} {
+    display: flex;
+    align-items: flex-end;
+    background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0) 0,
+      rgba(0, 0, 0, 0.75) 82%,
+      rgba(0, 0, 0, 0.85) 100%
+    );
   }
 `;
 
@@ -87,35 +118,7 @@ const PostSlider = ({ size = 520, files, onPostClick, interval = 10000 }) => {
     }
   };
 
-  /////오토 슬라이드
-  // 너무 많은 사진들이 동시에 움직이면 저사양 PC에서는 버벅일 수 있을 듯.
-  // 그러한 이유에서 카카오스토리나 인스타에서 자동으로 넘기는 함수를 굳이 만들지 않은 듯.
-  //   useInterval(() => {
-  //     // Your custom logic here
-  //     if (interval > 0) {
-  //       onNext();
-  //     }
-  //   }, interval);
-
-  //   function useInterval(callback, delay) {
-  //     const savedCallback = useRef();
-
-  //     // Remember the latest callback.
-  //     useEffect(() => {
-  //       savedCallback.current = callback;
-  //     }, [callback]);
-
-  //     // Set up the interval.
-  //     useEffect(() => {
-  //       function tick() {
-  //         savedCallback.current();
-  //       }
-  //       if (delay !== null) {
-  //         let id = setInterval(tick, delay);
-  //         return () => clearInterval(id);
-  //       }
-  //     }, [delay]);
-  //   }
+  //오토슬라이드 소스가 들어갈 자리
 
   return (
     <>
@@ -128,7 +131,11 @@ const PostSlider = ({ size = 520, files, onPostClick, interval = 10000 }) => {
               background={file.url}
               onClick={() => onPostClick(currentIndex)}
             >
-              <span>{file.url}</span>
+              <Caption size={size} currentIndex={currentIndex}>
+                <p>
+                  <SpeechBubble /> {file.caption}
+                </p>
+              </Caption>
             </Slice>
           ))}
         </Images>
@@ -160,3 +167,33 @@ PostSlider.propTypes = {
 };
 
 export default PostSlider;
+
+/////오토 슬라이드
+// 너무 많은 사진들이 동시에 움직이면 저사양 PC에서는 버벅일 수 있을 듯.
+// 그러한 이유에서 카카오스토리나 인스타에서 자동으로 넘기는 함수를 굳이 만들지 않은 듯.
+//   useInterval(() => {
+//     // Your custom logic here
+//     if (interval > 0) {
+//       onNext();
+//     }
+//   }, interval);
+
+//   function useInterval(callback, delay) {
+//     const savedCallback = useRef();
+
+//     // Remember the latest callback.
+//     useEffect(() => {
+//       savedCallback.current = callback;
+//     }, [callback]);
+
+//     // Set up the interval.
+//     useEffect(() => {
+//       function tick() {
+//         savedCallback.current();
+//       }
+//       if (delay !== null) {
+//         let id = setInterval(tick, delay);
+//         return () => clearInterval(id);
+//       }
+//     }, [delay]);
+//   }
