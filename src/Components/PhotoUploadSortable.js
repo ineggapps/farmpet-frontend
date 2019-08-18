@@ -7,53 +7,89 @@ import arrayMove from "array-move";
 import { UPLOAD_API_NAME } from "../SharedQueries";
 import uuidv4 from "uuid/v4";
 import HashMap from "hashmap";
+import { RemoveIcon } from "./Icons";
 
 const Container = styled.div``;
 const SortableUl = styled.ul`
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(6, 0.1fr);
+  grid-template-columns: repeat(5, 0.1fr);
   grid-row-gap: 10px;
+  grid-column-gap: 10px;
   user-select: none;
 `;
 
-const List = styled.li`
+const ListParent = styled.li`
+  position: relative;
+  &:hover span {
+    visibility: visible;
+  }
+`;
+
+const List = styled.div`
   cursor: move;
-  margin-right: 10px;
-  width: 75px;
-  height: 75px;
-  border-radius: 15px;
+  width: 95px;
+  height: 95px;
+  border-radius: 2px;
   border: 1px solid ${props => props.theme.lightGreyColor};
   background-image: url(${props =>
-    props.info && props.info.thumbnail
-      ? props.info.thumbnail
+    props.file && props.file.thumbnail
+      ? props.file.thumbnail
       : "http://localhost:4000/upload/loading.gif"});
   background-size: cover;
   background-position: center;
 `;
 
-const SortableItem = SortableElement(({ value }) => {
-  // console.log(info, "가 보이나 보자");
-  // console.log(fileMap.get(info), "해시 함수에서 꺼내보니");
-  return <List info={fileMap.get(value)} />;
+const DeleteButton = styled.span`
+  visibility: hidden;
+  cursor: pointer;
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  padding: 0 3px 2px;
+  background-color: black;
+  opacity: 0.8;
+  & svg {
+    fill: #fff;
+  }
+`;
+
+const fileMap = new HashMap();
+const SortableItem = SortableElement(({ value, deleteItem }) => {
+  console.log(value, "가 보이나 보자");
+  console.log(fileMap.get(value), "해시 함수에서 꺼내보니");
+  return <List file={fileMap.get(value)} />;
 });
 
-const SortableList = SortableContainer(({ items }) => (
+const SortableList = SortableContainer(({ items, deleteItem }) => (
   <SortableUl>
     {items &&
       items.map((value, index) => (
-        <SortableItem key={`item-${index}`} index={index} value={value} />
+        <ListParent>
+          <DeleteButton onClick={() => deleteItem(value)}>
+            <RemoveIcon size={10} />
+          </DeleteButton>
+          <SortableItem key={`item-${index}`} index={index} value={value} deleteItem={deleteItem} />
+        </ListParent>
       ))}
   </SortableUl>
 ));
 
-const fileMap = new HashMap();
 const PhotoUploadSortable = ({ onUploadStart, onUploadEnd, onImageUploaded }) => {
   const [isUploading, setIsUploading] = useState(false);
   const [files, setFiles] = useState([]);
   const [result, setResult] = useState([]);
   const [resultId, setResultId] = useState([]);
   const fileInput = useRef(null);
+
+  const deleteItem = key => {
+    console.log("아이템 삭제 요청", key);
+    if (fileMap.has(key)) {
+      fileMap.remove(key);
+      console.log("아이템 해시맵에서 삭제하였음.", fileMap.get(key));
+    }
+    setFiles(files.filter(f => f !== key));
+  };
 
   //업로드 중인지 여부
   useEffect(() => {
@@ -138,7 +174,9 @@ const PhotoUploadSortable = ({ onUploadStart, onUploadEnd, onImageUploaded }) =>
   return (
     <Container>
       <input type="file" ref={fileInput} multiple onChange={onFileChange} />
-      {files && <SortableList axis={"xy"} items={files} onSortEnd={onSortEnd} />}
+      {files && (
+        <SortableList axis={"xy"} items={files} onSortEnd={onSortEnd} deleteItem={deleteItem} />
+      )}
     </Container>
   );
 };
