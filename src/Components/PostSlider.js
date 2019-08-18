@@ -12,12 +12,6 @@ const Container = styled.div`
   border-radius: 15px;
 `;
 
-const Images = styled.ul`
-  display: inline-flex;
-  transform: translate(-${props => props.currentIndex * props.size}px, 0px);
-  transition: transform 0.2s;
-`;
-
 const Caption = styled.div`
   display: none;
   font-size: 0.9em;
@@ -41,13 +35,11 @@ const Caption = styled.div`
   }
 `;
 
-const Slice = styled.li`
-  position: relative;
-  width: ${props => props.size}px;
-  height: ${props => props.size}px;
-  background-image: url(${props => props.background});
-  background-size: cover;
-  background-position: center;
+const Images = styled.ul`
+  display: inline-flex;
+  transform: translate(-${props => props.currentIndex * props.size}px, 0px);
+  transition: transform 0.2s;
+
   &:hover ${Caption} {
     display: flex;
     align-items: flex-end;
@@ -60,17 +52,27 @@ const Slice = styled.li`
   }
 `;
 
+const Slice = styled.li`
+  position: relative;
+  width: ${props => props.size}px;
+  height: ${props => props.size}px;
+  background-image: url(${props => props.background});
+  background-size: cover;
+  background-position: center;
+`;
+
 const SideButton = styled.div`
   width: 10%;
-  height: 100%;
+  /* height: 100%; */
   position: absolute;
+  top: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
   & svg {
     fill: white;
-    opacity: 0.3;
+    opacity: 0.7;
   }
   &:hover svg {
     opacity: 1;
@@ -79,12 +81,12 @@ const SideButton = styled.div`
 
 const LeftButton = styled(SideButton)`
   left: 0;
-  top: 0;
+  /* top: 0; */
 `;
 
 const RightButton = styled(SideButton)`
   right: 0;
-  top: 0;
+  /* top: 0; */
 `;
 
 const Navigator = styled.div`
