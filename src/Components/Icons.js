@@ -184,7 +184,7 @@ export const RightArrowIcon = ({ size = 24 }) => (
   </svg>
 );
 
-export const SpeechBubble = ({ size = 14 }) => (
+export const SpeechBubbleIcon = ({ size = 14 }) => (
   <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24">
     <path d="M0 1v16.981h4v5.019l7-5.019h13v-16.981h-24zm13 12h-8v-1h8v1zm6-3h-14v-1h14v1zm0-3h-14v-1h14v1z" />
   </svg>

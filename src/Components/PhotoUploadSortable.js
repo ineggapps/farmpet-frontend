@@ -7,7 +7,7 @@ import arrayMove from "array-move";
 import { UPLOAD_API_NAME } from "../SharedQueries";
 import uuidv4 from "uuid/v4";
 import HashMap from "hashmap";
-import { RemoveIcon } from "./Icons";
+import { RemoveIcon, SpeechBubbleIcon } from "./Icons";
 
 const Container = styled.div``;
 const SortableUl = styled.ul`
@@ -37,7 +37,7 @@ const Slice = styled.div`
   background-position: center;
 `;
 
-const DeleteArea = styled.button`
+const DeleteButton = styled.button`
   background-color: #333;
   width: 15px;
   height: 15px;
@@ -51,25 +51,28 @@ const DeleteArea = styled.button`
   background-image: url("data:image/svg+xml;base64,PHN2ZyBmaWxsPSJ3aGl0ZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMTAiIGhlaWdodD0iMTAiIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZD0iTTIzLjk1NCAyMS4wM2wtOS4xODQtOS4wOTUgOS4wOTItOS4xNzQtMi44MzItMi44MDctOS4wOSA5LjE3OS05LjE3Ni05LjA4OC0yLjgxIDIuODEgOS4xODYgOS4xMDUtOS4wOTUgOS4xODQgMi44MSAyLjgxIDkuMTEyLTkuMTkyIDkuMTggOS4xeiIvPjwvc3ZnPg==");
   background-repeat: no-repeat;
   background-position: center;
-`;
-const DeleteButton = styled.div`
-  & ${DeleteArea} {
-    cursor: pointer;
-    right: 3px;
-    top: 3px;
-    position: absolute;
-    padding: 2px 4px;
-  }
-  & svg {
-    fill: #fff;
-  }
+  cursor: pointer;
+  right: 3px;
+  top: 3px;
+  position: absolute;
+  padding: 2px 4px;
 `;
 
-const DeleteBackground = styled.div`
-  z-index: 10;
-  width: 10px;
-  height: 10px;
-  background-image: url("data:image/svg+xml;base64,PHN2ZyBmaWxsPSJ3aGl0ZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMTAiIGhlaWdodD0iMTAiIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZD0iTTIzLjk1NCAyMS4wM2wtOS4xODQtOS4wOTUgOS4wOTItOS4xNzQtMi44MzItMi44MDctOS4wOSA5LjE3OS05LjE3Ni05LjA4OC0yLjgxIDIuODEgOS4xODYgOS4xMDUtOS4wOTUgOS4xODQgMi44MSAyLjgxIDkuMTEyLTkuMTkyIDkuMTggOS4xeiIvPjwvc3ZnPg==");
+const CaptionButton = styled.button`
+  background-color: transparent;
+  width: 100%;
+  height: 20px;
+  border: 0 none;
+  cursor: pointer;
+  &:focus {
+    outline: none;
+  }
+  & svg {
+    fill: ${props => props.theme.darkGreyColor};
+    position: relative;
+    top: 2px;
+    margin-right: 4px;
+  }
 `;
 
 const fileMap = new HashMap();
@@ -79,20 +82,32 @@ const SortableItem = SortableElement(({ value, deleteItem, triggerImageUpload })
   const onDelete = value => {
     deleteItem(value);
   };
+  const onAddCaption = value => {};
   return (
     <div>
       <Slice file={fileMap.get(value)} />
-      <DeleteButton>
-        <DeleteBackground size={10} />
-        <DeleteArea
+      <DeleteButton
+        onClick={e => {
+          e.preventDefault();
+          onDelete(value);
+        }}
+      />
+      <div>
+        <CaptionButton
           onClick={e => {
             e.preventDefault();
-            onDelete(value);
+            fileMap.set(value, { ...fileMap.get(value), caption: "설명을 추가해보세요 ^^" });
+            console.log(
+              { ...fileMap.get(value), caption: "설명을 추가해보세요 ^^" },
+              "이벤트 발생해서 데이터 삽입하였음."
+            );
+            triggerImageUpload();
           }}
-        />
-      </DeleteButton>
-      <div>
-        <button
+        >
+          <SpeechBubbleIcon />
+          설명 추가
+        </CaptionButton>
+        {/* <button
           onClick={e => {
             e.preventDefault();
             fileMap.set(value, { ...fileMap.get(value), caption: "설명을 추가해보세요 ^^" });
@@ -104,8 +119,7 @@ const SortableItem = SortableElement(({ value, deleteItem, triggerImageUpload })
           }}
         >
           추가 매크로{" "}
-        </button>
-        설명 추가 컴포넌트 추가할 자리
+        </button> */}
       </div>
     </div>
   );

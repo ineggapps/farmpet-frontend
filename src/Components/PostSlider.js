@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import { LeftArrowIcon, RightArrowIcon, SpeechBubble } from "./Icons";
+import { LeftArrowIcon, RightArrowIcon, SpeechBubbleIcon } from "./Icons";
 
 const Container = styled.div`
   width: ${props => props.size}px;
@@ -134,7 +134,7 @@ const PostSlider = ({ size = 520, files, onPostClick, interval = 10000 }) => {
               {file.caption && (
                 <Caption size={size} currentIndex={currentIndex}>
                   <p>
-                    <SpeechBubble /> {file.caption}
+                    <SpeechBubbleIcon /> {file.caption}
                   </p>
                 </Caption>
               )}
