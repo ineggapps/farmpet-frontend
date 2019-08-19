@@ -113,6 +113,11 @@ const SortableItem = SortableElement(({ value, deleteItem, triggerImageUpload, f
     setIsInput(!isInput);
   };
 
+  const onCaptionButtonClick = e => {
+    e.preventDefault();
+    toggleInput();
+  };
+
   return (
     <div>
       <Slice file={fileMap.get(value)} />
@@ -123,12 +128,21 @@ const SortableItem = SortableElement(({ value, deleteItem, triggerImageUpload, f
         }}
       />
       {isLabeled ? (
-        <Wrapper onClick={() => setIsInput(!isInput)} style={{ color: `#ED4956` }}>
+        <Wrapper
+          onClick={e => {
+            onCaptionButtonClick(e);
+          }}
+          style={{ color: `#ED4956` }}
+        >
           <SpeechBubbleIcon />
           Edit Caption
         </Wrapper>
       ) : (
-        <Wrapper onClick={() => setIsInput(!isInput)}>
+        <Wrapper
+          onClick={e => {
+            onCaptionButtonClick(e);
+          }}
+        >
           <SpeechBubbleIcon />
           Add Caption
         </Wrapper>
