@@ -1,6 +1,6 @@
 import React from "react";
 import styled, { keyframes } from "styled-components";
-import { LeftArrowIcon, RightArrowIcon } from "../Icons";
+import { LeftArrowIcon, RightArrowIcon, SpeechBubbleIcon } from "../Icons";
 
 const FadeInAnimation = keyframes`
   0%{
@@ -31,6 +31,29 @@ const BackgroundWrapper = styled.div`
   height: 100%;
 `;
 
+const Caption = styled.div`
+  display: none;
+  font-size: 0.9em;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 200px;
+  /* padding-top: 100px; */
+  & p {
+    color: #fff;
+    width: 100%;
+    padding: 10px 15px 20px;
+    line-height: 18px;
+  }
+  & svg {
+    position: relative;
+    top: 2px;
+    fill: ${props => props.theme.lightGreyColor};
+    margin-right: 8px;
+  }
+`;
+
 const Viewer = styled.div`
   /* &:before {
     content: "";
@@ -42,6 +65,16 @@ const Viewer = styled.div`
     position: relative;
     max-width: 1000px;
     min-height:500px;
+  }
+  &:hover ${Caption} {
+    display: flex;
+    align-items: flex-end;
+    background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0) 0,
+      rgba(0, 0, 0, 0.75) 82%,
+      rgba(0, 0, 0, 0.85) 100%
+    );
   }
 `;
 
@@ -80,8 +113,6 @@ const Images = styled.div`
   }
 `;
 
-const ImageList = styled.li``;
-
 const PostGalleryPresenter = ({
   post,
   onBackgroundClick,
@@ -100,6 +131,13 @@ const PostGalleryPresenter = ({
         <Images>
           <img src={post.files[currentIndex].url} alt={post.files[currentIndex].id} />
         </Images>
+        {post.files[currentIndex].caption && (
+          <Caption currentIndex={currentIndex}>
+            <p>
+              <SpeechBubbleIcon /> {post.files[currentIndex].caption}
+            </p>
+          </Caption>
+        )}
       </Viewer>
       {filesLength > 1 && (
         <>
