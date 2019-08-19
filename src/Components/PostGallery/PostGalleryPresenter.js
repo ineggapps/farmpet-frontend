@@ -121,7 +121,14 @@ const PostGalleryPresenter = ({
   onNext,
   filesLength
 }) => {
-  if (post === null || post === undefined || post.files === undefined || post.files === null) {
+  if (
+    post === null ||
+    post === undefined ||
+    post.files === undefined ||
+    post.files === null ||
+    post.files[currentIndex] === undefined ||
+    post.files[currentIndex] === null
+  ) {
     return null;
   }
   return (
