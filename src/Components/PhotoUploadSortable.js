@@ -29,7 +29,6 @@ const Slice = styled.div`
   width: 95px;
   height: 95px;
   border-radius: 2px;
-  border: 1px solid ${props => props.theme.lightGreyColor};
   background-image: url(${props =>
     props.file && props.file.thumbnail
       ? props.file.thumbnail
@@ -73,7 +72,7 @@ const PureButton = styled.button`
   padding: 0;
 `;
 
-const Wrapper = styled(PureButton)`
+const CaptionContainer = styled(PureButton)`
   padding: 5px 0;
   width: 100%;
   cursor: pointer;
@@ -84,6 +83,29 @@ const Wrapper = styled(PureButton)`
     top: 4px;
     margin-right: 4px;
   }
+`;
+
+const AddButton = styled(PureButton)`
+  cursor: pointer;
+  width: 95px;
+  height: 122px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGZpbGw9IiM5OTkiIHdpZHRoPSIyOCIgaGVpZ2h0PSIyOCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNNSA4LjVjMC0uODI4LjY3Mi0xLjUgMS41LTEuNXMxLjUuNjcyIDEuNSAxLjVjMCAuODI5LS42NzIgMS41LTEuNSAxLjVzLTEuNS0uNjcxLTEuNS0xLjV6bTkgLjVsLTIuNTE5IDQtMi40ODEtMS45Ni00IDUuOTZoMTRsLTUtOHptOC00djE0aC0yMHYtMTRoMjB6bTItMmgtMjR2MThoMjR2LTE4eiIvPjwvc3ZnPg==");
+  background-color: #fefefe;
+  border: 1px solid ${props => props.theme.superLightGreyColor};
+  &:hover {
+    border-color: #999;
+    background-color: ${props => props.theme.bgColor};
+  }
+`;
+
+const ListContainer = styled.div`
+  border: 1px solid ${props => props.theme.superLightGreyColor};
+`;
+
+const NonDisplayFileInput = styled.input`
+  display: none;
 `;
 
 const fileMap = new HashMap();
@@ -119,7 +141,7 @@ const SortableItem = SortableElement(({ value, deleteItem, triggerImageUpload, f
   };
 
   return (
-    <div>
+    <ListContainer>
       <Slice file={fileMap.get(value)} />
       <DeleteButton
         onClick={e => {
@@ -128,7 +150,7 @@ const SortableItem = SortableElement(({ value, deleteItem, triggerImageUpload, f
         }}
       />
       {isLabeled ? (
-        <Wrapper
+        <CaptionContainer
           onClick={e => {
             onCaptionButtonClick(e);
           }}
@@ -136,38 +158,46 @@ const SortableItem = SortableElement(({ value, deleteItem, triggerImageUpload, f
         >
           <SpeechBubbleIcon />
           Edit Caption
-        </Wrapper>
+        </CaptionContainer>
       ) : (
-        <Wrapper
+        <CaptionContainer
           onClick={e => {
             onCaptionButtonClick(e);
           }}
         >
           <SpeechBubbleIcon />
           Add Caption
-        </Wrapper>
+        </CaptionContainer>
       )}
       {isInput ? <PhotoUploadCaption onCaptionWrittenListener={onCaptionWrittenListener} /> : null}
-    </div>
+    </ListContainer>
   );
 });
 
-const SortableList = SortableContainer(({ items, deleteItem, triggerImageUpload, fileMap }) => (
-  <SortableUl>
-    {items &&
-      items.map((value, index) => (
-        <SortableComponent key={`item-${index}`}>
-          <SortableItem
-            index={index}
-            value={value}
-            deleteItem={deleteItem}
-            triggerImageUpload={triggerImageUpload}
-            fileMap={fileMap}
-          />
-        </SortableComponent>
-      ))}
-  </SortableUl>
-));
+const SortableList = SortableContainer(
+  ({ items, deleteItem, triggerImageUpload, fileMap, fileInput }) => (
+    <SortableUl>
+      <AddButton
+        onClick={e => {
+          e.preventDefault();
+          fileInput.current.click();
+        }}
+      />
+      {items &&
+        items.map((value, index) => (
+          <SortableComponent key={`item-${index}`}>
+            <SortableItem
+              index={index}
+              value={value}
+              deleteItem={deleteItem}
+              triggerImageUpload={triggerImageUpload}
+              fileMap={fileMap}
+            />
+          </SortableComponent>
+        ))}
+    </SortableUl>
+  )
+);
 
 const PhotoUploadSortable = ({ onUploadStart, onUploadEnd, onImageUploaded }) => {
   const [isUploading, setIsUploading] = useState(false);
@@ -275,7 +305,7 @@ const PhotoUploadSortable = ({ onUploadStart, onUploadEnd, onImageUploaded }) =>
   };
   return (
     <Container>
-      <input type="file" ref={fileInput} multiple onChange={onFileChange} />
+      <NonDisplayFileInput type="file" ref={fileInput} multiple onChange={onFileChange} />
       {files && (
         <SortableList
           axis={"xy"}
@@ -284,6 +314,7 @@ const PhotoUploadSortable = ({ onUploadStart, onUploadEnd, onImageUploaded }) =>
           deleteItem={deleteItem}
           triggerImageUpload={triggerImageUpload}
           fileMap={fileMap}
+          fileInput={fileInput}
         />
       )}
     </Container>
