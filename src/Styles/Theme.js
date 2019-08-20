@@ -2,6 +2,7 @@ const BOX_BORDER = "1px solid #e6e6e6";
 const BORDER_RADIUS = "4px";
 const HEADER_HEIGHT = 65;
 const SIDE_BOX_SIZE = 290;
+const POST_BOX_SIZE = 600;
 const FONTS =
   "-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,Cantarell,'Open Sans','Helvetica Neue',sans-serif";
 
@@ -29,7 +30,7 @@ export default {
              background-color:white;
             `,
   postBox: `
-  width:600px;
+  width:${POST_BOX_SIZE}px;
   border-radius:3px;
   margin:20px auto 25px;
   border-bottom:1px solid #DEDEDE;
