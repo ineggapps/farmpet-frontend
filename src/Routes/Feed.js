@@ -135,7 +135,7 @@ export default () => {
       <Helmet>
         <title>Feed | Farmpet</title>
       </Helmet>
-      <Contents>{loading || meLoading ? LoaderContents : LoaderContents}</Contents>
+      <Contents>{loading || meLoading ? LoaderContents : RealContents}</Contents>
     </Wrapper>
   );
 };
