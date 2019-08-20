@@ -11,6 +11,7 @@ import SideProfile from "../Components/SideProfile";
 import SideUsers from "../Components/SideUsers";
 import SidePets from "../Components/SidePets";
 import { usePostGallery } from "../PostGalleryContext";
+import MainLoader from "../Components/MainLoader";
 
 const FEED_QUERY = gql`
   {
@@ -77,10 +78,6 @@ const SectionLeft = styled.section`
 `;
 const SNB = styled.section``;
 
-const LoaderWrapper = styled.div`
-  margin-top: 20px;
-`;
-
 export default () => {
   const { data, loading } = useQuery(FEED_QUERY);
   const { data: meData, loading: meLoading } = useQuery(ME);
@@ -89,11 +86,8 @@ export default () => {
   // console.log(viewerContent, setViewerContent, "feed page content");
   // console.log(meData);
 
-  const LoaderContents = (
-    <LoaderWrapper>
-      <Loader />
-    </LoaderWrapper>
-  );
+  const LoaderContents = () => <MainLoader />;
+
   const RealContents = (
     <>
       <SectionLeft>
