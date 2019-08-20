@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import Avatar from "./Avatar";
@@ -9,6 +10,10 @@ const Container = styled.div`
   padding: 20px 0 0;
   display: flex;
   flex-direction: row;
+  a {
+    text-decoration: inherit;
+    color: inherit;
+  }
 `;
 
 const UserInfo = styled.div`
@@ -20,10 +25,14 @@ const UserInfo = styled.div`
 const SideProfile = ({ user }) => {
   return (
     <Container>
-      <Avatar size="lg" url={user.avatar} />
+      <Link to={`${user.username}`}>
+        <Avatar size="lg" url={user.avatar} />
+      </Link>
       <UserInfo>
         <div>
-          <FatText text={user.username} />
+          <Link to={`${user.username}`}>
+            <FatText text={user.username} />
+          </Link>
         </div>
         <div>
           {user.firstName} {user.lastName}
