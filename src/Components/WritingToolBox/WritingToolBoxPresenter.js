@@ -9,6 +9,7 @@ import { Select, MenuItem } from "@material-ui/core";
 import { PERMISSION_PUBLIC, PERMISSION_FRIENDS, PERMISSION_PRIVATE } from "../../SharedQueries";
 import PetAvatar from "../PetAvatar";
 import PhotoUploadSortable from "../PhotoUploadSortable";
+import { flexbox } from "@material-ui/system";
 
 //Material Styles
 const useStyles = makeStyles(theme => ({
@@ -78,10 +79,17 @@ const Pet = styled.li`
   }
 `;
 
+const PermissionContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+`;
+
 const ControlPanel = styled.div`
   margin-top: 20px;
   display: flex;
-  justify-content: space-between;
+  /* justify-content: space-between; */
+  justify-content: flex-end;
   align-items: center;
 `;
 
@@ -106,6 +114,23 @@ export default ({
   return (
     <>
       <Container>
+        <PermissionContainer>
+          <Select
+            open={open}
+            onClose={() => setOpen(false)}
+            onOpen={() => setOpen(true)}
+            value={permission}
+            onChange={({ target: { value } }) => setPermission(value)}
+            inputProps={{
+              name: "permission",
+              id: "demo-controlled-open-select"
+            }}
+          >
+            <MenuItem value={`${PERMISSION_PUBLIC}`}>Public</MenuItem>
+            <MenuItem value={`${PERMISSION_FRIENDS}`}>Friends</MenuItem>
+            <MenuItem value={`${PERMISSION_PRIVATE}`}>Private</MenuItem>
+          </Select>
+        </PermissionContainer>
         <form autoComplete="off" className={classes.formControl}>
           <TextArea
             placeholder={`Tell me your story.`}
@@ -135,21 +160,6 @@ export default ({
               ))}
           </Pets>
           <ControlPanel>
-            <Select
-              open={open}
-              onClose={() => setOpen(false)}
-              onOpen={() => setOpen(true)}
-              value={permission}
-              onChange={({ target: { value } }) => setPermission(value)}
-              inputProps={{
-                name: "permission",
-                id: "demo-controlled-open-select"
-              }}
-            >
-              <MenuItem value={`${PERMISSION_PUBLIC}`}>Public</MenuItem>
-              <MenuItem value={`${PERMISSION_FRIENDS}`}>Friends</MenuItem>
-              <MenuItem value={`${PERMISSION_PRIVATE}`}>Private</MenuItem>
-            </Select>
             <ButtonTest variant="contained" color="secondary" onClick={() => uploadPost()}>
               Upload
             </ButtonTest>
