@@ -77,7 +77,7 @@ const SectionLeft = styled.section`
 `;
 const SNB = styled.section``;
 
-const FeedLoader = styled.div`
+const LoaderWrapper = styled.div`
   margin-top: 20px;
 `;
 
@@ -90,9 +90,9 @@ export default () => {
   // console.log(meData);
 
   const LoaderContents = (
-    <FeedLoader>
+    <LoaderWrapper>
       <Loader />
-    </FeedLoader>
+    </LoaderWrapper>
   );
   const RealContents = (
     <>
