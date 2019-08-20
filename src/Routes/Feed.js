@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import Helmet from "react-helmet";
 import styled from "styled-components";
 import { gql } from "apollo-boost";
 import { useQuery } from "react-apollo-hooks";
-import Loader from "../Components/Loader";
 import Post from "../Components/Post";
 import WritingToolBox from "../Components/WritingToolBox";
 import { ME } from "../SharedQueries";
@@ -81,10 +80,6 @@ const SNB = styled.section``;
 export default () => {
   const { data, loading } = useQuery(FEED_QUERY);
   const { data: meData, loading: meLoading } = useQuery(ME);
-
-  const { viewerContent, setViewerContent } = usePostGallery();
-  // console.log(viewerContent, setViewerContent, "feed page content");
-  // console.log(meData);
 
   const LoaderContents = <MainLoader />;
 
