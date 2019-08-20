@@ -86,7 +86,7 @@ export default () => {
   // console.log(viewerContent, setViewerContent, "feed page content");
   // console.log(meData);
 
-  const LoaderContents = () => <MainLoader />;
+  const LoaderContents = <MainLoader />;
 
   const RealContents = (
     <>
@@ -135,7 +135,7 @@ export default () => {
       <Helmet>
         <title>Feed | Farmpet</title>
       </Helmet>
-      <Contents>{loading || meLoading ? LoaderContents : RealContents}</Contents>
+      <Contents>{loading || meLoading ? LoaderContents : LoaderContents}</Contents>
     </Wrapper>
   );
 };
