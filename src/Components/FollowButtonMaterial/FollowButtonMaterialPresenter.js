@@ -6,7 +6,7 @@ const Container = styled.div``;
 
 const FollowButton = styled(Button)``;
 
-const FollowButtonPresenter = ({ isFollowing, onClick }) => {
+const FollowButtonMaterialPresenter = ({ isFollowing, onClick }) => {
   return (
     <Container>
       <FollowButton color="primary" onClick={() => onClick()}>
@@ -16,4 +16,4 @@ const FollowButtonPresenter = ({ isFollowing, onClick }) => {
   );
 };
 
-export default FollowButtonPresenter;
+export default FollowButtonMaterialPresenter;

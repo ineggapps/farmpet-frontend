@@ -4,7 +4,7 @@ import styled from "styled-components";
 import LinesEllipsis from "react-lines-ellipsis";
 import FatText from "./FatText";
 import Avatar from "./Avatar";
-import FollowButton from "./FollowButton";
+import FollowButtonMaterial from "./FollowButtonMaterial";
 
 const Container = styled.div`
   ${props => props.theme.postBoxSide};
@@ -50,7 +50,7 @@ const SideUsers = ({ title, users }) => {
                   basedOn="letters"
                 />
               </Profile>
-              <FollowButton isFollowing={f.isFollowing} id={f.id} />
+              <FollowButtonMaterial isFollowing={f.isFollowing} id={f.id} />
             </Friend>
           ))}
       </Friends>
