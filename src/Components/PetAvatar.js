@@ -14,6 +14,7 @@ const getSize = size => {
   if (size === "sm") number = 28;
   else if (size === "md") number = 36;
   else if (size === "lg") number = 56;
+  else if (size === "xlg") number = 77;
   return `
   width:${number}px;
   min-width:${number}px;
@@ -53,7 +54,7 @@ const PetAvatar = ({ category, size = "sm", url }) => {
 };
 
 PetAvatar.propTypes = {
-  size: PropTypes.oneOf(["sm", "md", "lg"]),
+  size: PropTypes.oneOf(["sm", "md", "lg", "xlg"]),
   url: PropTypes.string
 };
 
