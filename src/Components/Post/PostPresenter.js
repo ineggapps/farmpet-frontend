@@ -316,10 +316,12 @@ export default ({
         ) : (
           <Caption>{caption}</Caption>
         )}
-        <PostViewer>
-          <PostSlider files={files} onPostClick={onPostClick} />
-          {/* <Slider files={files} /> */}
-        </PostViewer>
+        {files && files.length > 0 && (
+          <PostViewer>
+            <PostSlider files={files} onPostClick={onPostClick} />
+            {/* <Slider files={files} /> */}
+          </PostViewer>
+        )}
         <ContentFooter>
           <Buttons>
             <HeartButton onClick={toggleLike} isLiked={isLiked} />

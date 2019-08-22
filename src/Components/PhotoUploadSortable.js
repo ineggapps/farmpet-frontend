@@ -15,8 +15,7 @@ const SortableUl = styled.ul`
   width: 100%;
   display: grid;
   grid-template-columns: repeat(5, 0.1fr);
-  grid-row-gap: 10px;
-  grid-column-gap: 10px;
+  grid-gap: 7.5px;
   user-select: none;
 `;
 
