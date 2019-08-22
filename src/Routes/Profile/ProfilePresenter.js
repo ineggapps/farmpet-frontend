@@ -7,6 +7,7 @@ import FatText from "../../Components/FatText";
 import PetAvatar from "../../Components/PetAvatar";
 import EllipsisText from "react-ellipsis-text";
 import PostSquare from "../../Components/PostSquare";
+import { userInfo } from "os";
 
 const Wrapper = styled.div`
   width: 975px;
@@ -39,7 +40,6 @@ const ProfileContent = styled.section`
   display: flex;
   flex-direction: column;
   flex-grow: 2;
-  background-color: skyblue;
 
   h2 {
     font-size: 1.8em;
@@ -53,6 +53,9 @@ const ProfileContent = styled.section`
 const UserInfo = styled.div`
   display: flex;
   align-items: center;
+  & *:not(:last-child) {
+    margin-right: 20px;
+  }
 `;
 
 const UserStatisticsList = styled.ul`
@@ -116,17 +119,21 @@ const ProfilePresenter = ({
         <ProfileContent>
           <UserInfo>
             <h2>{user.username}</h2>
-            {user.isSelf ? <span>프로필 편집</span> : <FollowButtonNormal />}
+            {user.isSelf ? (
+              <span>프로필 편집</span>
+            ) : (
+              <FollowButtonNormal isFollowing={user.isFollowing} id={user.id} />
+            )}
           </UserInfo>
           <UserStatisticsList>
             <li>
-              게시물 <FatText text={user.postsCount + ""} />
+              Posts <FatText text={user.postsCount + ""} />
             </li>
             <li>
-              팔로워 <FatText text={followersCount + ""} />
+              Followers <FatText text={followersCount + ""} />
             </li>
             <li>
-              팔로잉 <FatText text={followingCount + ""} />
+              Followings <FatText text={followingCount + ""} />
             </li>
           </UserStatisticsList>
           <span>{user.bio}</span>
