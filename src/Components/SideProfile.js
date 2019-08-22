@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import Avatar from "./Avatar";
 import FatText from "./FatText";
+import { PAGE_USER } from "./Routes";
 
 const Container = styled.div`
   width: ${props => props.theme.sideBoxSize};
@@ -25,12 +26,12 @@ const UserInfo = styled.div`
 const SideProfile = ({ user }) => {
   return (
     <Container>
-      <Link to={`${user.username}`}>
+      <Link to={PAGE_USER(user.username)}>
         <Avatar size="lg" url={user.avatar} />
       </Link>
       <UserInfo>
         <div>
-          <Link to={`${user.username}`}>
+          <Link to={PAGE_USER(user.username)}>
             <FatText text={user.username} />
           </Link>
         </div>
