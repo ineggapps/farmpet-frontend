@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { SpeechBubbleIcon, HeartIcon } from "./Icons";
 
 const Container = styled.div`
+  cursor: pointer;
   position: relative;
   width: 300px;
   height: 300px;
