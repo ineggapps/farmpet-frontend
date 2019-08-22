@@ -11,7 +11,7 @@ import { userInfo } from "os";
 
 const Wrapper = styled.div`
   width: 975px;
-  margin: 50px auto 0;
+  margin: 70px auto 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -24,7 +24,7 @@ const Content = styled.div`
 
 const Contents = styled(Content)`
   flex-direction: column;
-  & > *:not(:last-child) {
+  & > * {
     margin-bottom: 44px;
   }
 `;
@@ -34,10 +34,14 @@ const ProfilePicArea = styled.div`
   justify-content: center;
   flex-grow: 1;
   margin-right: 30px;
+  & > div {
+    border: 1px solid ${props => props.theme.superLightGreyColor};
+  }
 `;
 
 const ProfileContent = styled.section`
   display: flex;
+  padding-top: 10px;
   flex-direction: column;
   flex-grow: 2;
 
@@ -146,7 +150,7 @@ const ProfilePresenter = ({
             user.pets.map(pet => (
               <li key={pet.id}>
                 <div key={pet.id}>
-                  <PetAvatar size="xlg" url={pet.avatar} />
+                  <PetAvatar category={pet.category} size="xlg" url={pet.avatar} />
                   <PetName text={pet.name + ""} length={10} />
                 </div>
               </li>
