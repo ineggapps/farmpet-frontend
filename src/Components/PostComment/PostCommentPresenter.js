@@ -1,11 +1,13 @@
 import React from "react";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 import Avatar from "../Avatar";
 import DateText from "../DateText";
 import FatText from "../FatText";
 import { RemoveIcon, WriteIcon } from "../Icons";
 import TextareaAutosize from "react-autosize-textarea/lib";
 import { Button } from "@material-ui/core";
+import { PAGE_USER } from "../Routes";
 
 const CommentList = styled.li`
   margin-bottom: 10px;
@@ -98,11 +100,15 @@ const PostCommentPresenter = ({
   return (
     <CommentList key={comment.id}>
       <CommentContainer>
-        <Avatar url={comment.user.avatar} size={"md"} />
+        <Link to={PAGE_USER(comment.user.username)}>
+          <Avatar url={comment.user.avatar} size={"md"} />
+        </Link>
         <CommentContent>
           <CommentSubTitle>
             <div>
-              <FatText text={comment.user.username} />
+              <Link to={PAGE_USER(comment.user.username)}>
+                <FatText text={comment.user.username} />
+              </Link>
               <DateText date={comment.createdAt} />
             </div>
             {comment.user.id === me.id && !isEditMode && (

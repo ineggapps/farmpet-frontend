@@ -1,6 +1,7 @@
 import React from "react";
 import TextareaAutosize from "react-autosize-textarea";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 import FatText from "../FatText";
 import Avatar from "../Avatar";
 import DateText from "../DateText";
@@ -11,6 +12,7 @@ import { RemoveIcon, EarthIcon, LockIcon, SocialIcon, WriteIcon } from "../Icons
 import { PERMISSION_PUBLIC, PERMISSION_PRIVATE, PERMISSION_FRIENDS } from "../../SharedQueries";
 import { Select, MenuItem, Button } from "@material-ui/core";
 import PostSlider from "../PostSlider";
+import { PAGE_USER } from "../Routes";
 
 const Post = styled.div`
   ${props => props.theme.postBox};
@@ -238,10 +240,14 @@ export default ({
   return !isDeletedPost ? (
     <Post>
       <Header>
-        <Avatar size="lg" url={avatar} />
+        <Link to={PAGE_USER(username)}>
+          <Avatar size="lg" url={avatar} />
+        </Link>
         <UserColumn>
           <p>
-            <FatText text={username} />
+            <Link to={PAGE_USER(username)}>
+              <FatText text={username} />
+            </Link>
           </p>
           <p>
             <DateText date={createdAt} />

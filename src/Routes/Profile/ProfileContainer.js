@@ -35,6 +35,13 @@ const SEE_USER = gql`
       avatar
       firstName
       lastName
+      pets {
+        id
+        category
+        name
+        avatar
+        bornAt
+      }
       postsCount
       followersCount
       followingCount

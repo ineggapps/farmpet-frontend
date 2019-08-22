@@ -4,6 +4,8 @@ import styled from "styled-components";
 import Avatar from "../../Components/Avatar";
 import FollowButtonNormal from "../../Components/FollowButtonNormal";
 import FatText from "../../Components/FatText";
+import PetAvatar from "../../Components/PetAvatar";
+import EllipsisText from "react-ellipsis-text";
 
 const Wrapper = styled.div`
   width: 975px;
@@ -21,7 +23,7 @@ const Content = styled.div`
 const Contents = styled(Content)`
   flex-direction: column;
   & > *:not(:last-child) {
-    margin-bottom: 20px;
+    margin-bottom: 44px;
   }
 `;
 
@@ -59,7 +61,28 @@ const UserStatisticsList = styled.ul`
   }
 `;
 
-const PetContents = styled.div``;
+const PetList = styled.ul`
+  display: grid;
+  grid-template-columns: repeat(8, 3fr);
+  grid-gap: 37.5px;
+  & li {
+    & > div {
+      flex-direction: column;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+    & span {
+      min-width: 100%;
+    }
+    width: 90px;
+    max-width: 90px;
+  }
+`;
+const PetName = styled(EllipsisText)`
+  font-size: 0.95em;
+`;
 
 const ProfilePresenter = ({
   feed,
@@ -72,6 +95,7 @@ const ProfilePresenter = ({
   isFollowing,
   onFollowClick
 }) => {
+  console.log(user, "프로필 출력");
   const RealContents = (
     <>
       <Content>
@@ -85,21 +109,44 @@ const ProfilePresenter = ({
           </UserInfo>
           <UserStatisticsList>
             <li>
-              게시물 <FatText text={user.postsCount} />
+              게시물 <FatText text={user.postsCount + ""} />
             </li>
             <li>
-              팔로워 <FatText text={followersCount} />
+              팔로워 <FatText text={followersCount + ""} />
             </li>
             <li>
-              팔로잉 <FatText text={followingCount} />
+              팔로잉 <FatText text={followingCount + ""} />
             </li>
           </UserStatisticsList>
           <span>{user.bio}</span>
         </ProfileContent>
       </Content>
-      <Content>내가 키우는 펫 영역이 들어갈 자리</Content>
       <Content>
-        포스트 그리드 정렬 (content 태그 안에 별도의 div태그 만들어서 그리드로 정렬하기)
+        <PetList>
+          {user.pets &&
+            user.pets.length > 0 &&
+            user.pets.map(pet => (
+              <li>
+                <div key={pet.id}>
+                  <PetAvatar size="xlg" url={pet.avatar} />
+                  <PetName text={pet.name} length={"10"} />
+                </div>
+              </li>
+            ))}
+        </PetList>
+      </Content>
+      <Content>
+        <ul>
+          {feed &&
+            feed.length > 0 &&
+            feed.map(post => (
+              <li>
+                <div>
+                  {post.id}/{post.caption}
+                </div>
+              </li>
+            ))}
+        </ul>
       </Content>
     </>
   );
