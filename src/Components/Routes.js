@@ -6,6 +6,9 @@ import Search from "../Routes/Search";
 import Profile from "../Routes/Profile";
 import Auth from "../Routes/Auth";
 
+//
+export const PAGE_USER = username => `/${username}`;
+
 const LoggedInRoutes = () => (
   <Switch>
     <Route exact path="/" component={Feed} />
