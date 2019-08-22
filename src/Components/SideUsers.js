@@ -5,6 +5,8 @@ import LinesEllipsis from "react-lines-ellipsis";
 import FatText from "./FatText";
 import Avatar from "./Avatar";
 import FollowButtonMaterial from "./FollowButtonMaterial";
+import { PAGE_USER } from "./Routes";
+import { Link } from "react-router-dom";
 
 const Container = styled.div`
   ${props => props.theme.postBoxSide};
@@ -40,16 +42,18 @@ const SideUsers = ({ title, users }) => {
         {users &&
           users.map(f => (
             <Friend key={f.id}>
-              <Profile>
-                <Avatar size={"md"} url={f.avatar} />
-                <LinesEllipsis
-                  text={f.username}
-                  maxLine="1"
-                  ellipsis="..."
-                  trimRight
-                  basedOn="letters"
-                />
-              </Profile>
+              <Link to={`${PAGE_USER(f.username)}`}>
+                <Profile>
+                  <Avatar size={"md"} url={f.avatar} />
+                  <LinesEllipsis
+                    text={f.username}
+                    maxLine="1"
+                    ellipsis="..."
+                    trimRight
+                    basedOn="letters"
+                  />
+                </Profile>
+              </Link>
               <FollowButtonMaterial isFollowing={f.isFollowing} id={f.id} />
             </Friend>
           ))}
