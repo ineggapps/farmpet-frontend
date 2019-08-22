@@ -40,7 +40,7 @@ const Images = styled.ul`
   transform: translate(-${props => props.currentIndex * props.size}px, 0px);
   transition: transform 0.2s;
 
-  &:hover ${Caption} {
+  & ${Caption} {
     display: flex;
     align-items: flex-end;
     background: linear-gradient(
@@ -49,6 +49,10 @@ const Images = styled.ul`
       rgba(0, 0, 0, 0.75) 82%,
       rgba(0, 0, 0, 0.85) 100%
     );
+  }
+
+  &:hover ${Caption} {
+    display: none;
   }
 `;
 

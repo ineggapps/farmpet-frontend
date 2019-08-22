@@ -66,7 +66,7 @@ const Viewer = styled.div`
     max-width: 1000px;
     min-height:500px;
   }
-  &:hover ${Caption} {
+  & ${Caption}{
     display: flex;
     align-items: flex-end;
     background: linear-gradient(
@@ -76,6 +76,10 @@ const Viewer = styled.div`
       rgba(0, 0, 0, 0.85) 100%
     );
   }
+
+  }
+  &:hover ${Caption} {
+    display:none;
 `;
 
 const SideButton = styled.div`
