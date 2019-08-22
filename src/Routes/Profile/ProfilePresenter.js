@@ -137,10 +137,10 @@ const ProfilePresenter = ({
           {user.pets &&
             user.pets.length > 0 &&
             user.pets.map(pet => (
-              <li>
+              <li key={pet.id}>
                 <div key={pet.id}>
                   <PetAvatar size="xlg" url={pet.avatar} />
-                  <PetName text={pet.name} length={"10"} />
+                  <PetName text={pet.name + ""} length={10} />
                 </div>
               </li>
             ))}
@@ -151,7 +151,7 @@ const ProfilePresenter = ({
           {feed &&
             feed.length > 0 &&
             feed.map(post => (
-              <li>
+              <li key={post.id}>
                 <PostSquare post={post} />
               </li>
             ))}

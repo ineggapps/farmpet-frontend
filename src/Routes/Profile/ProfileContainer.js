@@ -23,6 +23,8 @@ const SEE_USER_FEED = gql`
         thumbnail
         thumbnail_large
       }
+      commentCount
+      likeCount
     }
   }
 `;

@@ -1,8 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
+import { SpeechBubbleIcon, HeartIcon } from "./Icons";
 
 const Container = styled.div`
+  position: relative;
   width: 300px;
   height: 300px;
   background-image: url(${props => props.background});
@@ -11,7 +13,6 @@ const Container = styled.div`
 `;
 
 const Overlay = styled.div`
-  color: ${props => props.theme.lightGreyColor};
   width: 100%;
   height: 100%;
   display: flex;
@@ -21,8 +22,21 @@ const Overlay = styled.div`
     opacity: 1;
   }
   opacity: 0;
-  transition: opacity linear 0.3s;
-  background: rgba(0, 0, 0, 0.7);
+  transition: opacity linear 0.2s;
+  background: rgba(0, 0, 0, 0.8);
+`;
+
+const ToolTip = styled.div`
+  user-select: none;
+  &:first-child {
+    margin-right: 30px;
+  }
+  svg {
+    margin-right: 5px;
+  }
+  display: block;
+  font-weight: bold;
+  color: ${props => props.theme.lightGreyColor};
 `;
 
 //포스트스퀘어에서 전용 뷰어를 열기 위해 일단 post객체를 통째로 받아오도록 설계
@@ -33,7 +47,13 @@ const PostSquare = ({ post }) => {
   return (
     <Container background={background}>
       <Overlay>
-        {post.id}/{post.user.username}/{post.caption}
+        <ToolTip>
+          <HeartIcon fill="white" size="20" /> {post.likeCount}
+        </ToolTip>
+        <ToolTip>
+          <SpeechBubbleIcon fill="white" size="20" />
+          {post.commentCount}
+        </ToolTip>
       </Overlay>
     </Container>
   );
