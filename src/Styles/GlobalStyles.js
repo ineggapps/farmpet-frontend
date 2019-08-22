@@ -16,7 +16,8 @@ export default createGlobalStyle`
         font-family:${props => props.theme.fontFamily};
     }
     a{
-        color:${props => props.theme.blueColor};
+        color:inherit;
+        /* color:${props => props.theme.blueColor}; */
         text-decoration:none;
     }
 `;
