@@ -20,6 +20,7 @@ const LoggedInRoutes = () => (
 const LoggedOutRoutes = () => (
   <Switch>
     <Route exact path="/" component={Auth} />
+    <Route path="/:username" component={Profile} />
   </Switch>
 );
 
