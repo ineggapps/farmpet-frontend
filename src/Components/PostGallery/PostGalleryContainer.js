@@ -84,6 +84,7 @@ PostGalleryContainer.propTypes = {
       id: PropTypes.string,
       url: PropTypes.string,
       thumbnail: PropTypes.string,
+      thumbnail_large: PropTypes.string,
       caption: PropTypes.string
     })
   ),

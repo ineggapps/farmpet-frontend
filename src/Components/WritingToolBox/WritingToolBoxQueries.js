@@ -13,6 +13,7 @@ export const UPLOAD_POST = gql`
         id
         url
         thumbnail
+        thumbnail_large
         caption
       }
       caption

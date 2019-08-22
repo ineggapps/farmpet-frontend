@@ -21,6 +21,7 @@ const SEE_USER_FEED = gql`
         id
         url
         thumbnail
+        thumbnail_large
       }
     }
   }

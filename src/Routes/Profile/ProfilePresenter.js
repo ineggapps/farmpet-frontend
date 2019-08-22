@@ -6,6 +6,7 @@ import FollowButtonNormal from "../../Components/FollowButtonNormal";
 import FatText from "../../Components/FatText";
 import PetAvatar from "../../Components/PetAvatar";
 import EllipsisText from "react-ellipsis-text";
+import PostSquare from "../../Components/PostSquare";
 
 const Wrapper = styled.div`
   width: 975px;
@@ -84,6 +85,16 @@ const PetName = styled(EllipsisText)`
   font-size: 0.95em;
 `;
 
+const PostList = styled.ul`
+  display: grid;
+  grid-template-columns: repeat(3, 3fr);
+  grid-gap: 37.5px;
+  & li {
+    width: 300px;
+    height: 300px;
+  }
+`;
+
 const ProfilePresenter = ({
   feed,
   user,
@@ -136,17 +147,15 @@ const ProfilePresenter = ({
         </PetList>
       </Content>
       <Content>
-        <ul>
+        <PostList>
           {feed &&
             feed.length > 0 &&
             feed.map(post => (
               <li>
-                <div>
-                  {post.id}/{post.caption}
-                </div>
+                <PostSquare post={post} />
               </li>
             ))}
-        </ul>
+        </PostList>
       </Content>
     </>
   );
