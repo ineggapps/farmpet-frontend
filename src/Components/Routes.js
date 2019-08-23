@@ -5,12 +5,14 @@ import Feed from "../Routes/Feed";
 import Search from "../Routes/Search";
 import Profile from "../Routes/Profile";
 import Auth from "../Routes/Auth";
+import Account from "../Routes/Account";
 
 //
 export const PAGE_USER = username => `/${username}`;
 
 const LoggedInRoutes = () => (
   <Switch>
+    <Route exact path="/account" component={Account} />
     <Route exact path="/" component={Feed} />
     <Route path="/search" component={Search} />
     <Route path="/:username" component={Profile} />
