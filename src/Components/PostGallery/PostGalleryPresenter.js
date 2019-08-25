@@ -69,6 +69,7 @@ const Viewer = styled.div`
   & ${Caption}{
     display: flex;
     align-items: flex-end;
+    user-select:none;
     background: linear-gradient(
       to bottom,
       rgba(0, 0, 0, 0) 0,
