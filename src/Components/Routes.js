@@ -10,6 +10,7 @@ import Pet from "../Routes/Pet";
 
 //
 export const PAGE_USER = username => `/${username}`;
+export const PAGE_PET = name => `/pet/${name}`;
 
 const LoggedInRoutes = () => (
   <Switch>
@@ -24,6 +25,7 @@ const LoggedInRoutes = () => (
 const LoggedOutRoutes = () => (
   <Switch>
     <Route exact path="/" component={Auth} />
+    <Route path="/pet/:name" component={Pet} />
     <Route path="/:username" component={Profile} />
   </Switch>
 );
