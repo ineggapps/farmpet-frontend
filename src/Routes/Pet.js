@@ -132,6 +132,7 @@ const OwnerList = styled.ul`
 const Username = styled(EllipsisText)`
   margin-top: 10px;
   font-size: 0.95em;
+  user-select: none !important;
 `;
 
 const PostList = styled.ul`
