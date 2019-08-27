@@ -7,7 +7,8 @@ import FatText from "../../Components/FatText";
 import PetAvatar from "../../Components/PetAvatar";
 import EllipsisText from "react-ellipsis-text";
 import PostSquare from "../../Components/PostSquare";
-import { userInfo } from "os";
+import { Link } from "react-router-dom";
+import { PAGE_PET } from "../../Components/Routes";
 
 const Wrapper = styled.div`
   width: 975px;
@@ -152,8 +153,10 @@ const ProfilePresenter = ({
             user.pets.map(pet => (
               <li key={pet.id}>
                 <div key={pet.id}>
-                  <PetAvatar category={pet.category} size="xlg" url={pet.avatar} />
-                  <PetName text={pet.name + ""} length={10} />
+                  <Link to={`${PAGE_PET(pet.name)}`}>
+                    <PetAvatar category={pet.category} size="xlg" url={pet.avatar} />
+                    <PetName text={pet.name + ""} length={10} />
+                  </Link>
                 </div>
               </li>
             ))}

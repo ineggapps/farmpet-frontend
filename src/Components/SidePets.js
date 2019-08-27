@@ -1,9 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 import LinesEllipsis from "react-lines-ellipsis";
 import FatText from "./FatText";
 import PetAvatar from "./PetAvatar";
+import { PAGE_PET } from "./Routes";
 
 const Container = styled.div`
   ${props => props.theme.postBoxSide};
@@ -49,8 +51,12 @@ const SidePets = ({ title, pets }) => {
           pets.map(pet => (
             <Pet key={pet.id}>
               <Profile>
-                <PetAvatar category={pet.category} size={"md"} url={pet.avatar} />
-                <PetName text={pet.name} maxLine="2" ellipsis="..." trimRight basedOn="letters" />
+                <Link to={`${PAGE_PET(pet.name)}`}>
+                  <PetAvatar category={pet.category} size={"md"} url={pet.avatar} />
+                </Link>
+                <Link to={`${PAGE_PET(pet.name)}`}>
+                  <PetName text={pet.name} maxLine="2" ellipsis="..." trimRight basedOn="letters" />
+                </Link>
               </Profile>
             </Pet>
           ))}
