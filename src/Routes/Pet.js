@@ -10,6 +10,8 @@ import FatText from "../Components/FatText";
 import EllipsisText from "react-ellipsis-text";
 import PostSquare from "../Components/PostSquare";
 import Avatar from "../Components/Avatar";
+import { Link } from "react-router-dom";
+import { PAGE_USER } from "../Components/Routes";
 
 const PET_PROFILE = gql`
   query seePet($name: String!) {
@@ -186,8 +188,10 @@ const Pet = withRouter(({ match: { params: { name } } }) => {
             petData.seePet.owners.map(owner => (
               <li key={owner.id}>
                 <div key={owner.id}>
-                  <Avatar category={owner.category} size="lg" url={owner.avatar} />
-                  <Username text={owner.username + ""} length={10} />
+                  <Link to={`${PAGE_USER(owner.username)}`}>
+                    <Avatar category={owner.category} size="lg" url={owner.avatar} />
+                    <Username text={owner.username + ""} length={10} />
+                  </Link>
                 </div>
               </li>
             ))}
