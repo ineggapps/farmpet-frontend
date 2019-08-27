@@ -91,6 +91,7 @@ const PetList = styled.ul`
 const PetName = styled(EllipsisText)`
   margin-top: 10px;
   font-size: 0.95em;
+  user-select: none;
 `;
 
 const PostList = styled.ul`

@@ -112,8 +112,8 @@ const PetStatisticsList = styled.ul`
 
 const OwnerList = styled.ul`
   display: grid;
-  grid-template-columns: repeat(8, 3fr);
-  grid-gap: 37.5px;
+  grid-template-columns: repeat(10, 3fr);
+  grid-gap: 10px;
   & li {
     & > div {
       flex-direction: column;
@@ -137,7 +137,7 @@ const Username = styled(EllipsisText)`
 const PostList = styled.ul`
   display: grid;
   grid-template-columns: repeat(3, 3fr);
-  grid-gap: 37.5px;
+  grid-gap: 45px;
   & li {
     width: 300px;
     height: 300px;
@@ -180,11 +180,12 @@ const Pet = withRouter(({ match: { params: { name } } }) => {
         <OwnerList>
           {petData &&
             petData.seePet &&
-            petData.seePet.length > 0 &&
+            petData.seePet.owners &&
+            petData.seePet.owners.length > 0 &&
             petData.seePet.owners.map(owner => (
               <li key={owner.id}>
                 <div key={owner.id}>
-                  <Avatar category={owner.category} size="xlg" url={owner.avatar} />
+                  <Avatar category={owner.category} size="lg" url={owner.avatar} />
                   <Username text={owner.username + ""} length={10} />
                 </div>
               </li>
