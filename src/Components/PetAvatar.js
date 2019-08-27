@@ -15,6 +15,7 @@ const getSize = size => {
   else if (size === "md") number = 36;
   else if (size === "lg") number = 56;
   else if (size === "xlg") number = 77;
+  else if (size === "xxlg") number = 150;
   return `
   width:${number}px;
   min-width:${number}px;
