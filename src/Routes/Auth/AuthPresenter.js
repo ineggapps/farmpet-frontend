@@ -2,7 +2,7 @@ import React from "react";
 import Helmet from "react-helmet";
 import styled from "styled-components";
 import Input from "../../Components/Input";
-import Button from "../../Components/Button";
+import KakaoButton from "../../Components/KakaoButton";
 import PuppyVideo from "../../Components/PuppyVideo";
 import { STATE_SIGNUP, STATE_LOGIN } from "./AuthContainer";
 
@@ -57,7 +57,7 @@ const LogInComponents = ({ email, password, onSubmit }) => (
       <form onSubmit={onSubmit}>
         <Input type="email" required placeholder="Email Address" {...email} />
         <Input type="password" required placeholder="Password" {...password} />
-        <Button
+        <KakaoButton
           text="Log In"
           onClick={() => {
             console.log("click");
@@ -89,7 +89,7 @@ const SignUpComponents = ({
         <Input required placeholder="User name" {...username} />
         <Input required placeholder="First name" {...firstName} />
         <Input required placeholder="Last name" {...lastName} />
-        <Button
+        <KakaoButton
           text="Register"
           onClick={() => {
             console.log("click");
