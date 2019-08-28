@@ -8,6 +8,7 @@ import MainLoader from "../Components/MainLoader";
 import Avatar from "../Components/Avatar";
 import FatText from "../Components/FatText";
 import useInput from "../Hooks/useInput";
+import Button from "../Components/Button";
 
 const Wrapper = styled.div`
   display: flex;
@@ -96,7 +97,6 @@ const Account = () => {
         <form>
           {data && data.me && (
             <>
-              <Row>asdf</Row>
               <Row>
                 <ColumnTitle style={{ width: 85, display: "flex", justifyContent: "flex-end" }}>
                   <Avatar url={data.me.avatar} size={"lg"} />
@@ -126,6 +126,21 @@ const Account = () => {
                   <FatText text={"bio"} />
                 </ColumnTitle>
                 <input type="text" {...bio} placeholder={data.me.bio} />
+              </Row>
+              <Row>
+                <Button
+                  text={"Submit"}
+                  onClick={() => {
+                    console.log("lkj;ljlj");
+                  }}
+                ></Button>
+                <Button
+                  color={"#ED4956"}
+                  text={"Submit"}
+                  onClick={() => {
+                    console.log("lkj;ljlj");
+                  }}
+                ></Button>
               </Row>
             </>
           )}
