@@ -24,11 +24,11 @@ const Container = styled.div`
   margin-top: 55px;
   background-color: white;
   width: 935px;
-  border: 1px solid ${props => props.theme.superLightGreyColor};
+  border: 1px solid ${props => props.theme.borderGreyColor};
 `;
 
 const Menu = styled.ul`
-  width: 235px;
+  width: 225px;
   height: 100%;
   & li {
     display: flex;
@@ -36,26 +36,27 @@ const Menu = styled.ul`
     align-items: center;
     height: 60px;
     padding-left: 20px;
-    border-left: 4px solid transparent;
+    border-left: 3px solid transparent;
     &:hover {
-      border-left: 4px solid ${props => props.theme.lightGreyColor};
+      border-left: 3px solid ${props => props.theme.borderGreyColor};
     }
   }
+  border-right: 1px solid ${props => props.theme.borderGreyColor};
+  margin-right: 10px;
 `;
 
 const FormDiv = styled.div`
-  padding: 20px 0;
+  padding: 20px 20px 20px 80px;
 `;
 
 const ColumnTitle = styled.div`
-  color: ${props => props.theme.darkGreyColor};
   text-align: right;
   width: 130px;
 `;
 
 const Row = styled.div`
   display: flex;
-  font-size: 1.2em;
+  font-size: 1.1em;
   align-items: center;
   & ${ColumnTitle} {
     margin-right: 20px;
@@ -95,6 +96,7 @@ const Account = () => {
         <form>
           {data && data.me && (
             <>
+              <Row>asdf</Row>
               <Row>
                 <ColumnTitle style={{ width: 85, display: "flex", justifyContent: "flex-end" }}>
                   <Avatar url={data.me.avatar} size={"lg"} />
