@@ -304,7 +304,13 @@ const PhotoUploadSortable = ({ onUploadStart, onUploadEnd, onImageUploaded }) =>
   };
   return (
     <Container>
-      <NonDisplayFileInput type="file" ref={fileInput} multiple onChange={onFileChange} />
+      <NonDisplayFileInput
+        type="file"
+        accept="image/*"
+        ref={fileInput}
+        multiple
+        onChange={onFileChange}
+      />
       {files && (
         <SortableList
           axis={"xy"}
