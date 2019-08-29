@@ -169,7 +169,7 @@ const Pet = withRouter(({ match: { params: { name } } }) => {
         <ProfileContent>
           <PetInfo>
             <h2>{petData.seePet.name}</h2>
-            <h3>({petData.seePet.nickname})</h3>
+            {petData.seePet.nickname && <h3>({petData.seePet.nickname})</h3>}
             <h3>{petData.seePet.bornAt}</h3>
           </PetInfo>
           <PetStatisticsList>
