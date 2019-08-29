@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { Link, withRouter } from "react-router-dom";
 import Helmet from "react-helmet";
 import PropTypes from "prop-types";
 import styled from "styled-components";
@@ -25,6 +26,7 @@ const Container = styled.div`
   margin-top: 55px;
   background-color: white;
   width: 935px;
+  min-height: 800px;
   border: 1px solid ${props => props.theme.borderGreyColor};
 `;
 
@@ -40,6 +42,7 @@ const Menu = styled.ul`
     border-left: 3px solid transparent;
     &:hover {
       border-left: 3px solid ${props => props.theme.borderGreyColor};
+      font-weight: bold;
     }
   }
   border-right: 1px solid ${props => props.theme.borderGreyColor};
@@ -72,12 +75,16 @@ const Row = styled.div`
   }
 `;
 
-const Account = () => {
+const Account = withRouter(({ history }) => {
+  const {
+    location: { pathname }
+  } = history;
   const { data, loading } = useQuery(ME);
   const username = useInput("");
   const firstName = useInput("");
   const lastName = useInput("");
   const bio = useInput("");
+  const [avatar, setAvatar] = useState("");
 
   useEffect(() => {
     if (data && data.me) {
@@ -85,6 +92,8 @@ const Account = () => {
       firstName.setValue(data.me.firstName);
       lastName.setValue(data.me.lastName);
       bio.setValue(data.me.bio);
+      setAvatar(data.me.avatar);
+      console.log(avatar);
     }
   }, [data]);
 
@@ -92,6 +101,7 @@ const Account = () => {
     <Container>
       <Menu>
         <li>Edit Profile</li>
+        <li>Edit Pet</li>
       </Menu>
       <FormDiv>
         <form>
@@ -101,7 +111,7 @@ const Account = () => {
                 <ColumnTitle style={{ width: 85, display: "flex", justifyContent: "flex-end" }}>
                   <Avatar url={data.me.avatar} size={"lg"} />
                 </ColumnTitle>
-                <FatText text={data.me.username} />
+                <FatText text={username.value} />
               </Row>
               <Row>
                 <ColumnTitle>
@@ -131,14 +141,7 @@ const Account = () => {
                 <Button
                   text={"Submit"}
                   onClick={() => {
-                    console.log("lkj;ljlj");
-                  }}
-                ></Button>
-                <Button
-                  color={"#ED4956"}
-                  text={"Submit"}
-                  onClick={() => {
-                    console.log("lkj;ljlj");
+                    console.log("회원정보 변경 전송");
                   }}
                 ></Button>
               </Row>
@@ -158,7 +161,7 @@ const Account = () => {
       <Contents>{!loading && data && data.me ? RealContents : LoaderContents}</Contents>
     </Wrapper>
   );
-};
+});
 
 Account.propTypes = {};
 
