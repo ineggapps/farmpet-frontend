@@ -11,10 +11,12 @@ import Pet from "../Routes/Pet";
 //
 export const PAGE_USER = username => `/${username}`;
 export const PAGE_PET = name => `/pet/${name}`;
+export const PAGE_ACCOUNT = `/account`;
 
 const LoggedInRoutes = () => (
   <Switch>
     <Route exact path="/account" component={Account} />
+    <Route exact path="/account/profile" component={Account} />
     <Route path="/pet/:name" component={Pet} />
     <Route path="/search" component={Search} />
     <Route path="/:username" component={Profile} />

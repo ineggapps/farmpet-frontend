@@ -2,9 +2,12 @@ import React from "react";
 import { Link, withRouter } from "react-router-dom";
 import styled from "styled-components";
 import Logo from "./Logo";
-import { WriteIcon, GNBNotificationIcon, SearchIcon } from "./Icons";
+import { WriteIcon, GNBNotificationIcon, SearchIcon, ProfileIcon } from "./Icons";
 import Input from "./Input";
 import useInput from "../Hooks/useInput";
+import { PAGE_ACCOUNT } from "./Routes";
+// import { gql } from "apollo-boost";
+// import { useQuery } from "react-apollo-hooks";
 
 const Header = styled.header`
   background-color: white;
@@ -81,6 +84,7 @@ const SearchInput = styled(Input)`
 
 export default withRouter(({ history }) => {
   const search = useInput("");
+  // const { data: meData, loading: meLoading } = useQuery(ME);
 
   const onSearchSubmit = e => {
     e.preventDefault();
@@ -108,6 +112,11 @@ export default withRouter(({ history }) => {
             </GNBList>
             <GNBList>
               <GNBNotificationIcon />
+            </GNBList>
+            <GNBList>
+              <Link to={PAGE_ACCOUNT}>
+                <ProfileIcon />
+              </Link>
             </GNBList>
           </GNB>
         </GNBWrapper>
