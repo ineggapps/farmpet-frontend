@@ -1,15 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { Link, withRouter } from "react-router-dom";
-import Helmet from "react-helmet";
-import PropTypes from "prop-types";
+import React from "react";
 import styled from "styled-components";
-import { useQuery } from "react-apollo-hooks";
-import { ME } from "../SharedQueries";
-import MainLoader from "../Components/MainLoader";
-import Avatar from "../Components/Avatar";
-import FatText from "../Components/FatText";
-import useInput from "../Hooks/useInput";
-import Button from "../Components/Button";
+import Helmet from "react-helmet";
+import MainLoader from "../../Components/MainLoader";
+import Avatar from "../../Components/Avatar";
+import FatText from "../../Components/FatText";
+import Button from "../../Components/Button";
 
 const Wrapper = styled.div`
   display: flex;
@@ -39,9 +34,9 @@ const Menu = styled.ul`
     align-items: center;
     height: 60px;
     padding-left: 20px;
-    border-left: 3px solid transparent;
+    border-left: 2px solid transparent;
     &:hover {
-      border-left: 3px solid ${props => props.theme.borderGreyColor};
+      border-left: 2px solid ${props => props.theme.borderGreyColor};
       font-weight: bold;
     }
   }
@@ -75,28 +70,17 @@ const Row = styled.div`
   }
 `;
 
-const Account = withRouter(({ history }) => {
-  const {
-    location: { pathname }
-  } = history;
-  const { data, loading } = useQuery(ME);
-  const username = useInput("");
-  const firstName = useInput("");
-  const lastName = useInput("");
-  const bio = useInput("");
-  const [avatar, setAvatar] = useState("");
-
-  useEffect(() => {
-    if (data && data.me) {
-      username.setValue(data.me.username);
-      firstName.setValue(data.me.firstName);
-      lastName.setValue(data.me.lastName);
-      bio.setValue(data.me.bio);
-      setAvatar(data.me.avatar);
-      console.log(avatar);
-    }
-  }, [data]);
-
+const AccountPresenter = ({
+  meData,
+  meLoading,
+  pathname,
+  username,
+  firstName,
+  lastName,
+  bio,
+  avatar,
+  setAvatar
+}) => {
   const RealContents = (
     <Container>
       <Menu>
@@ -105,11 +89,11 @@ const Account = withRouter(({ history }) => {
       </Menu>
       <FormDiv>
         <form>
-          {data && data.me && (
+          {meData && meData.me && (
             <>
               <Row>
                 <ColumnTitle style={{ width: 85, display: "flex", justifyContent: "flex-end" }}>
-                  <Avatar url={data.me.avatar} size={"lg"} />
+                  <Avatar url={meData.me.avatar} size={"lg"} />
                 </ColumnTitle>
                 <FatText text={username.value} />
               </Row>
@@ -117,25 +101,25 @@ const Account = withRouter(({ history }) => {
                 <ColumnTitle>
                   <FatText text={"username"} />
                 </ColumnTitle>
-                <input type="text" {...username} placeholder={data.me.username} />
+                <input type="text" {...username} placeholder={meData.me.username} />
               </Row>
               <Row>
                 <ColumnTitle>
                   <FatText text={"firstName"} />
                 </ColumnTitle>
-                <input type="text" {...firstName} placeholder={data.me.firstName} />
+                <input type="text" {...firstName} placeholder={meData.me.firstName} />
               </Row>
               <Row>
                 <ColumnTitle>
                   <FatText text={"lastName"} />
                 </ColumnTitle>
-                <input type="text" {...lastName} placeholder={data.me.lastName} />
+                <input type="text" {...lastName} placeholder={meData.me.lastName} />
               </Row>
               <Row>
                 <ColumnTitle>
                   <FatText text={"bio"} />
                 </ColumnTitle>
-                <input type="text" {...bio} placeholder={data.me.bio} />
+                <input type="text" {...bio} placeholder={meData.me.bio} />
               </Row>
               <Row>
                 <Button
@@ -158,11 +142,9 @@ const Account = withRouter(({ history }) => {
       <Helmet>
         <title>Edit My Profile | Farmpet</title>
       </Helmet>
-      <Contents>{!loading && data && data.me ? RealContents : LoaderContents}</Contents>
+      <Contents>{!meLoading && meData && meData.me ? RealContents : LoaderContents}</Contents>
     </Wrapper>
   );
-});
+};
 
-Account.propTypes = {};
-
-export default Account;
+export default AccountPresenter;
