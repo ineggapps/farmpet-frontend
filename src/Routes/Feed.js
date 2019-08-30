@@ -113,7 +113,7 @@ export default () => {
           ))}
       </SectionLeft>
       <SNB>
-        {!meLoading && meData.me && (
+        {!meLoading && meData && meData.me && (
           <>
             <SideProfile user={meData.me} />
             <SidePets title={`${meData.me.username}'s Pets`} pets={meData.me.pets} />
