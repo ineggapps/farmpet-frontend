@@ -68,6 +68,9 @@ const Row = styled.div`
     border: 1px solid ${props => props.theme.superLightGreyColor};
     height: 32px;
   }
+  &:last-child > * {
+    margin-left: 107px;
+  }
 `;
 
 const AccountPresenter = ({
