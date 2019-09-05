@@ -17,6 +17,7 @@ export const ME = gql`
       id
       avatar
       username
+      bio
       pets {
         id
         category
