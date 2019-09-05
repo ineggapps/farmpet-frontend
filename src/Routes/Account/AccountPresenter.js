@@ -79,7 +79,8 @@ const AccountPresenter = ({
   lastName,
   bio,
   avatar,
-  setAvatar
+  setAvatar,
+  onSubmit
 }) => {
   const RealContents = (
     <Container>
@@ -126,6 +127,7 @@ const AccountPresenter = ({
                   text={"Submit"}
                   onClick={() => {
                     console.log("회원정보 변경 전송");
+                    onSubmit();
                   }}
                 ></Button>
               </Row>
