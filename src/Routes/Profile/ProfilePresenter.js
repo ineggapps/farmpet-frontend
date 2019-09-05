@@ -8,7 +8,7 @@ import PetAvatar from "../../Components/PetAvatar";
 import EllipsisText from "react-ellipsis-text";
 import PostSquare from "../../Components/PostSquare";
 import { Link } from "react-router-dom";
-import { PAGE_PET } from "../../Components/Routes";
+import { PAGE_PET, PAGE_ACCOUNT } from "../../Components/Routes";
 
 const Wrapper = styled.div`
   width: 975px;
@@ -127,7 +127,9 @@ const ProfilePresenter = ({
           <UserInfo>
             <h2>{user.username}</h2>
             {user.isSelf ? (
-              <span>프로필 편집</span>
+              <span>
+                <Link to={PAGE_ACCOUNT}>프로필 편집</Link>
+              </span>
             ) : (
               <FollowButtonNormal isFollowing={user.isFollowing} id={user.id} />
             )}

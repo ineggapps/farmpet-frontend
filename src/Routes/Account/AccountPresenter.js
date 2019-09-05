@@ -1,10 +1,12 @@
 import React from "react";
 import styled from "styled-components";
 import Helmet from "react-helmet";
+import { Link } from "react-router-dom";
 import MainLoader from "../../Components/MainLoader";
 import Avatar from "../../Components/Avatar";
 import FatText from "../../Components/FatText";
 import Button from "../../Components/Button";
+import { PAGE_USER } from "../../Components/Routes";
 
 const Wrapper = styled.div`
   display: flex;
@@ -16,36 +18,16 @@ const Contents = styled.div`
   display: flex;
   flex-direction: row;
 `;
+
 const Container = styled.div`
   display: flex;
   margin-top: 55px;
-  background-color: white;
   width: 935px;
-  min-height: 800px;
-  border: 1px solid ${props => props.theme.borderGreyColor};
 `;
 
-const Menu = styled.ul`
-  width: 225px;
-  height: 100%;
-  & li {
-    display: flex;
-    font-size: 1.2em;
-    align-items: center;
-    height: 60px;
-    padding-left: 20px;
-    border-left: 2px solid transparent;
-    &:hover {
-      border-left: 2px solid ${props => props.theme.borderGreyColor};
-      font-weight: bold;
-    }
-  }
-  border-right: 1px solid ${props => props.theme.borderGreyColor};
-  margin-right: 10px;
-`;
-
-const FormDiv = styled.div`
-  padding: 20px 20px 20px 80px;
+const Card = styled.div`
+  background-color: white;
+  border: 1px solid ${props => props.theme.greyColor};
 `;
 
 const ColumnTitle = styled.div`
@@ -87,20 +69,18 @@ const AccountPresenter = ({
 }) => {
   const RealContents = (
     <Container>
-      <Menu>
-        <li>Edit Profile</li>
-        <li>Edit Pet</li>
-      </Menu>
-      <FormDiv>
-        <form>
-          {meData && meData.me && (
-            <>
-              <Row>
-                <ColumnTitle style={{ width: 85, display: "flex", justifyContent: "flex-end" }}>
-                  <Avatar url={meData.me.avatar} size={"lg"} />
-                </ColumnTitle>
-                <FatText text={username.value} />
-              </Row>
+      <form>
+        {meData && meData.me && (
+          <>
+            <Row>
+              <ColumnTitle style={{ width: 85, display: "flex", justifyContent: "flex-end" }}>
+                <Link to={PAGE_USER(meData.me.username)}>
+                  <Avatar url={meData.me.avatar} size={"xlg"} />
+                </Link>
+              </ColumnTitle>
+              <FatText text={username.value} />
+            </Row>
+            <Card>
               <Row>
                 <ColumnTitle>
                   <FatText text={"username"} />
@@ -134,10 +114,10 @@ const AccountPresenter = ({
                   }}
                 ></Button>
               </Row>
-            </>
-          )}
-        </form>
-      </FormDiv>
+            </Card>
+          </>
+        )}
+      </form>
     </Container>
   );
 
