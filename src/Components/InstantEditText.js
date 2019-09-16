@@ -52,7 +52,6 @@ const CustomButton = styled.button`
   &:focus {
     outline: none;
   }
-  min-width: 30px;
   height: 30px;
 `;
 
