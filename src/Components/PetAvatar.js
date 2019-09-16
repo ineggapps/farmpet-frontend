@@ -55,7 +55,7 @@ const PetAvatar = ({ category, size = "sm", url }) => {
 };
 
 PetAvatar.propTypes = {
-  size: PropTypes.oneOf(["sm", "md", "lg", "xlg"]),
+  size: PropTypes.oneOf(["sm", "md", "lg", "xlg", "xxlg"]),
   url: PropTypes.string
 };
 
