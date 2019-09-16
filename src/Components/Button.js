@@ -25,7 +25,9 @@ const Button = ({ text, onClick, color = "#3897f0" }) => {
       color={color}
       onClick={e => {
         e.preventDefault();
-        onClick();
+        if (onClick !== undefined && onClick !== null) {
+          onClick();
+        }
       }}
     >
       {text}
