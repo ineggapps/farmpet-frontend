@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Helmet from "react-helmet";
 import { withRouter } from "react-router-dom";
 import styled from "styled-components";
@@ -12,6 +12,7 @@ import PostSquare from "../Components/PostSquare";
 import Avatar from "../Components/Avatar";
 import { Link } from "react-router-dom";
 import { PAGE_USER } from "../Components/Routes";
+import { WriteIcon } from "../Components/Icons";
 
 const PET_PROFILE = gql`
   query seePet($name: String!) {
@@ -97,6 +98,25 @@ const Contents = styled.div`
   flex-direction: row;
 `;
 
+const ControlComponent = styled.div`
+  & button {
+    cursor: pointer;
+    span {
+      display: none;
+    }
+    padding: 0;
+    margin: 0;
+    border: 0 none;
+    background: 0 none;
+    &:focus {
+      outline: none;
+    }
+  }
+  & svg {
+    fill: ${props => props.theme.lightGreyColor};
+  }
+`;
+
 const PetInfo = styled.div`
   display: flex;
   align-items: center;
@@ -107,6 +127,7 @@ const PetInfo = styled.div`
 
 const PetStatisticsList = styled.ul`
   display: flex;
+  margin-top: 20px;
   & li:not(:last-child) {
     margin-right: 30px;
   }
@@ -155,6 +176,14 @@ const Pet = withRouter(({ match: { params: { name } } }) => {
   const { data: feedData, loading: feedLoading } = useQuery(SEE_PET_FEED, { variables: { name } });
   console.log(petData, "petData");
 
+  const [isNameEdit, setIsNameEdit] = useState(false);
+  const [isNicknameEdit, setIsNicknameEdit] = useState(false);
+
+  const editName = () => {
+    setIsNameEdit(!isNameEdit);
+    console.log(isNameEdit, "로 상태 변경");
+  };
+
   const RealContents = petData && petData.seePet && feedData && feedData.seePetFeed && (
     <Container>
       <Content>
@@ -169,9 +198,15 @@ const Pet = withRouter(({ match: { params: { name } } }) => {
         <ProfileContent>
           <PetInfo>
             <h2>{petData.seePet.name}</h2>
-            {petData.seePet.nickname && <h3>({petData.seePet.nickname})</h3>}
+            <ControlComponent>
+              <button onClick={() => editName()}>
+                <span>수정</span>
+                <WriteIcon size="12" />
+              </button>
+            </ControlComponent>
             <h3>{petData.seePet.bornAt}</h3>
           </PetInfo>
+          <PetInfo>{petData.seePet.nickname && <h2>{petData.seePet.nickname}</h2>}</PetInfo>
           <PetStatisticsList>
             <li>
               Posts <FatText text={petData.seePet.postsCount + ""} />
