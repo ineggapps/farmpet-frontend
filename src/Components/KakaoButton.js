@@ -15,11 +15,11 @@ const Container = styled.button`
   cursor: pointer;
 `;
 
-const Button = ({ text, onClick }) => <Container onClick={onClick}>{text}</Container>;
+const KakaoButton = ({ text, onClick }) => <Container onClick={onClick}>{text}</Container>;
 
-Button.propTypes = {
+KakaoButton.propTypes = {
   text: PropTypes.string.isRequired,
   onClick: PropTypes.func
 };
 
-export default Button;
+export default KakaoButton;
