@@ -7,6 +7,7 @@ import Avatar from "../../Components/Avatar";
 import FatText from "../../Components/FatText";
 import Button from "../../Components/Button";
 import { PAGE_USER } from "../../Components/Routes";
+import SidePets from "../../Components/SidePets";
 
 const Wrapper = styled.div`
   display: flex;
@@ -35,8 +36,13 @@ const ColumnTitle = styled.div`
   width: 130px;
 `;
 
+const SNB = styled.section`
+  margin-left: 20px;
+`;
+
 const Row = styled.div`
   display: flex;
+  width: 598px;
   font-size: 1.1em;
   align-items: center;
   & ${ColumnTitle} {
@@ -118,6 +124,11 @@ const AccountPresenter = ({
           </>
         )}
       </form>
+      <SNB>
+        {!meLoading && meData && meData.me && (
+          <SidePets title={`${meData.me.username}'s Pets`} pets={meData.me.pets} />
+        )}
+      </SNB>
     </Container>
   );
 
