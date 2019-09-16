@@ -41,10 +41,31 @@ const ControlComponent = styled.div`
       outline: none;
     }
   }
-
   & svg {
     fill: ${props => props.theme.lightGreyColor};
   }
+`;
+
+const CustomButton = styled.button`
+  border-radius: 3px;
+  cursor: pointer;
+  &:focus {
+    outline: none;
+  }
+  min-width: 30px;
+  height: 30px;
+`;
+
+const CancelButton = styled(CustomButton)`
+  background-color: white;
+  border: 1px solid ${props => props.theme.darkGreyColor};
+  &:hover {
+    border-color: #333;
+  }
+`;
+
+const SaveButton = styled(CustomButton)`
+  ${props => props.theme.redButton}
 `;
 
 const InstantEditText = ({
@@ -60,10 +81,12 @@ const InstantEditText = ({
   const EditMode = () => (
     <Container>
       <InputText onChange={onChange} value={value} placeholder={placeholder} type={type} />
-      <Button color={`${props => props.theme.lightGreyColor}`} text="Cancel" />
-      <button>
+      <CancelButton color={`${props => props.theme.lightGreyColor}`}>
+        <span>Cancel</span>
+      </CancelButton>
+      <SaveButton>
         <span>Save</span>
-      </button>
+      </SaveButton>
     </Container>
   );
 
