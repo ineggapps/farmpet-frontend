@@ -3,7 +3,7 @@ import Helmet from "react-helmet";
 import { withRouter } from "react-router-dom";
 import styled from "styled-components";
 import { gql } from "apollo-boost";
-import { useQuery } from "react-apollo-hooks";
+import { useQuery, useMutation } from "react-apollo-hooks";
 import MainLoader from "../Components/MainLoader";
 import PetAvatar from "../Components/PetAvatar";
 import FatText from "../Components/FatText";
@@ -12,7 +12,8 @@ import PostSquare from "../Components/PostSquare";
 import Avatar from "../Components/Avatar";
 import { Link } from "react-router-dom";
 import { PAGE_USER } from "../Components/Routes";
-import { WriteIcon } from "../Components/Icons";
+import InstantEditText from "../Components/InstantEditText";
+import useInput from "../Hooks/useInput";
 
 const PET_PROFILE = gql`
   query seePet($name: String!) {
@@ -52,6 +53,17 @@ const SEE_PET_FEED = gql`
       commentCount
       likeCount
     }
+  }
+`;
+const UPDATE_PET = gql`
+  mutation updatePet(
+    $id: String!
+    $name: String
+    $nickname: String
+    $avatar: String
+    $bornAt: String
+  ) {
+    updatePet(id: $id, name: $name, nickname: $nickname, avatar: $avatar, bornAt: $bornAt)
   }
 `;
 
@@ -96,25 +108,6 @@ const Content = styled.div`
 const Contents = styled.div`
   display: flex;
   flex-direction: row;
-`;
-
-const ControlComponent = styled.div`
-  & button {
-    cursor: pointer;
-    span {
-      display: none;
-    }
-    padding: 0;
-    margin: 0;
-    border: 0 none;
-    background: 0 none;
-    &:focus {
-      outline: none;
-    }
-  }
-  & svg {
-    fill: ${props => props.theme.lightGreyColor};
-  }
 `;
 
 const PetInfo = styled.div`
@@ -176,12 +169,22 @@ const Pet = withRouter(({ match: { params: { name } } }) => {
   const { data: feedData, loading: feedLoading } = useQuery(SEE_PET_FEED, { variables: { name } });
   console.log(petData, "petData");
 
+  // const [updatePetMutation] = useMutation(UPDATE_PET);
+  //pet name
   const [isNameEdit, setIsNameEdit] = useState(false);
+  const nameInput = useInput(name);
+  //pet nickname
   const [isNicknameEdit, setIsNicknameEdit] = useState(false);
+  const nicknameInput = useInput();
 
   const editName = () => {
     setIsNameEdit(!isNameEdit);
     console.log(isNameEdit, "로 상태 변경");
+  };
+
+  const editNickname = () => {
+    setIsNicknameEdit(!isNicknameEdit);
+    console.log(isNicknameEdit, "로 상태 변경");
   };
 
   const RealContents = petData && petData.seePet && feedData && feedData.seePetFeed && (
@@ -197,16 +200,36 @@ const Pet = withRouter(({ match: { params: { name } } }) => {
         </ProfilePicArea>
         <ProfileContent>
           <PetInfo>
-            <h2>{petData.seePet.name}</h2>
-            <ControlComponent>
-              <button onClick={() => editName()}>
-                <span>수정</span>
-                <WriteIcon size="12" />
-              </button>
-            </ControlComponent>
+            <h2>
+              <InstantEditText
+                isEditMode={isNameEdit}
+                placeholder={petData.seePet.name}
+                onChange={nameInput.onChange}
+                value={nameInput.value}
+                type={"text"}
+                onEditClick={editName}
+                onConfirmClick={editName}
+              />
+            </h2>{" "}
             <h3>{petData.seePet.bornAt}</h3>
           </PetInfo>
-          <PetInfo>{petData.seePet.nickname && <h2>{petData.seePet.nickname}</h2>}</PetInfo>
+          <PetInfo>
+            {petData.seePet.nickname && (
+              <>
+                <h2>
+                  <InstantEditText
+                    isEditMode={isNicknameEdit}
+                    placeholder={petData.seePet.nickname}
+                    onChange={nicknameInput.onChange}
+                    value={nicknameInput.value ? nicknameInput.value : petData.seePet.nickname}
+                    type={"text"}
+                    onEditClick={editNickname}
+                    onConfirmClick={editNickname}
+                  />
+                </h2>
+              </>
+            )}
+          </PetInfo>
           <PetStatisticsList>
             <li>
               Posts <FatText text={petData.seePet.postsCount + ""} />
