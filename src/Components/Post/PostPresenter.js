@@ -258,13 +258,13 @@ export default ({
             <ControlComponents>
               <ControlComponent>
                 <button onClick={() => editPost()}>
-                  <span>수정</span>
+                  <span>Edit</span>
                   <WriteIcon size="12" />
                 </button>
               </ControlComponent>
               <ControlComponent>
                 <button onClick={() => deletePost()}>
-                  <span>삭제</span>
+                  <span>Delete</span>
                   <RemoveIcon size="12" />
                 </button>
               </ControlComponent>

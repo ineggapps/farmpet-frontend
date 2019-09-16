@@ -115,13 +115,13 @@ const PostCommentPresenter = ({
               <ControlComponents>
                 <ControlComponent>
                   <button onClick={() => editComment()}>
-                    <span>수정</span>
+                    <span>Edit</span>
                     <WriteIcon size="12" />
                   </button>
                 </ControlComponent>
                 <ControlComponent>
                   <button onClick={() => deleteComment()}>
-                    <span>삭제</span>
+                    <span>Delete</span>
                     <RemoveIcon size="12" />
                   </button>
                 </ControlComponent>
