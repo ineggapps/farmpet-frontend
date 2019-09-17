@@ -169,7 +169,7 @@ const Pet = withRouter(({ match: { params: { name } } }) => {
   const { data: feedData, loading: feedLoading } = useQuery(SEE_PET_FEED, { variables: { name } });
   console.log(petData, "petData");
 
-  // const [updatePetMutation] = useMutation(UPDATE_PET);
+  const [updatePetMutation] = useMutation(UPDATE_PET);
   //pet name
   const [isNameEdit, setIsNameEdit] = useState(false);
   const nameInput = useInput(name);
