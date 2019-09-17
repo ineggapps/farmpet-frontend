@@ -77,7 +77,7 @@ const InstantEditText = ({
   onCancelClick,
   onSaveClick
 }) => {
-  const EditMode = () => (
+  const EditMode = (
     <Container>
       <InputText onChange={onChange} value={value} placeholder={placeholder} type={type} />
       <CancelButton color={`${props => props.theme.lightGreyColor}`}>
@@ -89,7 +89,7 @@ const InstantEditText = ({
     </Container>
   );
 
-  const ViewMode = () => (
+  const ViewMode = (
     <Container>
       <Text>{value}</Text>
       <ControlComponent>
@@ -101,7 +101,7 @@ const InstantEditText = ({
     </Container>
   );
 
-  return isEditMode ? <EditMode /> : <ViewMode />;
+  return isEditMode ? EditMode : ViewMode;
 };
 
 InstantEditText.propTypes = {
