@@ -27,6 +27,7 @@ const InputText = styled.input`
 
 const ControlComponent = styled.div`
   display: flex;
+  margin-left: 10px;
   flex-direction: row;
   & button {
     cursor: pointer;
