@@ -86,7 +86,7 @@ const InstantEditText = ({
       >
         <span>Cancel</span>
       </CancelButton>
-      <SaveButton>
+      <SaveButton onClick={() => onSaveClick()}>
         <span>Save</span>
       </SaveButton>
     </Container>

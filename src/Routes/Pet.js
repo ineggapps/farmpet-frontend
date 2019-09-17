@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Helmet from "react-helmet";
 import { withRouter } from "react-router-dom";
 import styled from "styled-components";
@@ -181,7 +181,28 @@ const Pet = withRouter(({ match: { params: { name } } }) => {
     setIsNameEdit(true);
   };
 
-  const editNameSave = () => {};
+  const editNameSave = async () => {
+    try {
+      if (petData && petData.seePet) {
+        const result = await updatePetMutation({
+          variables: {
+            id: petData.seePet.id,
+            name: nameInput.value
+          }
+        });
+        if (!result.updatePet) {
+          throw Error("returned false");
+        }
+      }
+    } catch (error) {
+      console.log(error);
+      if (petData && petData.seePet) {
+        nameInput.setValue(petData.seePet.name);
+      }
+    } finally {
+      setIsNameEdit(false);
+    }
+  };
 
   const editNameCancel = () => {
     nameInput.setValue(name);
@@ -192,7 +213,27 @@ const Pet = withRouter(({ match: { params: { name } } }) => {
     setIsNicknameEdit(true);
   };
 
-  const editNicknameSave = () => {};
+  const editNicknameSave = async () => {
+    try {
+      if (petData && petData.seePet) {
+        const result = await updatePetMutation({
+          variables: {
+            id: petData.seePet.id,
+            nickname: nicknameInput.value
+          }
+        });
+        if (!result.updatePet) {
+          throw Error("returned false");
+        }
+      }
+    } catch (error) {
+      console.log(error);
+      nicknameInput.setValue(petData.seePet.nickname);
+    } finally {
+      setIsNicknameEdit(false);
+    }
+    setIsNicknameEdit(false);
+  };
 
   const editNicknameCancel = () => {
     if (petData && petData.seePet) {
@@ -200,6 +241,12 @@ const Pet = withRouter(({ match: { params: { name } } }) => {
     }
     setIsNicknameEdit(false);
   };
+
+  useEffect(() => {
+    if (petData && petData.seePet && !isNicknameEdit && nicknameInput.value === undefined) {
+      nicknameInput.setValue(petData.seePet.nickname);
+    }
+  });
 
   const RealContents = petData && petData.seePet && feedData && feedData.seePetFeed && (
     <Container>
@@ -236,7 +283,7 @@ const Pet = withRouter(({ match: { params: { name } } }) => {
                     isEditMode={isNicknameEdit}
                     placeholder={petData.seePet.nickname}
                     onChange={nicknameInput.onChange}
-                    value={nicknameInput.value ? nicknameInput.value : petData.seePet.nickname}
+                    value={nicknameInput.value}
                     type={"text"}
                     onEditClick={editNicknameEdit}
                     onCancelClick={editNicknameCancel}
