@@ -6,6 +6,7 @@ import { useQuery } from "react-apollo-hooks";
 import { gql } from "apollo-boost";
 import Loader from "../../Components/Loader";
 import MainLoader from "../../Components/MainLoader";
+import { ME } from "../../SharedQueries";
 
 const SEE_USER_FEED = gql`
   query seeUserFeed($username: String!) {
@@ -59,6 +60,7 @@ export default withRouter(({ match: { params: { username } } }) => {
     variables: { username }
   });
   const { data: userData, loading: userLoading } = useQuery(SEE_USER, { variables: { username } });
+  const { data: meData, loading: meLoading } = useQuery(ME);
 
   //팔로 시 fake 산정을 위한 useState값 전달 (널체크가 너무 길다)
   const [followingCount, setFollowingCount] = useState(
@@ -85,16 +87,20 @@ export default withRouter(({ match: { params: { username } } }) => {
   if (
     !feedLoading &&
     !userLoading &&
+    !meLoading &&
     feedData &&
     feedData.seeUserFeed &&
     userData &&
-    userData.seeUser
+    userData.seeUser &&
+    meData &&
+    meData.me
   ) {
     console.log(userData.seeUser, feedData.seeUserFeed);
     return (
       <ProfilePresenter
         feed={feedData.seeUserFeed}
         user={userData.seeUser}
+        me={meData.me}
         //팔로 설정 관련
         followingCount={followingCount}
         setFollowingCount={setFollowingCount}

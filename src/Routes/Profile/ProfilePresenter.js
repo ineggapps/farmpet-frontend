@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Helmet from "react-helmet";
 import styled from "styled-components";
 import Avatar from "../../Components/Avatar";
@@ -9,6 +9,10 @@ import EllipsisText from "react-ellipsis-text";
 import PostSquare from "../../Components/PostSquare";
 import { Link } from "react-router-dom";
 import { PAGE_PET, PAGE_ACCOUNT } from "../../Components/Routes";
+import InstantEditText from "../../Components/InstantEditText";
+import useInput from "../../Hooks/useInput";
+import gql from "graphql-tag";
+import { useMutation } from "react-apollo-hooks";
 
 const Wrapper = styled.div`
   width: 975px;
@@ -57,8 +61,8 @@ const ProfileContent = styled.section`
 
 const UserInfo = styled.div`
   display: flex;
-  align-items: center;
-  & *:not(:last-child) {
+  align-items: baseline;
+  & > *:not(:last-child) {
     margin-right: 20px;
   }
 `;
@@ -105,9 +109,28 @@ const PostList = styled.ul`
   }
 `;
 
+const UPDATE_ACCOUNT = gql`
+  mutation updateAccount(
+    $avatar: String
+    $username: String
+    $firstName: String
+    $lastName: String
+    $bio: String
+  ) {
+    updateAccount(
+      avatar: $avatar
+      username: $username
+      firstName: $firstName
+      lastName: $lastName
+      bio: $bio
+    )
+  }
+`;
+
 const ProfilePresenter = ({
   feed,
   user,
+  me,
   //팔로잉 관련된 변수
   followingCount,
   setFollowingCount,
@@ -116,7 +139,91 @@ const ProfilePresenter = ({
   isFollowing,
   onFollowClick
 }) => {
+  const [updateUserMutation] = useMutation(UPDATE_ACCOUNT);
+
+  //username 변경
+  const [isUsernameEdit, setIsUsernameEdit] = useState(false);
+  const usernameInput = useInput(me.username);
+  const usernameEdit = () => {
+    setIsUsernameEdit(true);
+  };
+  const usernameSave = async () => {
+    try {
+      const result = await updateUserMutation({
+        variables: {
+          username: usernameInput.value
+        }
+      });
+      if (!result.data.updateAccount) {
+        throw Error();
+      }
+    } catch (error) {
+      usernameInput.setValue(me.username);
+    } finally {
+      setIsUsernameEdit(false);
+    }
+  };
+  const usernameCancel = () => {
+    usernameInput.setValue(me.username);
+    setIsUsernameEdit(false);
+  };
+
+  //firstName 변경
+  const [isFirstNameEdit, setIsFirstNameEdit] = useState(false);
+  const firstNameInput = useInput(me.firstName);
+  const firstNameEdit = () => {
+    setIsFirstNameEdit(true);
+  };
+  const firstNameSave = async () => {
+    try {
+      const result = await updateUserMutation({
+        variables: {
+          firstName: firstNameInput.value
+        }
+      });
+      if (!result.updateAccount) {
+        throw Error();
+      }
+    } catch (error) {
+      firstNameInput.setValue(me.firstName);
+    } finally {
+      setIsFirstNameEdit(false);
+    }
+  };
+  const firstNameCancel = () => {
+    firstNameInput.setValue(me.firstName);
+    setIsFirstNameEdit(false);
+  };
+
+  //lastName 변경
+  const [isLastNameEdit, setIsLastNameEdit] = useState(false);
+  const lastNameInput = useInput(me.lastName);
+  const lastNameEdit = () => {
+    setIsLastNameEdit(true);
+  };
+  const lastNameSave = async () => {
+    try {
+      const result = await updateUserMutation({
+        variables: {
+          lastName: lastNameInput.value
+        }
+      });
+      if (!result.updateAccount) {
+        throw Error();
+      }
+    } catch (error) {
+      lastNameInput.setValue(me.lastName);
+    } finally {
+      setIsLastNameEdit(false);
+    }
+  };
+  const lastNameCancel = () => {
+    lastNameInput.setValue(me.lastName);
+    setIsLastNameEdit(false);
+  };
+
   console.log(user, "프로필 출력");
+  console.log(me, "내 정보");
   const RealContents = (
     <>
       <Content>
@@ -125,14 +232,62 @@ const ProfilePresenter = ({
         </ProfilePicArea>
         <ProfileContent>
           <UserInfo>
-            <h2>{user.username}</h2>
-            {user.isSelf ? (
+            <h2>
+              {user.isSelf ? (
+                <InstantEditText
+                  isEditMode={isUsernameEdit}
+                  placeholder={usernameInput.value}
+                  onChange={usernameInput.onChange}
+                  value={usernameInput.value}
+                  type={"text"}
+                  onEditClick={usernameEdit}
+                  onSaveClick={usernameSave}
+                  onCancelClick={usernameCancel}
+                />
+              ) : (
+                user.username
+              )}
+            </h2>
+            {!user.isSelf && <FollowButtonNormal isFollowing={user.isFollowing} id={user.id} />}
+            {/* {user.isSelf ? (
               <span>
                 <Link to={PAGE_ACCOUNT}>프로필 편집</Link>
               </span>
             ) : (
               <FollowButtonNormal isFollowing={user.isFollowing} id={user.id} />
-            )}
+            )} */}
+            <h3>
+              {user.isSelf ? (
+                <InstantEditText
+                  isEditMode={isFirstNameEdit}
+                  placeholder={firstNameInput.value}
+                  onChange={firstNameInput.onChange}
+                  value={firstNameInput.value}
+                  type={"text"}
+                  onEditClick={firstNameEdit}
+                  onSaveClick={firstNameSave}
+                  onCancelClick={firstNameCancel}
+                />
+              ) : (
+                user.firstName
+              )}
+            </h3>
+            <h3>
+              {user.isSelf ? (
+                <InstantEditText
+                  isEditMode={isLastNameEdit}
+                  placeholder={lastNameInput.value}
+                  onChange={lastNameInput.onChange}
+                  value={lastNameInput.value}
+                  type={"text"}
+                  onEditClick={lastNameEdit}
+                  onSaveClick={lastNameSave}
+                  onCancelClick={lastNameCancel}
+                />
+              ) : (
+                user.lastName
+              )}
+            </h3>
           </UserInfo>
           <UserStatisticsList>
             <li>
@@ -164,6 +319,7 @@ const ProfilePresenter = ({
             ))}
         </PetList>
       </Content>
+      {/* <Content>프로필 편집 Area</Content> */}
       <Content>
         <PostList>
           {feed &&
