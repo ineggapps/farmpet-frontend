@@ -80,7 +80,10 @@ const InstantEditText = ({
   const EditMode = (
     <Container>
       <InputText onChange={onChange} value={value} placeholder={placeholder} type={type} />
-      <CancelButton color={`${props => props.theme.lightGreyColor}`}>
+      <CancelButton
+        color={`${props => props.theme.lightGreyColor}`}
+        onClick={() => onCancelClick()}
+      >
         <span>Cancel</span>
       </CancelButton>
       <SaveButton>

@@ -177,14 +177,28 @@ const Pet = withRouter(({ match: { params: { name } } }) => {
   const [isNicknameEdit, setIsNicknameEdit] = useState(false);
   const nicknameInput = useInput();
 
-  const editName = () => {
-    setIsNameEdit(!isNameEdit);
-    console.log(isNameEdit, "로 상태 변경");
+  const editNameEdit = () => {
+    setIsNameEdit(true);
   };
 
-  const editNickname = () => {
-    setIsNicknameEdit(!isNicknameEdit);
-    console.log(isNicknameEdit, "로 상태 변경");
+  const editNameSave = () => {};
+
+  const editNameCancel = () => {
+    nameInput.setValue(name);
+    setIsNameEdit(false);
+  };
+
+  const editNicknameEdit = () => {
+    setIsNicknameEdit(true);
+  };
+
+  const editNicknameSave = () => {};
+
+  const editNicknameCancel = () => {
+    if (petData && petData.seePet) {
+      nicknameInput.setValue(petData.seePet.nickname);
+    }
+    setIsNicknameEdit(false);
   };
 
   const RealContents = petData && petData.seePet && feedData && feedData.seePetFeed && (
@@ -207,8 +221,9 @@ const Pet = withRouter(({ match: { params: { name } } }) => {
                 onChange={nameInput.onChange}
                 value={nameInput.value}
                 type={"text"}
-                onEditClick={editName}
-                onConfirmClick={editName}
+                onEditClick={editNameEdit}
+                onCancelClick={editNameCancel}
+                onSaveClick={editNameSave}
               />
             </h2>{" "}
             <h3>{petData.seePet.bornAt}</h3>
@@ -223,8 +238,9 @@ const Pet = withRouter(({ match: { params: { name } } }) => {
                     onChange={nicknameInput.onChange}
                     value={nicknameInput.value ? nicknameInput.value : petData.seePet.nickname}
                     type={"text"}
-                    onEditClick={editNickname}
-                    onConfirmClick={editNickname}
+                    onEditClick={editNicknameEdit}
+                    onCancelClick={editNicknameCancel}
+                    onSaveClick={editNicknameSave}
                   />
                 </h2>
               </>
