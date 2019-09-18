@@ -87,6 +87,15 @@ const InstantEditText = ({
         placeholder={placeholder}
         type={type}
         maxLength={maxLength}
+        onKeyPress={e => {
+          e.preventDefault();
+          if (e.which === 27) {
+            //ESC
+            onCancelClick();
+          } else if (e.which === 13) {
+            onSaveClick();
+          }
+        }}
       />
       <CancelButton
         color={`${props => props.theme.lightGreyColor}`}
