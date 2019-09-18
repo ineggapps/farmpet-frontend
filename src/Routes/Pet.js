@@ -68,9 +68,10 @@ const UPDATE_PET = gql`
 `;
 
 const ProfilePicArea = styled.div`
+  width: 300px;
   display: flex;
   justify-content: center;
-  flex-grow: 1;
+  /* flex-grow: 1; */
   margin-right: 30px;
   & > div {
     border: 1px solid ${props => props.theme.superLightGreyColor};
@@ -81,7 +82,7 @@ const ProfileContent = styled.section`
   display: flex;
   padding-top: 10px;
   flex-direction: column;
-  flex-grow: 2;
+  /* flex-grow: 2; */
 
   h2 {
     font-size: 1.8em;
@@ -113,7 +114,7 @@ const Contents = styled.div`
 const PetInfo = styled.div`
   display: flex;
   align-items: center;
-  & *:not(:last-child) {
+  & > *:not(:last-child) {
     margin-right: 20px;
   }
 `;
@@ -263,6 +264,7 @@ const Pet = withRouter(({ match: { params: { name } } }) => {
           <PetInfo>
             <h2>
               <InstantEditText
+                maxLength={15}
                 isEditMode={isNameEdit}
                 placeholder={petData.seePet.name}
                 onChange={nameInput.onChange}
@@ -280,6 +282,7 @@ const Pet = withRouter(({ match: { params: { name } } }) => {
               <>
                 <h2>
                   <InstantEditText
+                    maxLength={15}
                     isEditMode={isNicknameEdit}
                     placeholder={petData.seePet.nickname}
                     onChange={nicknameInput.onChange}
