@@ -168,7 +168,7 @@ const Pet = withRouter(({ match: { params: { name } } }) => {
   //펫 네임을 기반으로 pet프로필 조사
   const { data: petData, loading: petLoading } = useQuery(PET_PROFILE, { variables: { name } });
   const { data: feedData, loading: feedLoading } = useQuery(SEE_PET_FEED, { variables: { name } });
-  console.log(petData, "petData");
+  // console.log(petData, "petData");
 
   const [updatePetMutation] = useMutation(UPDATE_PET);
   //pet name
@@ -191,9 +191,10 @@ const Pet = withRouter(({ match: { params: { name } } }) => {
             name: nameInput.value
           }
         });
-        if (!result.updatePet) {
+        if (!result.data.updatePet) {
           throw Error("returned false");
         }
+        petData.seePet.name = nameInput.value;
       }
     } catch (error) {
       console.log(error);
@@ -223,9 +224,10 @@ const Pet = withRouter(({ match: { params: { name } } }) => {
             nickname: nicknameInput.value
           }
         });
-        if (!result.updatePet) {
+        if (!result.data.updatePet) {
           throw Error("returned false");
         }
+        petData.seePet.nickname = nicknameInput.value;
       }
     } catch (error) {
       console.log(error);
