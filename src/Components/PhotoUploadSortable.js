@@ -31,7 +31,7 @@ const Slice = styled.div`
   background-image: url(${props =>
     props.file && props.file.thumbnail
       ? props.file.thumbnail
-      : "http://localhost:4000/upload/loading.gif"});
+      : "http://localhost:5000/upload/loading.gif"});
   background-size: cover;
   background-position: center;
 `;
@@ -289,7 +289,7 @@ const PhotoUploadSortable = ({ onUploadStart, onUploadEnd, onImageUploaded }) =>
     setFiles([...files, ...newFiles]);
     setResultId(uuids);
 
-    const { data } = await axios.post("http://localhost:4000/api/upload", formData, {
+    const { data } = await axios.post("http://localhost:5000/api/upload", formData, {
       "content-type": "multipart/form-data"
     });
     setResult(data);
