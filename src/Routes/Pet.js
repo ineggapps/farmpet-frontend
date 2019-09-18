@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Helmet from "react-helmet";
-import { withRouter } from "react-router-dom";
+import { withRouter, Redirect } from "react-router-dom";
 import styled from "styled-components";
 import { gql } from "apollo-boost";
 import { useQuery, useMutation } from "react-apollo-hooks";
@@ -11,7 +11,7 @@ import EllipsisText from "react-ellipsis-text";
 import PostSquare from "../Components/PostSquare";
 import Avatar from "../Components/Avatar";
 import { Link } from "react-router-dom";
-import { PAGE_USER } from "../Components/Routes";
+import { PAGE_USER, PAGE_PET } from "../Components/Routes";
 import InstantEditText from "../Components/InstantEditText";
 import useInput from "../Hooks/useInput";
 
@@ -164,7 +164,7 @@ const PostList = styled.ul`
 
 const Container = styled.div``;
 
-const Pet = withRouter(({ match: { params: { name } } }) => {
+const Pet = withRouter(({ match: { params: { name } }, history }) => {
   //펫 네임을 기반으로 pet프로필 조사
   const { data: petData, loading: petLoading } = useQuery(PET_PROFILE, { variables: { name } });
   const { data: feedData, loading: feedLoading } = useQuery(SEE_PET_FEED, { variables: { name } });
@@ -195,6 +195,7 @@ const Pet = withRouter(({ match: { params: { name } } }) => {
           throw Error("returned false");
         }
         petData.seePet.name = nameInput.value;
+        history.replace(nameInput.value);
       }
     } catch (error) {
       console.log(error);
