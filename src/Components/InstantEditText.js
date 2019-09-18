@@ -88,11 +88,12 @@ const InstantEditText = ({
         type={type}
         maxLength={maxLength}
         onKeyPress={e => {
-          e.preventDefault();
           if (e.which === 27) {
             //ESC
+            e.preventDefault();
             onCancelClick();
           } else if (e.which === 13) {
+            e.preventDefault();
             onSaveClick();
           }
         }}
