@@ -8,7 +8,7 @@ import PetAvatar from "../../Components/PetAvatar";
 import EllipsisText from "react-ellipsis-text";
 import PostSquare from "../../Components/PostSquare";
 import { Link } from "react-router-dom";
-import { PAGE_PET, PAGE_ACCOUNT } from "../../Components/Routes";
+import { PAGE_PET, PAGE_ACCOUNT, PAGE_USER } from "../../Components/Routes";
 import InstantEditText from "../../Components/InstantEditText";
 import useInput from "../../Hooks/useInput";
 import gql from "graphql-tag";
@@ -137,8 +137,18 @@ const ProfilePresenter = ({
   followersCount,
   setFollowersCount,
   isFollowing,
-  onFollowClick
+  onFollowClick,
+  //withRouter
+  history
 }) => {
+  /*
+    원래 이 코드들은 Container 부에 들어가는 것이 맞지만
+    데이터가 로딩되고 나서 기존 데이터를 fake로 수정해주는 역할 또한 필요하기 때문에 
+    Presenter에 배치하게 되었음.
+    ex)
+    username을 수정하면 가져온 데이터에서도 username을 수정해둬야 한다.
+    => A유저가 또 username을 B로 수정을 시도했을 때 Cancel버튼을 누르면 바뀐 username인 B가 들어가야 함.
+  */
   const [updateUserMutation] = useMutation(UPDATE_ACCOUNT);
 
   //username 변경
@@ -157,6 +167,8 @@ const ProfilePresenter = ({
       if (!result.data.updateAccount) {
         throw Error();
       }
+      me.username = usernameInput.value;
+      history.replace(PAGE_USER(usernameInput.value.toLowerCase()));
     } catch (error) {
       usernameInput.setValue(me.username);
     } finally {
@@ -184,6 +196,7 @@ const ProfilePresenter = ({
       if (!result.updateAccount) {
         throw Error();
       }
+      me.firstName = firstNameInput.value;
     } catch (error) {
       firstNameInput.setValue(me.firstName);
     } finally {
@@ -211,6 +224,7 @@ const ProfilePresenter = ({
       if (!result.updateAccount) {
         throw Error();
       }
+      me.lastName = lastNameInput.value;
     } catch (error) {
       lastNameInput.setValue(me.lastName);
     } finally {

@@ -185,6 +185,7 @@ const Pet = withRouter(({ match: { params: { name } }, history }) => {
   const editNameSave = async () => {
     try {
       if (petData && petData.seePet) {
+        nameInput.setValue(nameInput.value.toLowerCase());
         const result = await updatePetMutation({
           variables: {
             id: petData.seePet.id,
@@ -195,7 +196,7 @@ const Pet = withRouter(({ match: { params: { name } }, history }) => {
           throw Error("returned false");
         }
         petData.seePet.name = nameInput.value;
-        history.replace(nameInput.value);
+        history.replace(PAGE_PET(nameInput.value));
       }
     } catch (error) {
       console.log(error);

@@ -55,7 +55,7 @@ const SEE_USER = gql`
   }
 `;
 
-export default withRouter(({ match: { params: { username } } }) => {
+export default withRouter(({ match: { params: { username } }, history }) => {
   const { data: feedData, loading: feedLoading } = useQuery(SEE_USER_FEED, {
     variables: { username }
   });
@@ -108,6 +108,7 @@ export default withRouter(({ match: { params: { username } } }) => {
         setFollowersCount={setFollowersCount}
         isFollowing={isFollowing}
         onFollowClick={onFollowClick}
+        history={history}
       />
     );
   } else {
