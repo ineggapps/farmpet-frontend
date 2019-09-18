@@ -72,6 +72,7 @@ const InstantEditText = ({
   isEditMode = false,
   placeholder,
   onChange,
+  maxLength,
   type,
   value,
   onEditClick,
@@ -80,7 +81,13 @@ const InstantEditText = ({
 }) => {
   const EditMode = (
     <Container>
-      <InputText onChange={onChange} value={value} placeholder={placeholder} type={type} />
+      <InputText
+        onChange={onChange}
+        value={value}
+        placeholder={placeholder}
+        type={type}
+        maxLength={maxLength}
+      />
       <CancelButton
         color={`${props => props.theme.lightGreyColor}`}
         onClick={() => onCancelClick()}
