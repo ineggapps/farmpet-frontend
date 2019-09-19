@@ -10,8 +10,8 @@ export const STATE_SIGNUP = "signUp";
 
 export default () => {
   const [action, setAction] = useState(STATE_LOGIN);
-  const email = useInput("inegg.apps@gmail.com");
-  const password = useInput("");
+  const email = useInput("test@test.com");
+  const password = useInput("test@test.com");
   const passwordConfirm = useInput("");
   const username = useInput("");
   const firstName = useInput("");
