@@ -9,6 +9,7 @@ import uuidv4 from "uuid/v4";
 import HashMap from "hashmap";
 import PhotoUploadCaption from "./PhotoUploadCaption";
 import { SpeechBubbleIcon } from "./Icons";
+import { getAddress } from "../GlobalVariables";
 
 const Container = styled.div``;
 const SortableUl = styled.ul`
@@ -29,9 +30,7 @@ const Slice = styled.div`
   height: 95px;
   border-radius: 2px;
   background-image: url(${props =>
-    props.file && props.file.thumbnail
-      ? props.file.thumbnail
-      : "http://localhost:5000/upload/loading.gif"});
+    props.file && props.file.thumbnail ? props.file.thumbnail : getAddress("upload/loading.gif")});
   background-size: cover;
   background-position: center;
 `;
@@ -289,7 +288,7 @@ const PhotoUploadSortable = ({ onUploadStart, onUploadEnd, onImageUploaded }) =>
     setFiles([...files, ...newFiles]);
     setResultId(uuids);
 
-    const { data } = await axios.post("http://localhost:5000/api/upload", formData, {
+    const { data } = await axios.post(getAddress("api/upload"), formData, {
       "content-type": "multipart/form-data"
     });
     setResult(data);

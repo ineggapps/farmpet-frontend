@@ -1,8 +1,9 @@
 import ApolloClient from "apollo-boost";
 import { defaults, resolvers, TOKEN } from "./LocalState";
+import { getAddress } from "../GlobalVariables";
 
 export default new ApolloClient({
-  uri: "http://localhost:5000",
+  uri: getAddress(),
   clientState: {
     defaults,
     resolvers
