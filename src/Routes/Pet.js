@@ -14,6 +14,7 @@ import { Link } from "react-router-dom";
 import { PAGE_USER, PAGE_PET } from "../Components/Routes";
 import InstantEditText from "../Components/InstantEditText";
 import useInput from "../Hooks/useInput";
+import { ME } from "../SharedQueries";
 
 const PET_PROFILE = gql`
   query seePet($name: String!) {
@@ -166,6 +167,7 @@ const Container = styled.div``;
 
 const Pet = withRouter(({ match: { params: { name } }, history }) => {
   //펫 네임을 기반으로 pet프로필 조사
+  const { data: meData, loading: meLoading } = useQuery(ME);
   const { data: petData, loading: petLoading } = useQuery(PET_PROFILE, { variables: { name } });
   const { data: feedData, loading: feedLoading } = useQuery(SEE_PET_FEED, { variables: { name } });
   // console.log(petData, "petData");
@@ -249,98 +251,128 @@ const Pet = withRouter(({ match: { params: { name } }, history }) => {
 
   useEffect(() => {
     if (petData && petData.seePet && !isNicknameEdit && nicknameInput.value === undefined) {
+      if (petData.seePet.nickname === null || petData.seePet.nickname === undefined) {
+        petData.seePet.nickname = "set your pet nickname!";
+      }
       nicknameInput.setValue(petData.seePet.nickname);
     }
   });
 
-  const RealContents = petData && petData.seePet && feedData && feedData.seePetFeed && (
-    <Container>
-      <Content>
-        <ProfilePicArea>
-          <PetAvatar
-            size="xxlg"
-            category={petData.seePet.category}
-            url={petData.seePet.avatar}
-            isBorder={true}
-          />
-        </ProfilePicArea>
-        <ProfileContent>
-          <PetInfo>
-            <h2>
-              <InstantEditText
-                maxLength={15}
-                isEditMode={isNameEdit}
-                placeholder={petData.seePet.name}
-                onChange={nameInput.onChange}
-                value={nameInput.value}
-                type={"text"}
-                onEditClick={editNameEdit}
-                onCancelClick={editNameCancel}
-                onSaveClick={editNameSave}
-              />
-            </h2>{" "}
-            <h3>{petData.seePet.bornAt}</h3>
-          </PetInfo>
-          <PetInfo>
-            {petData.seePet.nickname && (
+  const RealContents = meData &&
+    meData.me &&
+    petData &&
+    petData.seePet &&
+    feedData &&
+    feedData.seePetFeed && (
+      <Container>
+        <Content>
+          <ProfilePicArea>
+            <PetAvatar
+              size="xxlg"
+              category={petData.seePet.category}
+              url={petData.seePet.avatar}
+              isBorder={true}
+            />
+          </ProfilePicArea>
+          <ProfileContent>
+            <PetInfo>
+              <h2>
+                {meData &&
+                  meData.me &&
+                  meData.me.id &&
+                  petData &&
+                  petData.seePet &&
+                  petData.seePet.owners &&
+                  petData.seePet.name &&
+                  petData.seePet.owners.length > 0 &&
+                  (petData.seePet.owners.filter(owner => owner.id === meData.me.id).length > 0 ? (
+                    <InstantEditText
+                      maxLength={15}
+                      isEditMode={isNameEdit}
+                      placeholder={petData.seePet.name}
+                      onChange={nameInput.onChange}
+                      value={nameInput.value}
+                      type={"text"}
+                      onEditClick={editNameEdit}
+                      onCancelClick={editNameCancel}
+                      onSaveClick={editNameSave}
+                    />
+                  ) : (
+                    nameInput.value
+                  ))}
+              </h2>{" "}
+              <h3>{petData.seePet.bornAt}</h3>
+            </PetInfo>
+            <PetInfo>
               <>
                 <h2>
-                  <InstantEditText
-                    maxLength={15}
-                    isEditMode={isNicknameEdit}
-                    placeholder={petData.seePet.nickname}
-                    onChange={nicknameInput.onChange}
-                    value={nicknameInput.value}
-                    type={"text"}
-                    onEditClick={editNicknameEdit}
-                    onCancelClick={editNicknameCancel}
-                    onSaveClick={editNicknameSave}
-                  />
+                  {meData &&
+                    meData.me &&
+                    meData.me.id &&
+                    petData &&
+                    petData.seePet &&
+                    petData.seePet.owners &&
+                    petData.seePet.nickname &&
+                    petData.seePet.owners.length > 0 &&
+                    (petData.seePet.owners.filter(owner => owner.id === meData.me.id).length > 0 ? (
+                      <InstantEditText
+                        maxLength={15}
+                        isEditMode={isNicknameEdit}
+                        placeholder={petData.seePet.nickname}
+                        onChange={nicknameInput.onChange}
+                        value={nicknameInput.value}
+                        type={"text"}
+                        onEditClick={editNicknameEdit}
+                        onCancelClick={editNicknameCancel}
+                        onSaveClick={editNicknameSave}
+                      />
+                    ) : (
+                      nicknameInput.value
+                    ))}
                 </h2>
               </>
-            )}
-          </PetInfo>
-          <PetStatisticsList>
-            <li>
-              Posts <FatText text={petData.seePet.postsCount + ""} />
-            </li>
-          </PetStatisticsList>
-        </ProfileContent>
-      </Content>
-      <Content>
-        <OwnerList>
-          {petData &&
-            petData.seePet &&
-            petData.seePet.owners &&
-            petData.seePet.owners.length > 0 &&
-            petData.seePet.owners.map(owner => (
-              <li key={owner.id}>
-                <div key={owner.id}>
-                  <Link to={`${PAGE_USER(owner.username)}`}>
-                    <Avatar category={owner.category} size="lg" url={owner.avatar} />
-                    <Username text={owner.username + ""} length={10} />
-                  </Link>
-                </div>
+            </PetInfo>
+            <PetStatisticsList>
+              <li>
+                Posts <FatText text={petData.seePet.postsCount + ""} />
               </li>
-            ))}
-        </OwnerList>
-      </Content>
-      <Content>
-        <PostList>
-          {feedData &&
-            feedData.seePetFeed &&
-            feedData.seePetFeed.length > 0 &&
-            feedData.seePetFeed.map(post => (
-              <li key={post.id}>
-                <PostSquare post={post} />
-              </li>
-            ))}
-        </PostList>
-      </Content>
-    </Container>
-  );
+            </PetStatisticsList>
+          </ProfileContent>
+        </Content>
+        <Content>
+          <OwnerList>
+            {petData &&
+              petData.seePet &&
+              petData.seePet.owners &&
+              petData.seePet.owners.length > 0 &&
+              petData.seePet.owners.map(owner => (
+                <li key={owner.id}>
+                  <div key={owner.id}>
+                    <Link to={`${PAGE_USER(owner.username)}`}>
+                      <Avatar category={owner.category} size="lg" url={owner.avatar} />
+                      <Username text={owner.username + ""} length={10} />
+                    </Link>
+                  </div>
+                </li>
+              ))}
+          </OwnerList>
+        </Content>
+        <Content>
+          <PostList>
+            {feedData &&
+              feedData.seePetFeed &&
+              feedData.seePetFeed.length > 0 &&
+              feedData.seePetFeed.map(post => (
+                <li key={post.id}>
+                  <PostSquare post={post} />
+                </li>
+              ))}
+          </PostList>
+        </Content>
+      </Container>
+    );
 
-  if (petData && !petLoading) {
+  if (meData && feedData && petData && !petLoading) {
     return (
       <Wrapper>
         <Helmet>
