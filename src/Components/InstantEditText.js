@@ -89,24 +89,33 @@ const InstantEditText = ({
         maxLength={maxLength}
         onKeyPress={e => {
           if (e.which === 27) {
-            //ESC
-            e.preventDefault();
-            onCancelClick();
+            if (onCancelClick !== undefined && onCancelClick !== null) {
+              //ESC
+              e.preventDefault();
+              onCancelClick();
+            }
           } else if (e.which === 13) {
-            e.preventDefault();
-            onSaveClick();
+            if (onSaveClick !== undefined && onCancelClick !== null) {
+              //ENTER
+              e.preventDefault();
+              onSaveClick();
+            }
           }
         }}
       />
-      <CancelButton
-        color={`${props => props.theme.lightGreyColor}`}
-        onClick={() => onCancelClick()}
-      >
-        <span>Cancel</span>
-      </CancelButton>
-      <SaveButton onClick={() => onSaveClick()}>
-        <span>Save</span>
-      </SaveButton>
+      {onCancelClick !== undefined && onCancelClick !== null && (
+        <CancelButton
+          color={`${props => props.theme.lightGreyColor}`}
+          onClick={() => onCancelClick()}
+        >
+          <span>Cancel</span>
+        </CancelButton>
+      )}
+      {onSaveClick !== undefined && onCancelClick !== null && (
+        <SaveButton onClick={() => onSaveClick()}>
+          <span>Save</span>
+        </SaveButton>
+      )}
     </Container>
   );
 
