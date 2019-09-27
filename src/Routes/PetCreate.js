@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Helmet from "react-helmet";
-import { withRouter, Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import styled from "styled-components";
 import { gql } from "apollo-boost";
 import { useQuery, useMutation } from "react-apollo-hooks";
@@ -15,6 +15,10 @@ import { PAGE_USER, PAGE_PET } from "../Components/Routes";
 import InstantEditText from "../Components/InstantEditText";
 import useInput from "../Hooks/useInput";
 import { ME, CATEGORY_CAT, CATEGORY_DOG } from "../SharedQueries";
+//Material Caledar
+import "date-fns";
+import DateFnsUtils from "@date-io/date-fns";
+import { MuiPickersUtilsProvider, KeyboardDatePicker } from "@material-ui/pickers";
 
 const ProfilePicArea = styled.div`
   width: 300px;
@@ -113,9 +117,17 @@ const PostList = styled.ul`
 
 const Container = styled.div``;
 
-const PetCreate = withRouter(({ match: { params: { name } }, history }) => {
+const PetCreate = () => {
   //펫 네임을 기반으로 pet프로필 조사
   const { data: meData, loading: meLoading } = useQuery(ME);
+  const [selectedDate, setSelectedDate] = React.useState(new Date());
+
+  const name = useInput("");
+  const nickname = useInput("");
+
+  const handleDateChange = date => {
+    setSelectedDate(date);
+  };
 
   const RealContents = meData && meData.me && (
     <Container>
@@ -130,16 +142,15 @@ const PetCreate = withRouter(({ match: { params: { name } }, history }) => {
               <InstantEditText
                 maxLength={15}
                 isEditMode={true}
-                placeholder={"input your new pet name!"}
-                onChange={null}
-                value={""}
+                placeholder={"Input your new pet name!"}
+                onChange={name.onChange}
+                value={name.value}
                 type={"text"}
                 onEditClick={null}
                 onCancelClick={null}
                 onSaveClick={null}
               />
             </h2>{" "}
-            <h3>Birthday component</h3>
           </PetInfo>
           <PetInfo>
             <>
@@ -147,9 +158,9 @@ const PetCreate = withRouter(({ match: { params: { name } }, history }) => {
                 <InstantEditText
                   maxLength={15}
                   isEditMode={true}
-                  placeholder={"Input new nickname of your pet!"}
-                  onChange={null}
-                  value={""}
+                  placeholder={"Input nickname of your pet"}
+                  onChange={nickname.onChange}
+                  value={nickname.value}
                   type={"text"}
                   onEditClick={null}
                   onCancelClick={null}
@@ -157,6 +168,25 @@ const PetCreate = withRouter(({ match: { params: { name } }, history }) => {
                 />
               </h2>
             </>
+          </PetInfo>
+          <PetInfo>
+            <h3>
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <KeyboardDatePicker
+                  disableToolbar
+                  variant="inline"
+                  format="MM/dd/yyyy"
+                  margin="normal"
+                  id="date-picker-inline"
+                  label="The birthday of your new pet"
+                  value={selectedDate}
+                  onChange={handleDateChange}
+                  KeyboardButtonProps={{
+                    "aria-label": "change date"
+                  }}
+                />
+              </MuiPickersUtilsProvider>
+            </h3>
           </PetInfo>
         </ProfileContent>
       </Content>
@@ -176,6 +206,6 @@ const PetCreate = withRouter(({ match: { params: { name } }, history }) => {
   } else {
     return <MainLoader />;
   }
-});
+};
 
 export default PetCreate;
