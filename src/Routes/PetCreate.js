@@ -14,7 +14,7 @@ import { Link } from "react-router-dom";
 import { PAGE_USER, PAGE_PET } from "../Components/Routes";
 import InstantEditText from "../Components/InstantEditText";
 import useInput from "../Hooks/useInput";
-import { ME } from "../SharedQueries";
+import { ME, CATEGORY_CAT, CATEGORY_DOG } from "../SharedQueries";
 
 const ProfilePicArea = styled.div`
   width: 300px;
@@ -121,43 +121,40 @@ const PetCreate = withRouter(({ match: { params: { name } }, history }) => {
     <Container>
       <Content>
         <ProfilePicArea>
-          <PetAvatar size="xxlg" isBorder={true} />
+          <PetAvatar size={"xlg"} category={CATEGORY_DOG} url={null} />
+          <PetAvatar size={"xlg"} category={CATEGORY_CAT} url={null} />
         </ProfilePicArea>
         <ProfileContent>
           <PetInfo>
             <h2>
-              {meData && meData.me && meData.me.id && (
-                <InstantEditText
-                  maxLength={15}
-                  isEditMode={true}
-                  placeholder={"input your new pet name!"}
-                  onChange={null}
-                  value={"..."}
-                  type={"text"}
-                  onEditClick={null}
-                  onCancelClick={null}
-                  onSaveClick={null}
-                />
-              )}
+              <InstantEditText
+                maxLength={15}
+                isEditMode={true}
+                placeholder={"input your new pet name!"}
+                onChange={null}
+                value={""}
+                type={"text"}
+                onEditClick={null}
+                onCancelClick={null}
+                onSaveClick={null}
+              />
             </h2>{" "}
             <h3>Birthday component</h3>
           </PetInfo>
           <PetInfo>
             <>
               <h2>
-                {meData && meData.me && meData.me.id && (
-                  <InstantEditText
-                    maxLength={15}
-                    isEditMode={true}
-                    placeholder={"Input new nickname of your pet!"}
-                    onChange={null}
-                    value={"Input new nickname of your pet!"}
-                    type={"text"}
-                    onEditClick={null}
-                    onCancelClick={null}
-                    onSaveClick={null}
-                  />
-                )}
+                <InstantEditText
+                  maxLength={15}
+                  isEditMode={true}
+                  placeholder={"Input new nickname of your pet!"}
+                  onChange={null}
+                  value={""}
+                  type={"text"}
+                  onEditClick={null}
+                  onCancelClick={null}
+                  onSaveClick={null}
+                />
               </h2>
             </>
           </PetInfo>
