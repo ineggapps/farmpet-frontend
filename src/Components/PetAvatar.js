@@ -9,6 +9,7 @@ import { DogWaitingIcon, CatIcon } from "./Icons";
     md=36
     lg=56
 */
+
 const getSize = size => {
   let number;
   if (size === "sm") number = 28;
@@ -16,15 +17,19 @@ const getSize = size => {
   else if (size === "lg") number = 56;
   else if (size === "xlg") number = 77;
   else if (size === "xxlg") number = 150;
-  return `
-  width:${number}px;
+  return number;
+};
+
+const getCSS = size => {
+  const number = getSize(size);
+  return `width:${number}px;
   min-width:${number}px;
   height:${number}px;
     max-height:${number}px`;
 };
 
 const Container = styled.div`
-  ${props => getSize(props.size)};
+  ${props => getCSS(props.size)};
   background-image: url(${props => props.url});
   background-size: cover;
   background-color: ${props => props.theme.darkGreyColor};
@@ -39,9 +44,9 @@ const HasAvatarContainer = ({ size, url }) => <Container size={size} url={url} /
 const HasNotAvatarContainer = ({ category, size }) => (
   <Container size={size}>
     {category === CATEGORY_DOG ? (
-      <DogWaitingIcon size={size} fill={"#FFF"} />
+      <DogWaitingIcon size={getSize(size / 2)} fill={"#FFF"} />
     ) : (
-      <CatIcon size={size} fill={"#FFF"} />
+      <CatIcon size={getSize(size / 2)} fill={"#FFF"} />
     )}
   </Container>
 );
