@@ -139,9 +139,9 @@ InstantEditText.propTypes = {
   value: PropTypes.string,
   onChange: PropTypes.func,
   type: PropTypes.string,
-  onEditClick: PropTypes.func.isRequired,
-  onCancelClick: PropTypes.func.isRequired,
-  onSaveClick: PropTypes.func.isRequired
+  onEditClick: PropTypes.func,
+  onCancelClick: PropTypes.func,
+  onSaveClick: PropTypes.func
 };
 
 export default InstantEditText;
