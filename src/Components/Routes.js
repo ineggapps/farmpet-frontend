@@ -6,6 +6,7 @@ import Search from "../Routes/Search";
 import Profile from "../Routes/Profile";
 import Auth from "../Routes/Auth";
 import Pet from "../Routes/Pet";
+import PetCreate from "../Routes/PetCreate";
 
 //
 export const PAGE_USER = username => `/${username}`;
@@ -15,6 +16,7 @@ export const PAGE_ACCOUNT = username => `/${username}`;
 const LoggedInRoutes = () => (
   <Switch>
     <Route path="/search" component={Search} />
+    <Route path="/pet/create" component={PetCreate} />
     <Route path="/pet/:name" component={Pet} />
     <Route path="/:username" component={Profile} />
     <Route exact path="/" component={Feed} />
