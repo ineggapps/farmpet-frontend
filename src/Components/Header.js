@@ -6,6 +6,8 @@ import { WriteIcon, GNBNotificationIcon, SearchIcon, ProfileIcon } from "./Icons
 import Input from "./Input";
 import useInput from "../Hooks/useInput";
 import { PAGE_ACCOUNT } from "./Routes";
+import { useQuery } from "react-apollo-hooks";
+import { ME } from "../SharedQueries";
 // import { gql } from "apollo-boost";
 // import { useQuery } from "react-apollo-hooks";
 
@@ -84,12 +86,13 @@ const SearchInput = styled(Input)`
 
 export default withRouter(({ history }) => {
   const search = useInput("");
-  // const { data: meData, loading: meLoading } = useQuery(ME);
+  const { data: meData, loading: meLoading } = useQuery(ME);
 
   const onSearchSubmit = e => {
     e.preventDefault();
     history.push(`/search?term=${search.value}`);
   };
+
   return (
     <Header>
       <HeaderWrapper>
@@ -114,9 +117,11 @@ export default withRouter(({ history }) => {
               <GNBNotificationIcon />
             </GNBList>
             <GNBList>
-              <Link to={PAGE_ACCOUNT}>
-                <ProfileIcon />
-              </Link>
+              {!meLoading && meData && meData.me && (
+                <Link to={PAGE_ACCOUNT(meData.me.username)}>
+                  <ProfileIcon />
+                </Link>
+              )}
             </GNBList>
           </GNB>
         </GNBWrapper>
