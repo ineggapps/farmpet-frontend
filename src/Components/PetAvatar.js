@@ -39,9 +39,9 @@ const HasAvatarContainer = ({ size, url }) => <Container size={size} url={url} /
 const HasNotAvatarContainer = ({ category, size }) => (
   <Container size={size}>
     {category === CATEGORY_DOG ? (
-      <DogWaitingIcon size={"24"} fill={"#FFF"} />
+      <DogWaitingIcon size={size} fill={"#FFF"} />
     ) : (
-      <CatIcon size={"24"} fill={"#FFF"} />
+      <CatIcon size={size} fill={"#FFF"} />
     )}
   </Container>
 );
