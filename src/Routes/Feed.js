@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Helmet from "react-helmet";
 import styled from "styled-components";
 import { gql } from "apollo-boost";
@@ -78,7 +78,7 @@ const SectionLeft = styled.section`
 const SNB = styled.section``;
 
 export default () => {
-  const { data, loading } = useQuery(FEED_QUERY);
+  const { data, loading } = useQuery(FEED_QUERY, { fetchPolicy: "cache-and-network" });
   const { data: meData, loading: meLoading } = useQuery(ME);
 
   const LoaderContents = <MainLoader />;
