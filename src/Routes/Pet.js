@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Helmet from "react-helmet";
-import { withRouter, Redirect } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import styled from "styled-components";
 import { gql } from "apollo-boost";
 import { useQuery, useMutation } from "react-apollo-hooks";
