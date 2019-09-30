@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Helmet from "react-helmet";
-import { Redirect } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import styled from "styled-components";
 import { gql } from "apollo-boost";
 import { useQuery, useMutation } from "react-apollo-hooks";
@@ -19,6 +19,24 @@ import { ME, CATEGORY_CAT, CATEGORY_DOG } from "../SharedQueries";
 import "date-fns";
 import DateFnsUtils from "@date-io/date-fns";
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from "@material-ui/pickers";
+
+const CREATE_PET = gql`
+  mutation createPet(
+    $category: PetCategory!
+    $name: String!
+    $nickname: String
+    $bornAt: String
+    $gender: String
+  ) {
+    createPet(
+      category: $category
+      name: $name
+      nickname: $nickname
+      bornAt: $bornAt
+      gender: $gender
+    )
+  }
+`;
 
 const ProfilePicArea = styled.div`
   width: 300px;
@@ -115,9 +133,23 @@ const PostList = styled.ul`
   }
 `;
 
+const CustomButton = styled.button`
+  border-radius: 3px;
+  cursor: pointer;
+  &:focus {
+    outline: none;
+  }
+  height: 30px;
+`;
+
+const RedButton = styled(CustomButton)`
+  ${props => props.theme.redButton}
+`;
+
 const Container = styled.div``;
 
-const PetCreate = () => {
+const PetCreate = withRouter(({ match: { params: { name: paramName } }, history }) => {
+  const [createPetMutation] = useMutation(CREATE_PET);
   //펫 네임을 기반으로 pet프로필 조사
   const { data: meData, loading: meLoading } = useQuery(ME);
   const [selectedDate, setSelectedDate] = React.useState(new Date());
@@ -127,6 +159,25 @@ const PetCreate = () => {
 
   const handleDateChange = date => {
     setSelectedDate(date);
+  };
+
+  const onCreate = async () => {
+    console.log("만들기 클릭");
+    try {
+      const result = await createPetMutation({
+        variables: {
+          category: CATEGORY_DOG,
+          name: name.value,
+          nickname: nickname.value,
+          bornAt: selectedDate
+        }
+      });
+      if (result) {
+        history.replace(PAGE_PET(name.value));
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const RealContents = meData && meData.me && (
@@ -173,12 +224,10 @@ const PetCreate = () => {
             <h3>
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <KeyboardDatePicker
-                  disableToolbar
-                  variant="inline"
-                  format="MM/dd/yyyy"
                   margin="normal"
-                  id="date-picker-inline"
-                  label="The birthday of your new pet"
+                  id="date-picker-dialog"
+                  label="The birthday of your pet"
+                  format="MM/dd/yyyy"
                   value={selectedDate}
                   onChange={handleDateChange}
                   KeyboardButtonProps={{
@@ -190,7 +239,9 @@ const PetCreate = () => {
           </PetInfo>
         </ProfileContent>
       </Content>
-      <Content>만들기 버튼</Content>
+      <Content>
+        <RedButton onClick={() => onCreate()}>Create</RedButton>
+      </Content>
     </Container>
   );
 
@@ -206,6 +257,6 @@ const PetCreate = () => {
   } else {
     return <MainLoader />;
   }
-};
+});
 
 export default PetCreate;
