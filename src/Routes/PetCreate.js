@@ -146,13 +146,31 @@ const RedButton = styled(CustomButton)`
   ${props => props.theme.redButton}
 `;
 
+const Pets = styled.ul`
+  display: flex;
+  flex-direction: row;
+`;
+
+const PetCategory = styled.li`
+  ${props => (props.selected === "selected" ? "opacity:1;" : "opacity:.4;")}
+  &:hover {
+    opacity: 0.8;
+  }
+  &:not(:last-child) {
+    margin-left: 5px;
+  }
+`;
+
 const Container = styled.div``;
 
 const PetCreate = withRouter(({ match: { params: { name: paramName } }, history }) => {
   const [createPetMutation] = useMutation(CREATE_PET);
   //펫 네임을 기반으로 pet프로필 조사
   const { data: meData, loading: meLoading } = useQuery(ME);
-  const [selectedDate, setSelectedDate] = React.useState(new Date());
+
+  const [petCategory, setPetCategory] = useState(CATEGORY_DOG);
+  const petCategories = [CATEGORY_DOG, CATEGORY_CAT];
+  const [selectedDate, setSelectedDate] = useState(new Date());
 
   const name = useInput("");
   const nickname = useInput("");
@@ -166,7 +184,7 @@ const PetCreate = withRouter(({ match: { params: { name: paramName } }, history 
     try {
       const result = await createPetMutation({
         variables: {
-          category: CATEGORY_DOG,
+          category: petCategory,
           name: name.value,
           nickname: nickname.value,
           bornAt: selectedDate
@@ -184,8 +202,16 @@ const PetCreate = withRouter(({ match: { params: { name: paramName } }, history 
     <Container>
       <Content>
         <ProfilePicArea>
-          <PetAvatar size={"xlg"} category={CATEGORY_DOG} url={null} />
-          <PetAvatar size={"xlg"} category={CATEGORY_CAT} url={null} />
+          <Pets>
+            {petCategories.map(category => (
+              <PetCategory
+                selected={petCategory === category ? "selected" : ""}
+                onClick={() => setPetCategory(category)}
+              >
+                <PetAvatar size={"lg"} category={category} url={null} />
+              </PetCategory>
+            ))}
+          </Pets>
         </ProfilePicArea>
         <ProfileContent>
           <PetInfo>
