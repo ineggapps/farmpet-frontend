@@ -168,8 +168,14 @@ const Container = styled.div``;
 const Pet = withRouter(({ match: { params: { name } }, history }) => {
   //펫 네임을 기반으로 pet프로필 조사
   const { data: meData, loading: meLoading } = useQuery(ME);
-  const { data: petData, loading: petLoading } = useQuery(PET_PROFILE, { variables: { name } });
-  const { data: feedData, loading: feedLoading } = useQuery(SEE_PET_FEED, { variables: { name } });
+  const { data: petData, loading: petLoading } = useQuery(PET_PROFILE, {
+    variables: { name },
+    fetchPolicy: "cache-and-network"
+  });
+  const { data: feedData, loading: feedLoading } = useQuery(SEE_PET_FEED, {
+    variables: { name },
+    fetchPolicy: "cache-and-network"
+  });
   // console.log(petData, "petData");
 
   const [updatePetMutation] = useMutation(UPDATE_PET);
