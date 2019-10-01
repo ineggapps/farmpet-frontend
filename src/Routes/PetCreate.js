@@ -203,8 +203,9 @@ const PetCreate = withRouter(({ match: { params: { name: paramName } }, history 
       <Content>
         <ProfilePicArea>
           <Pets>
-            {petCategories.map(category => (
+            {petCategories.map((category, idx) => (
               <PetCategory
+                key={idx}
                 selected={petCategory === category ? "selected" : ""}
                 onClick={() => setPetCategory(category)}
               >
