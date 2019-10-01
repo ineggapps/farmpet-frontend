@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import LinesEllipsis from "react-lines-ellipsis";
 import FatText from "./FatText";
 import PetAvatar from "./PetAvatar";
-import { PAGE_PET } from "./Routes";
+import { PAGE_PET, PAGE_PET_CREATE } from "./Routes";
 
 const Container = styled.div`
   ${props => props.theme.postBoxSide};
@@ -38,13 +38,26 @@ const Profile = styled.div`
   }
 `;
 const FollowButton = styled.div``;
+const CustomButton = styled.button`
+  border-radius: 3px;
+  cursor: pointer;
+  &:focus {
+    outline: none;
+  }
+  height: 30px;
+`;
+const GreenButton = styled(CustomButton)`
+  ${props => props.theme.greenButton}
+`;
 
 const SidePets = ({ title, pets }) => {
   return (
     <Container>
       <Title>
         <FatText text={title} />
-        <FatText text="Add pet" />
+        <Link to={PAGE_PET_CREATE}>
+          <GreenButton>Add Pet</GreenButton>
+        </Link>
       </Title>
       <Pets>
         {pets &&

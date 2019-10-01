@@ -59,6 +59,17 @@ export default {
     background-color:#d95f3a;
   }
 `,
+  greenButton: `
+  border:1px solid #30E6B5;
+  background-color:#30E6B5;
+  color:#FFF;
+  &:focus {
+    outline: none;
+  }
+  &:hover{
+    background-color:#25B38D;
+  }
+`,
   avatar: {
     size: {
       sm: "28px",

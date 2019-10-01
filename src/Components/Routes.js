@@ -11,6 +11,7 @@ import PetCreate from "../Routes/PetCreate";
 //
 export const PAGE_USER = username => `/${username}`;
 export const PAGE_PET = name => `/pet/${name}`;
+export const PAGE_PET_CREATE = `/pet/create`;
 export const PAGE_ACCOUNT = username => `/${username}`;
 
 const LoggedInRoutes = () => (

@@ -149,6 +149,8 @@ const RedButton = styled(CustomButton)`
 const Pets = styled.ul`
   display: flex;
   flex-direction: row;
+  justify-content: center;
+  align-items: center;
 `;
 
 const PetCategory = styled.li`
@@ -157,7 +159,7 @@ const PetCategory = styled.li`
     opacity: 0.8;
   }
   &:not(:last-child) {
-    margin-left: 5px;
+    margin-right: 10px;
   }
 `;
 
@@ -209,7 +211,7 @@ const PetCreate = withRouter(({ match: { params: { name: paramName } }, history 
                 selected={petCategory === category ? "selected" : ""}
                 onClick={() => setPetCategory(category)}
               >
-                <PetAvatar size={"lg"} category={category} url={null} />
+                <PetAvatar size={"xlg"} category={category} url={null} />
               </PetCategory>
             ))}
           </Pets>
