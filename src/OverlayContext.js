@@ -9,9 +9,6 @@ const OverlayContextProvider = ({ children }) => {
     <OverlayContext.Provider value={{ isShow, setIsShow, opacity, setOpacity }}>
       {children}
     </OverlayContext.Provider>
-  return (
-    <OverlayContext.Provider value={{ isShow, setIsShow }}>{children}</OverlayContext.Provider>
-  );
 };
 
 export const useOverlay = () => {
