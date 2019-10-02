@@ -15,6 +15,7 @@ import { PAGE_USER, PAGE_PET } from "../Components/Routes";
 import InstantEditText from "../Components/InstantEditText";
 import useInput from "../Hooks/useInput";
 import { ME } from "../SharedQueries";
+import { PlusButtonIcon } from "../Components/Icons";
 
 const PET_PROFILE = gql`
   query seePet($name: String!) {
@@ -163,6 +164,16 @@ const PostList = styled.ul`
   }
 `;
 
+const AddOwnerButton = styled.div`
+  & svg {
+    fill: #999999;
+  }
+  &:hover svg {
+    fill: #777777;
+  }
+  cursor: pointer;
+`;
+
 const Container = styled.div``;
 
 const Pet = withRouter(({ match: { params: { name } }, history }) => {
@@ -185,6 +196,12 @@ const Pet = withRouter(({ match: { params: { name } }, history }) => {
   //pet nickname
   const [isNicknameEdit, setIsNicknameEdit] = useState(false);
   const nicknameInput = useInput();
+
+  //add pet owner
+  const [isAddPetOwnerMode, setIsAddPetOwnerMode] = useState(false);
+  const toggleOwnerMode = () => {
+    setIsAddPetOwnerMode(!isAddPetOwnerMode);
+  };
 
   const editNameEdit = () => {
     setIsNameEdit(true);
@@ -361,6 +378,27 @@ const Pet = withRouter(({ match: { params: { name } }, history }) => {
                   </div>
                 </li>
               ))}
+            {meData &&
+              meData.me &&
+              meData.me.id &&
+              petData &&
+              petData.seePet &&
+              petData.seePet.owners &&
+              petData.seePet.owners.length > 0 &&
+              petData.seePet.owners.filter(owner => owner.id === meData.me.id) && (
+                <li>
+                  <AddOwnerButton
+                    onClick={() => {
+                      toggleOwnerMode();
+                      console.log(
+                        "The button is for floating component to designate an owner about this pet"
+                      );
+                    }}
+                  >
+                    <PlusButtonIcon size={"56"} />
+                  </AddOwnerButton>
+                </li>
+              )}
           </OwnerList>
         </Content>
         <Content>
