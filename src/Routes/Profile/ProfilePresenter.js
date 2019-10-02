@@ -236,6 +236,34 @@ const ProfilePresenter = ({
     setIsLastNameEdit(false);
   };
 
+  //bio 변경
+  const [isBioEdit, setIsBioEdit] = useState(false);
+  const bioInput = useInput(me.bio);
+  const bioEdit = () => {
+    setIsBioEdit(true);
+  };
+  const bioSave = async () => {
+    try {
+      const result = await updateUserMutation({
+        variables: {
+          bio: bioInput.value
+        }
+      });
+      if (!result.updateAccount) {
+        throw Error();
+      }
+      me.bio = bioInput.value;
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsBioEdit(false);
+    }
+  };
+  const bioCancel = () => {
+    bioInput.setValue(me.bio);
+    setIsBioEdit(false);
+  };
+
   console.log(user, "프로필 출력");
   console.log(me, "내 정보");
   const RealContents = (
@@ -314,7 +342,22 @@ const ProfilePresenter = ({
               Followings <FatText text={followingCount + ""} />
             </li>
           </UserStatisticsList>
-          <span>{user.bio}</span>
+          <span>
+            {user.isSelf ? (
+              <InstantEditText
+                isEditMode={isBioEdit}
+                placeholder={bioInput.value}
+                onChange={bioInput.onChange}
+                value={bioInput.value}
+                type={"text"}
+                onEditClick={bioEdit}
+                onSaveClick={bioSave}
+                onCancelClick={bioCancel}
+              />
+            ) : (
+              user.bio
+            )}
+          </span>
         </ProfileContent>
       </Content>
       <Content>

@@ -10,7 +10,7 @@ const Container = styled.div`
 `;
 
 const Text = styled.span`
-  width: 100%;
+  /* width: 100%; */
 `;
 
 const InputText = styled.input`
