@@ -17,6 +17,7 @@ import useInput from "../Hooks/useInput";
 import { ME } from "../SharedQueries";
 import { PlusButtonIcon } from "../Components/Icons";
 import AddOwner from "../Components/AddOwner";
+import { useOverlay } from "../OverlayContext";
 
 const PET_PROFILE = gql`
   query seePet($name: String!) {
@@ -198,10 +199,12 @@ const Pet = withRouter(({ match: { params: { name } }, history }) => {
   const [isNicknameEdit, setIsNicknameEdit] = useState(false);
   const nicknameInput = useInput();
 
-  //add pet owner
+  //add pet owner r
   const [isAddOwnerMode, setIsAddOwnerMode] = useState(false);
-  const toggleOwnerMode = () => {
+  const { isShow, setIsShow } = useOverlay();
+  const toggleOwnerMode = async () => {
     setIsAddOwnerMode(!isAddOwnerMode);
+    setIsShow(!isShow);
   };
 
   const editNameEdit = () => {
