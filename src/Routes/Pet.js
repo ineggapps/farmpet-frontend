@@ -16,6 +16,7 @@ import InstantEditText from "../Components/InstantEditText";
 import useInput from "../Hooks/useInput";
 import { ME } from "../SharedQueries";
 import { PlusButtonIcon } from "../Components/Icons";
+import AddOwner from "../Components/AddOwner";
 
 const PET_PROFILE = gql`
   query seePet($name: String!) {
@@ -198,9 +199,9 @@ const Pet = withRouter(({ match: { params: { name } }, history }) => {
   const nicknameInput = useInput();
 
   //add pet owner
-  const [isAddPetOwnerMode, setIsAddPetOwnerMode] = useState(false);
+  const [isAddOwnerMode, setIsAddOwnerMode] = useState(false);
   const toggleOwnerMode = () => {
-    setIsAddPetOwnerMode(!isAddPetOwnerMode);
+    setIsAddOwnerMode(!isAddOwnerMode);
   };
 
   const editNameEdit = () => {
@@ -413,6 +414,7 @@ const Pet = withRouter(({ match: { params: { name } }, history }) => {
               ))}
           </PostList>
         </Content>
+        {isAddOwnerMode && <AddOwner />}
       </Container>
     );
 
