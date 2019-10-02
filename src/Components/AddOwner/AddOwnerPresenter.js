@@ -20,10 +20,12 @@ const Component = styled.div`
   border-radius: 3px;
 `;
 
-const AddOwnerPresenter = () => {
+const AddOwnerPresenter = ({ onClose }) => {
   return (
     <Container>
-      <Component>hello world!</Component>
+      <Component>
+        <button onClick={onClose}>닫기</button>
+      </Component>
     </Container>
   );
 };

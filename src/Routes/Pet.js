@@ -202,6 +202,12 @@ const Pet = withRouter(({ match: { params: { name } }, history }) => {
   //add pet owner r
   const [isAddOwnerMode, setIsAddOwnerMode] = useState(false);
   const { isShow, setIsShow } = useOverlay();
+
+  const onClose = async () => {
+    console.log("onClose clicked");
+    toggleOwnerMode();
+  }
+
   const toggleOwnerMode = async () => {
     setIsAddOwnerMode(!isAddOwnerMode);
     setIsShow(!isShow);
@@ -417,7 +423,11 @@ const Pet = withRouter(({ match: { params: { name } }, history }) => {
               ))}
           </PostList>
         </Content>
-        {isAddOwnerMode && <AddOwner />}
+        {isAddOwnerMode && (
+          <AddOwner
+            onClose={onClose}
+          />
+        )}
       </Container>
     );
 

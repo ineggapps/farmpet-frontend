@@ -16,7 +16,7 @@ const Overlay = () => {
   const { isShow, opacity } = useOverlay();
   console.log(isShow, "isShow상태", opacity);
   if (isShow) {
-    return <BlackScreen opacity={opacity}>BlackScreen</BlackScreen>;
+    return <BlackScreen opacity={opacity}></BlackScreen>;
   } else {
     return null;
   }

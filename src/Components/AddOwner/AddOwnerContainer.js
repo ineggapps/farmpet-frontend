@@ -2,10 +2,12 @@ import React from "react";
 import PropTypes from "prop-types";
 import AddOwnerPresenter from "./AddOwnerPresenter";
 
-const AddOwnerContainer = () => {
-  return <AddOwnerPresenter />;
+const AddOwnerContainer = ({ onClose }) => {
+  return <AddOwnerPresenter onClose={onClose} />;
 };
 
-AddOwnerContainer.propTypes = {};
+AddOwnerContainer.propTypes = {
+  onClose: PropTypes.func.isRequired
+};
 
 export default AddOwnerContainer;
