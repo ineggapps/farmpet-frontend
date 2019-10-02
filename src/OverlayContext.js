@@ -9,10 +9,7 @@ const OverlayContextProvider = ({ children }) => {
     <OverlayContext.Provider value={{ isShow, setIsShow, opacity, setOpacity }}>
       {children}
     </OverlayContext.Provider>
-<<<<<<< HEAD
   );
-=======
->>>>>>> e525eaa736613d491d19de505753facd200c74ef
 };
 
 export const useOverlay = () => {
