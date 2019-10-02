@@ -10,8 +10,8 @@ import Header from "./Header";
 import Footer from "./Footer";
 import styled from "styled-components";
 import PostGallery from "../Components/PostGallery";
-import { usePostGallery } from "../PostGalleryContext";
 import ContextProviders from "../ContextProviders";
+import Overlay from "./Overlay";
 
 const QUERY = gql`
   {
@@ -37,6 +37,7 @@ export default () => {
 
   return (
     <ContextProviders>
+      <Overlay />
       <PostGallery />
       <Wrapper>
         <GlobalStyles />
