@@ -6,17 +6,17 @@ const BlackScreen = styled.div`
   z-index: 3000;
   position: fixed;
   background-color: #000;
-  opacity: 0.8;
+  opacity: ${props => props.opacity};
   top: 0;
   width: 100%;
   height: 100%;
 `;
 
 const Overlay = () => {
-  const { isShow, setIsShow } = useOverlay();
-  console.log(isShow, "isShow상태");
+  const { isShow, opacity } = useOverlay();
+  console.log(isShow, "isShow상태", opacity);
   if (isShow) {
-    return <BlackScreen>BlackScreen</BlackScreen>;
+    return <BlackScreen opacity={opacity}>BlackScreen</BlackScreen>;
   } else {
     return null;
   }
