@@ -25,7 +25,10 @@ const Component = styled.div`
 const Title = styled.header`
   width: 100%;
   padding: 10px;
-  border-bottom: 1px solid ${props => props.theme.lightGreyColor};
+  border-bottom: 1px solid ${props => props.theme.superLightGreyColor};
+  & h2 {
+    font-weight: bold;
+  }
 `;
 
 const ListContainer = styled.div`
@@ -38,9 +41,17 @@ const ListContainer = styled.div`
   flex-grow: 3;
 `;
 
-const ListOfMyFriends = styled.div``;
+const ListOfMyFriends = styled.div`
+  width: 100%;
+  height: 100%;
+  flex-grow: 1;
+`;
 
-const ListOfSelectedFriends = styled.div``;
+const ListOfSelectedFriends = styled.div`
+  width: 100%;
+  height: 100%;
+  flex-grow: 1;
+`;
 
 const ButtonArea = styled.div`
   padding: 10px;
@@ -48,12 +59,12 @@ const ButtonArea = styled.div`
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  &:not(:last-child) {
+  & > *:not(:last-child) {
     margin-right: 10px;
   }
 `;
 
-const AddOwnerPresenter = ({ onClose }) => {
+const AddOwnerPresenter = ({ onClose, meData }) => {
   return (
     <Container>
       <Component>
@@ -61,8 +72,11 @@ const AddOwnerPresenter = ({ onClose }) => {
           <h2>Add Owners</h2>
         </Title>
         <ListContainer>
-          <ListOfMyFriends>ff</ListOfMyFriends>
-          <ListOfSelectedFriends></ListOfSelectedFriends>
+          <ListOfMyFriends>
+            Container컴포넌트에서 추가할 수 있는 user의 대상을 받아온다. 그것을 전달받아서
+            Presenter에 뿌려 주기
+          </ListOfMyFriends>
+          <ListOfSelectedFriends>0000</ListOfSelectedFriends>
         </ListContainer>
         <ButtonArea>
           <ButtonRed text="Qualify" onClick={onClose} />
