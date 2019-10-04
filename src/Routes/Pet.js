@@ -71,6 +71,17 @@ const UPDATE_PET = gql`
   }
 `;
 
+const SEE_CANDIDATE = gql`
+  query seeCandidate($petname: String!) {
+    seeCandidate(petname: $petname) {
+      id
+      username
+      firstName
+      lastName
+    }
+  }
+`;
+
 const ProfilePicArea = styled.div`
   width: 300px;
   display: flex;
@@ -185,6 +196,10 @@ const Pet = withRouter(({ match: { params: { name } }, history }) => {
     variables: { name },
     fetchPolicy: "cache-and-network"
   });
+  const { data: candidateData, loading: candidateLoading } = useQuery(SEE_CANDIDATE, {
+    variables: { petname: name },
+    fetchPolicy: "cache-and-network"
+  });
   const { data: feedData, loading: feedLoading } = useQuery(SEE_PET_FEED, {
     variables: { name },
     fetchPolicy: "cache-and-network"
@@ -206,7 +221,7 @@ const Pet = withRouter(({ match: { params: { name } }, history }) => {
   const onClose = async () => {
     console.log("onClose clicked");
     toggleOwnerMode();
-  }
+  };
 
   const toggleOwnerMode = async () => {
     setIsAddOwnerMode(!isAddOwnerMode);
@@ -401,7 +416,8 @@ const Pet = withRouter(({ match: { params: { name } }, history }) => {
                     onClick={() => {
                       toggleOwnerMode();
                       console.log(
-                        "The button is for floating component to designate an owner about this pet"
+                        "The button is for floating component to designate an owner about this pet",
+                        candidateData
                       );
                     }}
                   >
@@ -423,10 +439,8 @@ const Pet = withRouter(({ match: { params: { name } }, history }) => {
               ))}
           </PostList>
         </Content>
-        {isAddOwnerMode && (
-          <AddOwner
-            onClose={onClose}
-          />
+        {isAddOwnerMode && candidateData && candidateData.seeCandidate && (
+          <AddOwner onClose={onClose} candidates={candidateData.seeCandidate} />
         )}
       </Container>
     );

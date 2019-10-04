@@ -64,7 +64,8 @@ const ButtonArea = styled.div`
   }
 `;
 
-const AddOwnerPresenter = ({ onClose, meData }) => {
+const AddOwnerPresenter = ({ onClose, candidates }) => {
+  console.log(candidates);
   return (
     <Container>
       <Component>

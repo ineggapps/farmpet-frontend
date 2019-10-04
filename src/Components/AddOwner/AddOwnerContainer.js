@@ -4,8 +4,8 @@ import AddOwnerPresenter from "./AddOwnerPresenter";
 import { ME } from "../../SharedQueries";
 import MainLoader from "../MainLoader";
 
-const AddOwnerContainer = ({ onClose }) => {
-  return <AddOwnerPresenter onClose={onClose} />;
+const AddOwnerContainer = ({ onClose, candidates }) => {
+  return <AddOwnerPresenter onClose={onClose} candidates={candidates} />;
 };
 
 AddOwnerContainer.propTypes = {
