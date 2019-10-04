@@ -75,6 +75,7 @@ const SEE_CANDIDATE = gql`
   query seeCandidate($petname: String!) {
     seeCandidate(petname: $petname) {
       id
+      avatar
       username
       firstName
       lastName
