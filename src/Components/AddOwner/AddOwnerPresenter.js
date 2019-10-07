@@ -106,7 +106,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const AddOwnerPresenter = ({ onClose, candidates, toggleCheck, chosenUser }) => {
+const AddOwnerPresenter = ({ onQualify, onClose, candidates, toggleCheck, chosenUser }) => {
   //https://codesandbox.io/s/material-demo-1txxt
   const classes = useStyles();
   return (
@@ -177,7 +177,7 @@ const AddOwnerPresenter = ({ onClose, candidates, toggleCheck, chosenUser }) => 
           </ListOfUsers>
         </ListContainer>
         <ButtonArea>
-          <ButtonRed text="Qualify" onClick={onClose} />
+          <ButtonRed text="Qualify" onClick={() => onQualify(chosenUser)} />
           <ButtonWhite text="Cancel" onClick={onClose} />
         </ButtonArea>
       </Component>

@@ -30,6 +30,7 @@ const AddOwnerContainer = ({ onQualify, onClose, candidates }) => {
 
   return (
     <AddOwnerPresenter
+      onQualify={onQualify}
       onClose={onClose}
       candidates={candidatesS}
       toggleCheck={toggleCheck}
@@ -39,7 +40,8 @@ const AddOwnerContainer = ({ onQualify, onClose, candidates }) => {
 };
 
 AddOwnerContainer.propTypes = {
-  onClose: PropTypes.func.isRequired
+  onClose: PropTypes.func.isRequired,
+  onQualify: PropTypes.func.isRequired
 };
 
 export default AddOwnerContainer;

@@ -83,6 +83,12 @@ const SEE_CANDIDATE = gql`
   }
 `;
 
+const ADD_OWNERS = gql`
+  mutation addOwners($petname: String!, $owners: [String!]!) {
+    addOwners(petname: $petname, owners: $owners)
+  }
+`;
+
 const ProfilePicArea = styled.div`
   width: 300px;
   display: flex;
@@ -216,8 +222,15 @@ const Pet = withRouter(({ match: { params: { name } }, history }) => {
   const nicknameInput = useInput();
 
   //add pet owner r
+  const [addOwnersMutation] = useMutation(ADD_OWNERS);
   const [isAddOwnerMode, setIsAddOwnerMode] = useState(false);
   const { isShow, setIsShow } = useOverlay();
+
+  const onQualify = async chosenUser => {
+    console.log("onQualify clicked", chosenUser);
+    addOwnersMutation({ variables: { petname: name, owners: chosenUser.map(c => c.username) } });
+    toggleOwnerMode();
+  };
 
   const onClose = async () => {
     console.log("onClose clicked");
@@ -441,7 +454,11 @@ const Pet = withRouter(({ match: { params: { name } }, history }) => {
           </PostList>
         </Content>
         {isAddOwnerMode && candidateData && candidateData.seeCandidate && (
-          <AddOwner onClose={onClose} candidates={candidateData.seeCandidate} />
+          <AddOwner
+            onQualify={onQualify}
+            onClose={onClose}
+            candidates={candidateData.seeCandidate}
+          />
         )}
       </Container>
     );
