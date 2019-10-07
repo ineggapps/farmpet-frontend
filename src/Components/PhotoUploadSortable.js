@@ -10,6 +10,7 @@ import HashMap from "hashmap";
 import PhotoUploadCaption from "./PhotoUploadCaption";
 import { SpeechBubbleIcon } from "./Icons";
 import { getAddress } from "../GlobalVariables";
+import { TOKEN } from "../Apollo/LocalState";
 
 const Container = styled.div``;
 const SortableUl = styled.ul`
@@ -288,9 +289,17 @@ const PhotoUploadSortable = ({ onUploadStart, onUploadEnd, onImageUploaded }) =>
     setFiles([...files, ...newFiles]);
     setResultId(uuids);
 
-    const { data } = await axios.post(getAddress("api/upload"), formData, {
-      "content-type": "multipart/form-data"
-    });
+    const options = {
+      method: "POST",
+      url: getAddress("api/upload"),
+      headers: {
+        "content-type": "multipart/form-data",
+        Authorization: `Bearer ${localStorage.getItem(TOKEN)}`
+      },
+      data: formData
+    };
+
+    const { data } = await axios(options);
     setResult(data);
   };
 
