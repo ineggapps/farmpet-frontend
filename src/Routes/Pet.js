@@ -139,6 +139,9 @@ const PetInfo = styled.div`
   & > *:not(:last-child) {
     margin-right: 20px;
   }
+  & h2 {
+    height: 40px;
+  }
 `;
 
 const PetStatisticsList = styled.ul`
@@ -223,12 +226,28 @@ const Pet = withRouter(({ match: { params: { name } }, history }) => {
 
   //add pet owner r
   const [addOwnersMutation] = useMutation(ADD_OWNERS);
+  const [petOwners, setPetOwners] = useState();
   const [isAddOwnerMode, setIsAddOwnerMode] = useState(false);
   const { isShow, setIsShow } = useOverlay();
 
   const onQualify = async chosenUser => {
     console.log("onQualify clicked", chosenUser);
-    addOwnersMutation({ variables: { petname: name, owners: chosenUser.map(c => c.username) } });
+    const result = await addOwnersMutation({
+      variables: { petname: name, owners: chosenUser.map(c => c.username) }
+    });
+    //소유자 추가 요청 쿼리문
+    if (result.data.addOwners) {
+      // console.log(result.data.addOwners);
+      setPetOwners([...petOwners, ...chosenUser]);
+    }
+    //소유자 목록 후보에서 제거
+    // if (candidateData && candidateData.seeCandidate) {
+    chosenUser.forEach(u => {
+      candidateData.seeCandidate = candidateData.seeCandidate.filter(
+        c => c.username !== u.username
+      );
+    });
+    // }
     toggleOwnerMode();
   };
 
@@ -312,6 +331,12 @@ const Pet = withRouter(({ match: { params: { name } }, history }) => {
   };
 
   useEffect(() => {
+    //pet owner 초기화
+    if (petOwners === undefined && petData && petData.seePet && petData.seePet.owners) {
+      setPetOwners(petData.seePet.owners.map(owner => owner));
+      console.log(petData.seePet.owners, "음음", petOwners);
+    }
+    //nickname 설정하기
     if (petData && petData.seePet && !isNicknameEdit && nicknameInput.value === undefined) {
       if (petData.seePet.nickname === null || petData.seePet.nickname === undefined) {
         petData.seePet.nickname = "...";
@@ -347,7 +372,7 @@ const Pet = withRouter(({ match: { params: { name } }, history }) => {
                   petData.seePet.owners &&
                   petData.seePet.name &&
                   petData.seePet.owners.length > 0 &&
-                  (petData.seePet.owners.filter(owner => owner.id === meData.me.id).length > 0 ? (
+                  (petData.seePet.owners[0].id === meData.me.id ? (
                     <InstantEditText
                       maxLength={15}
                       isEditMode={isNameEdit}
@@ -403,11 +428,9 @@ const Pet = withRouter(({ match: { params: { name } }, history }) => {
         </Content>
         <Content>
           <OwnerList>
-            {petData &&
-              petData.seePet &&
-              petData.seePet.owners &&
-              petData.seePet.owners.length > 0 &&
-              petData.seePet.owners.map(owner => (
+            {petOwners &&
+              petOwners.length > 0 &&
+              petOwners.map(owner => (
                 <li key={owner.id}>
                   <div key={owner.id}>
                     <Link to={`${PAGE_USER(owner.username)}`}>
@@ -424,8 +447,12 @@ const Pet = withRouter(({ match: { params: { name } }, history }) => {
               petData.seePet &&
               petData.seePet.owners &&
               petData.seePet.owners.length > 0 &&
-              petData.seePet.owners.filter(owner => owner.id === meData.me.id) && (
-                <li>
+              petData.seePet.owners[0].id === meData.me.id &&
+              candidateData &&
+              candidateData.seeCandidate &&
+              candidateData.seeCandidate.length > 0 && (
+                /*
+              petData.seePet.owners.filter(owner => owner.id === meData.me.id) &&*/ <li>
                   <AddOwnerButton
                     onClick={() => {
                       toggleOwnerMode();
