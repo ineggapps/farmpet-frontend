@@ -4,7 +4,10 @@ import ButtonRed from "../ButtonRed";
 import ButtonWhite from "../ButtonWhite";
 import Avatar from "../Avatar";
 import { FormControlLabel, Checkbox } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 import { withStyles } from "@material-ui/styles";
+import IconButton from "@material-ui/core/IconButton";
+import DeleteIcon from "@material-ui/icons/Delete";
 
 const Container = styled.div`
   z-index: 4000; /* overlay가 z-index:3000임 */
@@ -38,8 +41,6 @@ const ListContainer = styled.div`
   display: flex;
   width: 100%;
   height: 363px;
-  justify-content: center;
-  align-items: center;
   flex-direction: row;
   flex-grow: 3;
 `;
@@ -62,16 +63,17 @@ const Item = styled.div`
   }
 `;
 
-const ListOfMyFriends = styled.div`
+const ListOfUsers = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 100%;
   height: 100%;
   flex-grow: 1;
-`;
 
-const ListOfSelectedFriends = styled.div`
-  width: 100%;
-  height: 100%;
-  flex-grow: 1;
+  & ul {
+    width: 100%;
+  }
 `;
 
 const ButtonArea = styled.div`
@@ -95,14 +97,18 @@ const GreenCheckbox = withStyles({
   checked: {}
 })(props => <Checkbox color="default" {...props} />);
 
-const AddOwnerPresenter = ({ onClose, candidates }) => {
-  //https://codesandbox.io/s/material-demo-1txxt
-  const [isCheck, setIsCheck] = useState(false);
-  const handleChange = name => event => {
-    setIsCheck(!isCheck);
-  };
+const useStyles = makeStyles(theme => ({
+  button: {
+    margin: theme.spacing(1)
+  },
+  input: {
+    display: "none"
+  }
+}));
 
-  console.log(candidates);
+const AddOwnerPresenter = ({ onClose, candidates, toggleCheck, chosenUser }) => {
+  //https://codesandbox.io/s/material-demo-1txxt
+  const classes = useStyles();
   return (
     <Container>
       <Component>
@@ -110,11 +116,11 @@ const AddOwnerPresenter = ({ onClose, candidates }) => {
           <h2>Add Owners</h2>
         </Title>
         <ListContainer>
-          <ListOfMyFriends>
+          <ListOfUsers>
             <ul>
               {candidates &&
                 candidates.map(c => (
-                  <li>
+                  <li key={c.id}>
                     <Item>
                       <div>
                         <Avatar size="md" url={c.avatar} />
@@ -127,7 +133,11 @@ const AddOwnerPresenter = ({ onClose, candidates }) => {
                       <div>
                         <FormControlLabel
                           control={
-                            <GreenCheckbox checked={isCheck} onChange={handleChange()} value="" />
+                            <GreenCheckbox
+                              checked={c.isChecked}
+                              onClick={() => toggleCheck(c.username)}
+                              value=""
+                            />
                           }
                           label=""
                         />
@@ -136,8 +146,35 @@ const AddOwnerPresenter = ({ onClose, candidates }) => {
                   </li>
                 ))}
             </ul>
-          </ListOfMyFriends>
-          <ListOfSelectedFriends>0000</ListOfSelectedFriends>
+          </ListOfUsers>
+          <ListOfUsers>
+            <ul>
+              {chosenUser &&
+                chosenUser.map(c => (
+                  <li key={c.id}>
+                    <Item>
+                      <div>
+                        <Avatar size="md" url={c.avatar} />
+                      </div>
+                      <div>
+                        {c.username}
+                        {c.firstName}
+                        {c.lastName}
+                      </div>
+                      <div>
+                        <IconButton
+                          className={classes.button}
+                          aria-label="delete"
+                          onClick={() => toggleCheck(c.username)}
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                      </div>
+                    </Item>
+                  </li>
+                ))}
+            </ul>
+          </ListOfUsers>
         </ListContainer>
         <ButtonArea>
           <ButtonRed text="Qualify" onClick={onClose} />
