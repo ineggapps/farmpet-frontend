@@ -14,10 +14,13 @@ import { Link } from "react-router-dom";
 import { PAGE_USER, PAGE_PET } from "../Components/Routes";
 import InstantEditText from "../Components/InstantEditText";
 import useInput from "../Hooks/useInput";
-import { ME } from "../SharedQueries";
+import { ME, UPLOAD_API_AVATAR_NAME } from "../SharedQueries";
 import { PlusButtonIcon } from "../Components/Icons";
 import AddOwner from "../Components/AddOwner";
 import { useOverlay } from "../OverlayContext";
+import { getAddress } from "../GlobalVariables";
+import { TOKEN } from "../Apollo/LocalState";
+import axios from "axios";
 
 const PET_PROFILE = gql`
   query seePet($name: String!) {
@@ -359,10 +362,23 @@ const Pet = withRouter(({ match: { params: { name } }, history }) => {
     handleSubmit();
   };
   const handleSubmit = async () => {
-    const formData = new FormData();
     const image = fileInput.current.files[0];
     if (image !== undefined) {
+      //이미지를 첨부한 경우
       console.log(image, "이미지");
+      const formData = new FormData();
+      formData.append(UPLOAD_API_AVATAR_NAME, image);
+      const options = {
+        method: "POST",
+        url: getAddress("api/upload/pet"),
+        headers: {
+          "content-type": "multipart/form-data",
+          Authorization: `Bearer ${localStorage.getItem(TOKEN)}`
+        },
+        data: formData
+      };
+      const { data } = await axios(options);
+      console.log(data);
     } else {
       // console.log("첨부된 이미지 없음 (사용자가 파일 첨부 창에서 취소를 눌렀을 때)");
     }
