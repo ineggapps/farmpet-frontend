@@ -429,7 +429,7 @@ const Pet = withRouter(({ match: { params: { name } }, history }) => {
               onClick={e => {
                 e.preventDefault();
                 // console.log("클릭됨");
-                if (petData.seePet.owners.filter(o => o.id === meData.me.id)) {
+                if (petData.seePet.owners.filter(o => o.id === meData.me.id).length > 0) {
                   //소유자만 프로필사진을 변경할 수 있음.
                   fileInput.current.click();
                 }
