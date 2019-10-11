@@ -79,7 +79,7 @@ const SNB = styled.section``;
 
 export default () => {
   const { data, loading } = useQuery(FEED_QUERY, { fetchPolicy: "cache-and-network" });
-  const { data: meData, loading: meLoading } = useQuery(ME);
+  const { data: meData, loading: meLoading } = useQuery(ME, { fetchPolicy: "cache-and-network" });
 
   const LoaderContents = <MainLoader />;
 
