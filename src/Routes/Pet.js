@@ -417,7 +417,7 @@ const Pet = withRouter(({ match: { params: { name } }, history }) => {
           <ProfilePicArea>
             <NonDisplayFileInput
               type="file"
-              accpet="image/*"
+              accept="image/*"
               ref={fileInput}
               onChange={onFileChange}
             />
