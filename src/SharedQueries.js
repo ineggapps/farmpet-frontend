@@ -1,6 +1,7 @@
 import { gql } from "apollo-boost";
 
 export const UPLOAD_API_NAME = "photos";
+export const UPLOAD_API_AVATAR_NAME = "photo";
 
 export const CATEGORY_DOG = "DOG";
 export const CATEGORY_CAT = "CAT";
