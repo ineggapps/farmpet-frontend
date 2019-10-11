@@ -76,8 +76,8 @@ const UserStatisticsList = styled.ul`
 
 const PetList = styled.ul`
   display: grid;
-  grid-template-columns: repeat(8, 3fr);
-  grid-gap: 37.5px;
+  grid-template-columns: repeat(10, 1fr);
+  grid-gap: 19.6px;
   & li {
     & > div {
       flex-direction: column;
@@ -89,7 +89,7 @@ const PetList = styled.ul`
     & span {
       min-width: 100%;
     }
-    width: 90px;
+    width: 80px;
     max-width: 90px;
   }
 `;
