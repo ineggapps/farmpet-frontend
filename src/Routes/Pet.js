@@ -224,7 +224,7 @@ const Pet = withRouter(({ match: { params: { name } }, history }) => {
   const [isNameEdit, setIsNameEdit] = useState(false);
   const nameInput = useInput(name);
   //pet avatar
-  const [petAvatarUrl, setPetAvatarUrl] = useState();
+  const [petAvatarUrl, setPetAvatarUrl] = useState(null);
 
   //pet nickname
   const [isNicknameEdit, setIsNicknameEdit] = useState(false);
@@ -338,7 +338,12 @@ const Pet = withRouter(({ match: { params: { name } }, history }) => {
 
   useEffect(() => {
     //petAvatar 초기화
-    if (petAvatarUrl === undefined && petData && petData.seePet && petData.seePet.avatar) {
+    if (
+      (petAvatarUrl === undefined || petAvatarUrl === null) &&
+      petData &&
+      petData.seePet &&
+      petData.seePet.avatar
+    ) {
       setPetAvatarUrl(petData.seePet.avatar);
     }
     //pet owner 초기화
@@ -424,7 +429,10 @@ const Pet = withRouter(({ match: { params: { name } }, history }) => {
               onClick={e => {
                 e.preventDefault();
                 // console.log("클릭됨");
-                fileInput.current.click();
+                if (petData.seePet.owners.filter(o => o.id === meData.me.id)) {
+                  //소유자만 프로필사진을 변경할 수 있음.
+                  fileInput.current.click();
+                }
               }}
             />
           </ProfilePicArea>
