@@ -379,6 +379,22 @@ const Pet = withRouter(({ match: { params: { name } }, history }) => {
       };
       const { data } = await axios(options);
       console.log(data);
+      if (data.url !== undefined && data.url !== null) {
+        //mutation 전송 시도
+        //굳이 url을 받고 다시 서버측으로 전송하려는 이유?
+        //나중에 raw파일을 업로드하고 크롭한 부분을 다시 서버에 보내서 이미지를 크롭하여 리사이징하기 위함.
+        const result = await updatePetMutation({
+          variables: {
+            id: petData.seePet.id,
+            avatar: data.url
+          }
+        });
+        if (result.data.updatePet) {
+          setPetAvatarUrl(data.url);
+        } else {
+          console.log("아바타 업데이트 실패");
+        }
+      }
     } else {
       // console.log("첨부된 이미지 없음 (사용자가 파일 첨부 창에서 취소를 눌렀을 때)");
     }
