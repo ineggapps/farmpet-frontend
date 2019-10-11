@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Helmet from "react-helmet";
 import { withRouter } from "react-router-dom";
 import styled from "styled-components";
@@ -215,11 +215,13 @@ const Pet = withRouter(({ match: { params: { name } }, history }) => {
     fetchPolicy: "cache-and-network"
   });
   // console.log(petData, "petData");
-
   const [updatePetMutation] = useMutation(UPDATE_PET);
   //pet name
   const [isNameEdit, setIsNameEdit] = useState(false);
   const nameInput = useInput(name);
+  //pet avatar
+  const [petAvatarUrl, setPetAvatarUrl] = useState(null);
+
   //pet nickname
   const [isNicknameEdit, setIsNicknameEdit] = useState(false);
   const nicknameInput = useInput();
@@ -331,6 +333,10 @@ const Pet = withRouter(({ match: { params: { name } }, history }) => {
   };
 
   useEffect(() => {
+    //petAvatar 초기화
+    if (petAvatarUrl === null && petData && petData.seePet && petData.seePet.avatar) {
+      setPetAvatarUrl(petData.seePet.avatar);
+    }
     //pet owner 초기화
     if (petOwners === undefined && petData && petData.seePet && petData.seePet.owners) {
       setPetOwners(petData.seePet.owners.map(owner => owner));
@@ -345,6 +351,23 @@ const Pet = withRouter(({ match: { params: { name } }, history }) => {
     }
   });
 
+  const NonDisplayFileInput = styled.input`
+    display: none;
+  `;
+  const fileInput = useRef(null);
+  const onFileChange = () => {
+    handleSubmit();
+  };
+  const handleSubmit = async () => {
+    const formData = new FormData();
+    const image = fileInput.current.files[0];
+    if (image !== undefined) {
+      console.log(image, "이미지");
+    } else {
+      // console.log("첨부된 이미지 없음 (사용자가 파일 첨부 창에서 취소를 눌렀을 때)");
+    }
+  };
+
   const RealContents = meData &&
     meData.me &&
     petData &&
@@ -354,11 +377,22 @@ const Pet = withRouter(({ match: { params: { name } }, history }) => {
       <Container>
         <Content>
           <ProfilePicArea>
+            <NonDisplayFileInput
+              type="file"
+              accpet="image/*"
+              ref={fileInput}
+              onChange={onFileChange}
+            />
             <PetAvatar
               size="xxlg"
               category={petData.seePet.category}
-              url={petData.seePet.avatar}
+              url={petAvatarUrl} /*petData.seePet.avatar*/
               isBorder={true}
+              onClick={e => {
+                e.preventDefault();
+                // console.log("클릭됨");
+                fileInput.current.click();
+              }}
             />
           </ProfilePicArea>
           <ProfileContent>
