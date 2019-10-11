@@ -40,9 +40,11 @@ const Container = styled.div`
   align-items: center;
 `;
 
-const HasAvatarContainer = ({ size, url }) => <Container size={size} url={url} />;
-const HasNotAvatarContainer = ({ category, size }) => (
-  <Container size={size}>
+const HasAvatarContainer = ({ size, url, onClick }) => (
+  <Container size={size} url={url} onClick={onClick} />
+);
+const HasNotAvatarContainer = ({ category, size, onClick }) => (
+  <Container size={size} onClick={onClick}>
     {category === CATEGORY_DOG ? (
       <DogWaitingIcon size={getSize(size / 2)} fill={"#FFF"} />
     ) : (
@@ -51,11 +53,11 @@ const HasNotAvatarContainer = ({ category, size }) => (
   </Container>
 );
 
-const PetAvatar = ({ category, size = "sm", url }) => {
+const PetAvatar = ({ category, size = "sm", url, onClick }) => {
   return url === "" || url === null ? (
-    <HasNotAvatarContainer category={category} size={size} url={url} />
+    <HasNotAvatarContainer category={category} size={size} url={url} onClick={onClick} />
   ) : (
-    <HasAvatarContainer size={size} url={url} />
+    <HasAvatarContainer size={size} url={url} onClick={onClick} />
   );
 };
 
