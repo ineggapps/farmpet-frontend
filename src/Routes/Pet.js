@@ -21,6 +21,7 @@ import { useOverlay } from "../OverlayContext";
 import { getAddress } from "../GlobalVariables";
 import { TOKEN } from "../Apollo/LocalState";
 import axios from "axios";
+import uuidv4 from "uuid/v4";
 
 const PET_PROFILE = gql`
   query seePet($name: String!) {
@@ -223,7 +224,7 @@ const Pet = withRouter(({ match: { params: { name } }, history }) => {
   const [isNameEdit, setIsNameEdit] = useState(false);
   const nameInput = useInput(name);
   //pet avatar
-  const [petAvatarUrl, setPetAvatarUrl] = useState(null);
+  const [petAvatarUrl, setPetAvatarUrl] = useState();
 
   //pet nickname
   const [isNicknameEdit, setIsNicknameEdit] = useState(false);
@@ -337,7 +338,7 @@ const Pet = withRouter(({ match: { params: { name } }, history }) => {
 
   useEffect(() => {
     //petAvatar 초기화
-    if (petAvatarUrl === null && petData && petData.seePet && petData.seePet.avatar) {
+    if (petAvatarUrl === undefined && petData && petData.seePet && petData.seePet.avatar) {
       setPetAvatarUrl(petData.seePet.avatar);
     }
     //pet owner 초기화
@@ -390,7 +391,7 @@ const Pet = withRouter(({ match: { params: { name } }, history }) => {
           }
         });
         if (result.data.updatePet) {
-          setPetAvatarUrl(data.url);
+          setPetAvatarUrl(`${data.url}?tid=${uuidv4()}`);
         } else {
           console.log("아바타 업데이트 실패");
         }
