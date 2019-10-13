@@ -34,9 +34,9 @@ const Container = styled.div`
 const defaultUrl =
   "https://scontent-yyz1-1.cdninstagram.com/vp/4acedf76fe4828b4d63ba8005945d182/5DCB27F1/t51.2885-19/44884218_345707102882519_2446069589734326272_n.jpg?_nc_ht=scontent-yyz1-1.cdninstagram.com";
 
-const Avatar = ({ size = "sm", url = defaultUrl, isBorder = false }) => {
+const Avatar = ({ size = "sm", url = defaultUrl, isBorder = false, onClick }) => {
   url = url === "" || url === null ? defaultUrl : url;
-  return <Container size={size} url={url} isBorder={isBorder} />;
+  return <Container size={size} url={url} isBorder={isBorder} onClick={onClick} />;
 };
 
 Avatar.propTypes = {

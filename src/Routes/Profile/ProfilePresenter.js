@@ -11,8 +11,6 @@ import { Link } from "react-router-dom";
 import { PAGE_PET, PAGE_ACCOUNT, PAGE_USER } from "../../Components/Routes";
 import InstantEditText from "../../Components/InstantEditText";
 import useInput from "../../Hooks/useInput";
-import gql from "graphql-tag";
-import { useMutation } from "react-apollo-hooks";
 
 const Wrapper = styled.div`
   width: 975px;
@@ -109,28 +107,19 @@ const PostList = styled.ul`
   }
 `;
 
-const UPDATE_ACCOUNT = gql`
-  mutation updateAccount(
-    $avatar: String
-    $username: String
-    $firstName: String
-    $lastName: String
-    $bio: String
-  ) {
-    updateAccount(
-      avatar: $avatar
-      username: $username
-      firstName: $firstName
-      lastName: $lastName
-      bio: $bio
-    )
-  }
+const NonDisplayFileInput = styled.input`
+  display: none;
 `;
 
 const ProfilePresenter = ({
   feed,
   user,
   me,
+  updateUserMutation,
+  fileInput,
+  onFileChange,
+  userAvatarUrl,
+  setUserAvatarUrl,
   //팔로잉 관련된 변수
   followingCount,
   setFollowingCount,
@@ -149,7 +138,6 @@ const ProfilePresenter = ({
     username을 수정하면 가져온 데이터에서도 username을 수정해둬야 한다.
     => A유저가 또 username을 B로 수정을 시도했을 때 Cancel버튼을 누르면 바뀐 username인 B가 들어가야 함.
   */
-  const [updateUserMutation] = useMutation(UPDATE_ACCOUNT);
 
   //username 변경
   const [isUsernameEdit, setIsUsernameEdit] = useState(false);
@@ -270,7 +258,25 @@ const ProfilePresenter = ({
     <>
       <Content>
         <ProfilePicArea>
-          <Avatar size="xxlg" url={user.avatar} isBorder={true} />
+          <NonDisplayFileInput
+            type="file"
+            accept="image/*"
+            ref={fileInput}
+            onChange={onFileChange}
+          />
+          <Avatar
+            size="xxlg"
+            url={userAvatarUrl}
+            isBorder={true}
+            onClick={() => {
+              if (user.isSelf) {
+                fileInput.current.click();
+                console.log("나임");
+              } else {
+                console.log("타 사용자");
+              }
+            }}
+          />
         </ProfilePicArea>
         <ProfileContent>
           <UserInfo>
