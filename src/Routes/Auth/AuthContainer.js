@@ -4,14 +4,15 @@ import useInput from "../../Hooks/useInput";
 import { useMutation } from "react-apollo-hooks";
 import { LOG_IN, CREATE_ACCOUNT, LOCAL_LOG_IN } from "./AuthQueries";
 import { toast } from "react-toastify";
+import { isDebugging } from "../../GlobalVariables";
 
 export const STATE_LOGIN = "logIn";
 export const STATE_SIGNUP = "signUp";
 
 export default () => {
   const [action, setAction] = useState(STATE_LOGIN);
-  const email = useInput("inegg.apps@gmail.com");
-  const password = useInput("");
+  const email = useInput(isDebugging ? "inegg.apps@gmail.com" : "test@test.com");
+  const password = useInput(isDebugging ? "1234" : "test@test.com");
   const passwordConfirm = useInput("");
   const username = useInput("");
   const firstName = useInput("");
