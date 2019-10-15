@@ -127,8 +127,8 @@ export default withRouter(({ match: { params: { username } }, history }) => {
   const [userAvatarUrl, setUserAvatarUrl] = useState(null);
 
   useEffect(() => {
-    if (userAvatarUrl === null && meData && meData.me && meData.me.avatar) {
-      setUserAvatarUrl(meData.me.avatar);
+    if (userAvatarUrl === null && userData && userData.seeUser && userData.seeUser.avatar) {
+      setUserAvatarUrl(userData.seeUser.avatar);
     }
   });
 
