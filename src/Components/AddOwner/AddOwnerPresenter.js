@@ -31,48 +31,76 @@ const Component = styled.div`
 const Title = styled.header`
   width: 100%;
   padding: 10px;
-  border-bottom: 1px solid ${props => props.theme.superLightGreyColor};
+  border-bottom: 1px solid ${props => props.theme.darkGreyColor};
   & h2 {
     font-weight: bold;
   }
 `;
 
 const ListContainer = styled.div`
-  display: flex;
   width: 100%;
   height: 363px;
+  display: flex;
   flex-direction: row;
-  flex-grow: 3;
+  & > div {
+    width: 50%;
+    h3 {
+      margin: 5px auto;
+      font-weight: bold;
+      color: ${props => props.theme.redColor};
+      width: 95%;
+      padding-bottom: 5px;
+      border-bottom: 1px solid ${props => props.theme.borderGreyColor};
+    }
+  }
 `;
 
 const Item = styled.div`
-  background-color: rgba(255, 255, 0, 0.3);
+  /* background-color: rgba(255, 255, 0, 0.3); */
   width: 100%;
   height: 44px;
   display: flex;
-  align-items: center;
-  justify-content: center;
   flex-direction: row;
+  cursor: pointer;
 
-  & > div:first-child {
+  & > div {
+    display: flex;
     justify-content: center;
-    flex-grow: 1;
+    flex-direction: column;
+    align-items: center;
+  }
+  & > div:first-child {
+    /* background-color: red; */
   }
   & > div:nth-child(2) {
-    flex-grow: 8;
+    /* background-color: yellow; */
+    align-items: flex-start;
+    flex-grow: 1;
+    padding-left: 10px;
+    strong {
+      font-weight: bold;
+    }
+  }
+  & > div:last-child {
+    /* background-color: green; */
+    label.MuiFormControlLabel-root {
+      margin: 0;
+    }
+  }
+
+  &:hover {
+    background-color: ${props => props.theme.superLightGreyColor};
   }
 `;
 
 const ListOfUsers = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-  flex-grow: 1;
-
+  width: 95%;
+  margin: 0 auto;
   & ul {
-    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
 `;
 
@@ -90,6 +118,7 @@ const ButtonArea = styled.div`
 const GreenCheckbox = withStyles({
   root: {
     color: "#888",
+    margin: "0",
     "&$checked": {
       color: "#ED4956"
     }
@@ -116,65 +145,67 @@ const AddOwnerPresenter = ({ onQualify, onClose, candidates, toggleCheck, chosen
           <h2>Add Owners</h2>
         </Title>
         <ListContainer>
-          <ListOfUsers>
-            <ul>
-              {candidates &&
-                candidates.map(c => (
-                  <li key={c.id}>
-                    <Item>
-                      <div>
-                        <Avatar size="md" url={c.avatar} />
-                      </div>
-                      <div>
-                        {c.username}
-                        {c.firstName}
-                        {c.lastName}
-                      </div>
-                      <div>
-                        <FormControlLabel
-                          control={
-                            <GreenCheckbox
-                              checked={c.isChecked}
-                              onClick={() => toggleCheck(c.username)}
-                              value=""
-                            />
-                          }
-                          label=""
-                        />
-                      </div>
-                    </Item>
-                  </li>
-                ))}
-            </ul>
-          </ListOfUsers>
-          <ListOfUsers>
-            <ul>
-              {chosenUser &&
-                chosenUser.map(c => (
-                  <li key={c.id}>
-                    <Item>
-                      <div>
-                        <Avatar size="md" url={c.avatar} />
-                      </div>
-                      <div>
-                        {c.username}
-                        {c.firstName}
-                        {c.lastName}
-                      </div>
-                      <div>
-                        <IconButton
-                          className={classes.button}
-                          aria-label="delete"
-                          onClick={() => toggleCheck(c.username)}
-                        >
-                          <DeleteIcon />
-                        </IconButton>
-                      </div>
-                    </Item>
-                  </li>
-                ))}
-            </ul>
-          </ListOfUsers>
+          <div>
+            <h3>List of my friends</h3>
+            <ListOfUsers>
+              <ul>
+                {candidates &&
+                  candidates.map(c => (
+                    <li key={c.id}>
+                      <Item onClick={() => toggleCheck(c.username)}>
+                        <div>
+                          <Avatar size="md" url={c.avatar} />
+                        </div>
+                        <div>
+                          <p>
+                            <strong>{c.username}</strong>
+                          </p>
+                          <p>
+                            {c.firstName}&nbsp;{c.lastName}
+                          </p>
+                        </div>
+                        <div>
+                          <FormControlLabel
+                            control={<GreenCheckbox checked={c.isChecked} value="" />}
+                            label=""
+                          />
+                        </div>
+                      </Item>
+                    </li>
+                  ))}
+              </ul>
+            </ListOfUsers>
+          </div>
+          <div>
+            <h3>Selected ones of my friends</h3>
+            <ListOfUsers>
+              <ul>
+                {chosenUser &&
+                  chosenUser.map(c => (
+                    <li key={c.id}>
+                      <Item onClick={() => toggleCheck(c.username)}>
+                        <div>
+                          <Avatar size="md" url={c.avatar} />
+                        </div>
+                        <div>
+                          <p>
+                            <strong>{c.username}</strong>
+                          </p>
+                          <p>
+                            {c.firstName}&nbsp;{c.lastName}
+                          </p>
+                        </div>
+                        <div>
+                          <IconButton className={classes.button} aria-label="delete">
+                            <DeleteIcon />
+                          </IconButton>
+                        </div>
+                      </Item>
+                    </li>
+                  ))}
+              </ul>
+            </ListOfUsers>
+          </div>
         </ListContainer>
         <ButtonArea>
           <ButtonRed text="Qualify" onClick={() => onQualify(chosenUser)} />
