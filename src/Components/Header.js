@@ -111,9 +111,6 @@ export default withRouter(({ history }) => {
         <GNBWrapper>
           <GNB>
             <GNBList>
-              <WriteIcon />
-            </GNBList>
-            <GNBList>
               <GNBNotificationIcon />
             </GNBList>
             <GNBList>
