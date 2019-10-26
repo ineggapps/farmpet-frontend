@@ -11,7 +11,7 @@ import EllipsisText from "react-ellipsis-text";
 import PostSquare from "../Components/PostSquare";
 import Avatar from "../Components/Avatar";
 import { Link } from "react-router-dom";
-import { PAGE_USER, PAGE_PET } from "../Components/Routes";
+import { PAGE_USER, PAGE_PET, PAGE_POST } from "../Components/Routes";
 import InstantEditText from "../Components/InstantEditText";
 import useInput from "../Hooks/useInput";
 import { ME, UPLOAD_API_AVATAR_NAME } from "../SharedQueries";
@@ -550,7 +550,9 @@ const Pet = withRouter(({ match: { params: { name } }, history }) => {
               feedData.seePetFeed.length > 0 &&
               feedData.seePetFeed.map(post => (
                 <li key={post.id}>
-                  <PostSquare post={post} />
+                  <Link to={`${PAGE_POST(post.id)}`}>
+                    <PostSquare post={post} />
+                  </Link>
                 </li>
               ))}
           </PostList>

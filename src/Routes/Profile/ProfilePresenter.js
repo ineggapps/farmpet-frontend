@@ -8,7 +8,7 @@ import PetAvatar from "../../Components/PetAvatar";
 import EllipsisText from "react-ellipsis-text";
 import PostSquare from "../../Components/PostSquare";
 import { Link } from "react-router-dom";
-import { PAGE_PET, PAGE_ACCOUNT, PAGE_USER } from "../../Components/Routes";
+import { PAGE_PET, PAGE_ACCOUNT, PAGE_USER, PAGE_POST } from "../../Components/Routes";
 import InstantEditText from "../../Components/InstantEditText";
 import useInput from "../../Hooks/useInput";
 
@@ -389,7 +389,9 @@ const ProfilePresenter = ({
             feed.length > 0 &&
             feed.map(post => (
               <li key={post.id}>
-                <PostSquare post={post} />
+                <Link to={`${PAGE_POST(post.id)}`}>
+                  <PostSquare post={post} />
+                </Link>
               </li>
             ))}
         </PostList>
