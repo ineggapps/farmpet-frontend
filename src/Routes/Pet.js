@@ -22,6 +22,9 @@ import { getAddress } from "../GlobalVariables";
 import { TOKEN } from "../Apollo/LocalState";
 import axios from "axios";
 import uuidv4 from "uuid/v4";
+import DeleteIcon from "@material-ui/icons/Delete";
+import IconButton from "@material-ui/core/IconButton";
+import { makeStyles } from "@material-ui/core/styles";
 
 const PET_PROFILE = gql`
   query seePet($name: String!) {
@@ -191,6 +194,12 @@ const PostList = styled.ul`
   }
 `;
 
+const Owner = styled.div`
+  position: relative;
+  & > *:nth-child(2) {
+  }
+`;
+
 const AddOwnerButton = styled.div`
   & svg {
     fill: #999999;
@@ -201,9 +210,20 @@ const AddOwnerButton = styled.div`
   cursor: pointer;
 `;
 
+const useStyles = makeStyles(theme => ({
+  button: {
+    margin: theme.spacing(1)
+  },
+  input: {
+    display: "none"
+  }
+}));
+
 const Container = styled.div``;
 
 const Pet = withRouter(({ match: { params: { name } }, history }) => {
+  const classes = useStyles();
+
   //펫 네임을 기반으로 pet프로필 조사
   const { data: meData, loading: meLoading } = useQuery(ME);
   const { data: petData, loading: petLoading } = useQuery(PET_PROFILE, {
@@ -503,16 +523,24 @@ const Pet = withRouter(({ match: { params: { name } }, history }) => {
         </Content>
         <Content>
           <OwnerList>
-            {petOwners &&
+            {meData &&
+              meData.me &&
+              meData.me.id &&
+              petOwners &&
               petOwners.length > 0 &&
-              petOwners.map(owner => (
+              petOwners.map((owner, idx) => (
                 <li key={owner.id}>
-                  <div key={owner.id}>
+                  <Owner key={owner.id}>
                     <Link to={`${PAGE_USER(owner.username)}`}>
                       <Avatar category={owner.category} size="lg" url={owner.avatar} />
                       <Username text={owner.username + ""} length={10} />
                     </Link>
-                  </div>
+                    {petOwners[0].id === meData.me.id && idx > 0 && (
+                      <IconButton className={classes.button} aria-label="delete">
+                        <DeleteIcon />
+                      </IconButton>
+                    )}
+                  </Owner>
                 </li>
               ))}
             {meData &&
