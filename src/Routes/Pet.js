@@ -96,6 +96,12 @@ const ADD_OWNERS = gql`
   }
 `;
 
+const DELETE_OWNER = gql`
+  mutation deleteOwner($petname: String!, $username: String!) {
+    deleteOwner(petname: $petname, username: $username)
+  }
+`;
+
 const ProfilePicArea = styled.div`
   width: 300px;
   display: flex;
@@ -252,6 +258,7 @@ const Pet = withRouter(({ match: { params: { name } }, history }) => {
 
   //add pet owner r
   const [addOwnersMutation] = useMutation(ADD_OWNERS);
+  const [deleteOwnerMutation] = useMutation(DELETE_OWNER);
   const [petOwners, setPetOwners] = useState();
   const [isAddOwnerMode, setIsAddOwnerMode] = useState(false);
   const { isShow, setIsShow } = useOverlay();
@@ -275,6 +282,19 @@ const Pet = withRouter(({ match: { params: { name } }, history }) => {
     });
     // }
     toggleOwnerMode();
+  };
+
+  const onDelete = async username => {
+    //연습용 코드 setPetOwners(petOwners.filter(p => p.id !== ownerId));
+    const result = await deleteOwnerMutation({
+      variables: { petname: name, username }
+    });
+    //소유자 추가 요청 쿼리문
+    if (result.data.deleteOwner) {
+      // console.log(result.data.addOwners);
+      candidateData.seeCandidate = petOwners.filter(p => p.username === username);
+      setPetOwners(petOwners.filter(p => p.username !== username));
+    }
   };
 
   const onClose = async () => {
@@ -536,7 +556,11 @@ const Pet = withRouter(({ match: { params: { name } }, history }) => {
                       <Username text={owner.username + ""} length={10} />
                     </Link>
                     {petOwners[0].id === meData.me.id && idx > 0 && (
-                      <IconButton className={classes.button} aria-label="delete">
+                      <IconButton
+                        className={classes.button}
+                        aria-label="delete"
+                        onClick={() => onDelete(owner.username)}
+                      >
                         <DeleteIcon />
                       </IconButton>
                     )}
