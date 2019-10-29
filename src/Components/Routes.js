@@ -19,6 +19,7 @@ export const PAGE_ACCOUNT = username => `/${username}`;
 const LoggedInRoutes = () => (
   <Switch>
     <Route path="/search" component={Search} />
+    <Route path="/search/:query" component={Search} />
     <Route path="/pet/create" component={PetCreate} />
     <Route path="/pet/:name" component={Pet} />
     <Route path="/post/:postId" component={Post} />
