@@ -1,30 +1,37 @@
-import React, { useState, useEffect, useRef } from "react";
+import React from "react";
 import Helmet from "react-helmet";
 import { withRouter } from "react-router-dom";
 import styled from "styled-components";
 import { gql } from "apollo-boost";
-import { useQuery, useMutation } from "react-apollo-hooks";
+import { useQuery } from "react-apollo-hooks";
 import MainLoader from "../Components/MainLoader";
 import PetAvatar from "../Components/PetAvatar";
-import FatText from "../Components/FatText";
-import EllipsisText from "react-ellipsis-text";
 import PostSquare from "../Components/PostSquare";
-import Avatar from "../Components/Avatar";
 import { Link } from "react-router-dom";
-import { PAGE_USER, PAGE_PET, PAGE_POST } from "../Components/Routes";
-import InstantEditText from "../Components/InstantEditText";
-import useInput from "../Hooks/useInput";
-import { ME, UPLOAD_API_AVATAR_NAME } from "../SharedQueries";
-import { PlusButtonIcon } from "../Components/Icons";
-import AddOwner from "../Components/AddOwner";
-import { useOverlay } from "../OverlayContext";
-import { getAddress } from "../GlobalVariables";
-import { TOKEN } from "../Apollo/LocalState";
-import axios from "axios";
-import uuidv4 from "uuid/v4";
-import DeleteIcon from "@material-ui/icons/Delete";
-import IconButton from "@material-ui/core/IconButton";
-import { makeStyles } from "@material-ui/core/styles";
+import { ME } from "../SharedQueries";
+import { PAGE_POST } from "../Components/Routes";
+
+const SEARCH_POST = gql`
+  query searchPost($query: String!) {
+    searchPost(query: $query) {
+      id
+      user {
+        id
+        username
+        avatar
+      }
+      caption
+      files {
+        id
+        url
+        thumbnail
+        thumbnail_large
+      }
+      commentCount
+      likeCount
+    }
+  }
+`;
 
 const ProfilePicArea = styled.div`
   width: 300px;
@@ -63,11 +70,19 @@ const Content = styled.div`
   width: 100%;
   display: flex;
   margin-bottom: 44px;
+  &.narrowMargin {
+    margin-bottom: 22px;
+  }
 `;
 
 const Contents = styled.div`
   display: flex;
   flex-direction: row;
+`;
+
+const SubTitle = styled.h3`
+  font-weight: bold;
+  color: ${props => props.theme.darkGreyColor};
 `;
 
 const PetInfo = styled.div`
@@ -81,39 +96,6 @@ const PetInfo = styled.div`
   }
 `;
 
-const PetStatisticsList = styled.ul`
-  display: flex;
-  margin-top: 20px;
-  & li:not(:last-child) {
-    margin-right: 30px;
-  }
-`;
-
-const OwnerList = styled.ul`
-  display: grid;
-  grid-template-columns: repeat(10, 3fr);
-  grid-gap: 10px;
-  & li {
-    & > div {
-      flex-direction: column;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-    }
-    & span {
-      min-width: 100%;
-    }
-    width: 90px;
-    max-width: 90px;
-  }
-`;
-const Username = styled(EllipsisText)`
-  margin-top: 10px;
-  font-size: 0.95em;
-  user-select: none !important;
-`;
-
 const PostList = styled.ul`
   display: grid;
   grid-template-columns: repeat(3, 3fr);
@@ -124,28 +106,16 @@ const PostList = styled.ul`
   }
 `;
 
-const Owner = styled.div`
-  position: relative;
-  & > *:nth-child(2) {
-  }
-`;
-
-const AddOwnerButton = styled.div`
-  & svg {
-    fill: #999999;
-  }
-  &:hover svg {
-    fill: #777777;
-  }
-  cursor: pointer;
-`;
-
 const Container = styled.div``;
 
 const Pet = withRouter(({ match: { params: { query } }, history }) => {
+  const { data: searchData, loading: searchLoading } = useQuery(SEARCH_POST, {
+    variables: { query },
+    fetchPolicy: "cache-and-network"
+  });
   const { data: meData, loading: meLoading } = useQuery(ME, { fetchPolicy: "cache-and-network" });
 
-  const RealContents = meData && meData.me && (
+  const RealContents = meData && meData.me && searchData && searchData.searchPost && (
     <Container>
       <Content>
         <ProfilePicArea>
@@ -162,19 +132,27 @@ const Pet = withRouter(({ match: { params: { query } }, history }) => {
           <PetInfo>
             <h2>#{query}</h2>
           </PetInfo>
-          <PetStatisticsList>
-            <li>Recent Posts</li>
-          </PetStatisticsList>
+          <PetInfo>
+            <h2>
+              {searchData && searchData.searchPost && searchData.searchPost.length === 1
+                ? `${searchData.searchPost.length} post`
+                : `${searchData.searchPost.length} posts`}
+            </h2>
+          </PetInfo>
         </ProfileContent>
+      </Content>
+      <Content className="narrowMargin">
+        <SubTitle>Recent Posts</SubTitle>
       </Content>
       <Content>
         <PostList>
-          <li key={"post.id"}>
-            {/* <Link to={`${PAGE_POST(post.id)}`}> */}
-            {/* <PostSquare post={post} /> */}
-            {/* </Link> */}
-            postSquare
-          </li>
+          {searchData.searchPost.map(post => (
+            <li key={post.id}>
+              <Link to={`${PAGE_POST(post.id)}`}>
+                <PostSquare post={post} />
+              </Link>
+            </li>
+          ))}
         </PostList>
       </Content>
     </Container>
