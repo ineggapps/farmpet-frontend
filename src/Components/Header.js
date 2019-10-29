@@ -94,7 +94,7 @@ export default withRouter(({ history }) => {
 
   const onSearchSubmit = e => {
     e.preventDefault();
-    history.push(`/search?term=${search.value}`);
+    history.push(`/search/${search.value}`);
   };
 
   return (
