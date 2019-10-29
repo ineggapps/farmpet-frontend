@@ -76,6 +76,10 @@ const SearchInput = styled(Input)`
   }
 `;
 
+const SearchButton = styled.div`
+  cursor: pointer;
+`;
+
 // const ME = gql`
 //   {
 //     me {
@@ -105,8 +109,10 @@ export default withRouter(({ history }) => {
         <SearchBoxWrapper>
           <form onSubmit={onSearchSubmit}>
             <SearchInput placeholder="Search something..." {...search} />
-            <SearchIcon />
           </form>
+          <SearchButton onClick={onSearchSubmit}>
+            <SearchIcon />
+          </SearchButton>
         </SearchBoxWrapper>
         <GNBWrapper>
           <GNB>
@@ -114,10 +120,12 @@ export default withRouter(({ history }) => {
               <GNBNotificationIcon />
             </GNBList>
             <GNBList>
-              {!meLoading && meData && meData.me && (
+              {!meLoading && meData && meData.me ? (
                 <Link to={PAGE_ACCOUNT(meData.me.username)}>
                   <ProfileIcon />
                 </Link>
+              ) : (
+                <ProfileIcon />
               )}
             </GNBList>
           </GNB>
