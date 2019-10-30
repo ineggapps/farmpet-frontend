@@ -115,13 +115,25 @@ const Pet = withRouter(({ match: { params: { query } }, history }) => {
   });
   const { data: meData, loading: meLoading } = useQuery(ME, { fetchPolicy: "cache-and-network" });
 
+  let postIndex = 0;
+  let fileIndex = 0;
+  if (searchData && searchData.searchPost && searchData.searchPost.length > 0) {
+    postIndex = Math.floor(Math.random() * searchData.searchPost.length);
+    fileIndex = Math.floor(Math.random() * searchData.searchPost[postIndex].files.length);
+    console.log(searchData.searchPost, "SearchPost", postIndex, fileIndex);
+  }
+
   const RealContents = meData && meData.me && searchData && searchData.searchPost && (
     <Container>
       <Content>
         <ProfilePicArea>
           <PetAvatar
             size="xxlg"
-            url={""} /*petData.seePet.avatar*/
+            url={
+              searchData && searchData.searchPost && searchData.searchPost.length > 0
+                ? searchData.searchPost[postIndex].files[fileIndex].thumbnail_large
+                : ""
+            }
             isBorder={true}
             onClick={e => {
               console.log("PetAvatar Clicked");
@@ -153,6 +165,11 @@ const Pet = withRouter(({ match: { params: { query } }, history }) => {
               </Link>
             </li>
           ))}
+          {searchData.searchPost.length === 0 && (
+            <li>
+              <PostSquare post={""} />
+            </li>
+          )}
         </PostList>
       </Content>
     </Container>
