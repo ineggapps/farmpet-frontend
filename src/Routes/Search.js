@@ -106,6 +106,11 @@ const PostList = styled.ul`
   }
 `;
 
+const HiddenWrapper = styled.div`
+  visibility: hidden;
+  background-color: red;
+`;
+
 const Container = styled.div``;
 
 const Pet = withRouter(({ match: { params: { query } }, history }) => {
@@ -167,7 +172,9 @@ const Pet = withRouter(({ match: { params: { query } }, history }) => {
           ))}
           {searchData.searchPost.length === 0 && (
             <li>
-              <PostSquare post={""} />
+              <HiddenWrapper>
+                <PostSquare post={""} />
+              </HiddenWrapper>
             </li>
           )}
         </PostList>
