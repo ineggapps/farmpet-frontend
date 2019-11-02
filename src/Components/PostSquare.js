@@ -1,7 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import { SpeechBubbleIcon, HeartIcon } from "./Icons";
+import { SpeechBubbleIcon, HeartIcon, PetIcon } from "./Icons";
+import { getAddress } from "../GlobalVariables";
 
 const Container = styled.div`
   cursor: pointer;
@@ -11,6 +12,7 @@ const Container = styled.div`
   background-image: url(${props => props.background});
   background-size: cover;
   background-position: center;
+  background-color: ${props => props.theme.lightGreyColor};
 `;
 
 const Overlay = styled.div`
@@ -44,7 +46,9 @@ const ToolTip = styled.div`
 
 const PostSquare = ({ post }) => {
   const background =
-    post && post.files && post.files.length > 0 ? post.files[0].thumbnail_large : null;
+    post && post.files && post.files.length > 0
+      ? post.files[0].thumbnail_large
+      : `${getAddress()}upload/noimage_thumbnail_300.png`;
   return (
     <Container background={background}>
       <Overlay>
