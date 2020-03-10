@@ -1,12 +1,13 @@
 import React from "react";
+import { gql } from "apollo-boost";
 import { Link, withRouter } from "react-router-dom";
 import styled from "styled-components";
 import Logo from "./Logo";
-import { WriteIcon, GNBNotificationIcon, SearchIcon, ProfileIcon } from "./Icons";
+import { WriteIcon, GNBNotificationIcon, SearchIcon, ProfileIcon, LogoutIcon } from "./Icons";
 import Input from "./Input";
 import useInput from "../Hooks/useInput";
 import { PAGE_ACCOUNT } from "./Routes";
-import { useQuery } from "react-apollo-hooks";
+import { useQuery, useMutation } from "react-apollo-hooks";
 import { ME } from "../SharedQueries";
 // import { gql } from "apollo-boost";
 // import { useQuery } from "react-apollo-hooks";
@@ -88,9 +89,20 @@ const SearchButton = styled.div`
 //   }
 // `;
 
+export const LOCAL_LOG_OUT = gql`
+  mutation logUserOut($cache: String) {
+    logUserOut(cache: $cache) @client
+  }
+`;
 export default withRouter(({ history }) => {
+  const [localLogOutMutation] = useMutation(LOCAL_LOG_OUT, {});
   const search = useInput("");
   const { data: meData, loading: meLoading } = useQuery(ME);
+
+  const onClick = async e => {
+    e.preventDefault();
+    await localLogOutMutation();
+  };
 
   const onSearchSubmit = e => {
     e.preventDefault();
@@ -127,6 +139,11 @@ export default withRouter(({ history }) => {
               ) : (
                 <ProfileIcon />
               )}
+            </GNBList>
+            <GNBList>
+              <a href="#" onClick={e => onClick(e)}>
+                <LogoutIcon />
+              </a>
             </GNBList>
           </GNB>
         </GNBWrapper>
