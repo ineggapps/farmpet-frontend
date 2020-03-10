@@ -181,7 +181,7 @@ const ProfilePresenter = ({
           firstName: firstNameInput.value
         }
       });
-      if (!result.updateAccount) {
+      if (!result.data.updateAccount) {
         throw Error();
       }
       me.firstName = firstNameInput.value;
@@ -209,7 +209,7 @@ const ProfilePresenter = ({
           lastName: lastNameInput.value
         }
       });
-      if (!result.updateAccount) {
+      if (!result.data.updateAccount) {
         throw Error();
       }
       me.lastName = lastNameInput.value;
@@ -237,7 +237,7 @@ const ProfilePresenter = ({
           bio: bioInput.value
         }
       });
-      if (!result.updateAccount) {
+      if (!result.data.updateAccount) {
         throw Error();
       }
       me.bio = bioInput.value;

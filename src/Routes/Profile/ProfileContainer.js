@@ -77,116 +77,125 @@ const UPDATE_ACCOUNT = gql`
   }
 `;
 
-export default withRouter(({ match: { params: { username } }, history }) => {
-  const { data: feedData, loading: feedLoading } = useQuery(SEE_USER_FEED, {
-    variables: { username }
-  });
-  const { data: userData, loading: userLoading } = useQuery(SEE_USER, { variables: { username } });
-  const { data: meData, loading: meLoading } = useQuery(ME);
-  const [updateUserMutation] = useMutation(UPDATE_ACCOUNT);
+export default withRouter(
+  ({
+    match: {
+      params: { username }
+    },
+    history
+  }) => {
+    const { data: feedData, loading: feedLoading } = useQuery(SEE_USER_FEED, {
+      variables: { username }
+    });
+    const { data: userData, loading: userLoading } = useQuery(SEE_USER, {
+      variables: { username }
+    });
+    const { data: meData, loading: meLoading } = useQuery(ME);
+    const [updateUserMutation] = useMutation(UPDATE_ACCOUNT);
 
-  //user avatar
-  const fileInput = useRef(null);
-  const onFileChange = () => {
-    handleSubmit();
-  };
-  const handleSubmit = async () => {
-    console.log("파일 전송 시작");
-    const image = fileInput.current.files[0];
-    if (image !== undefined) {
-      console.log(image, "이미지");
-      const formData = new FormData();
-      formData.append(UPLOAD_API_AVATAR_NAME, image);
-      const options = {
-        method: "POST",
-        url: getAddress("api/upload/user"),
-        headers: {
-          "content-type": "multipart/form-data",
-          Authorization: `Bearer ${localStorage.getItem(TOKEN)}`
-        },
-        data: formData
-      };
-      const { data } = await axios(options);
-      console.log("axios 수신", data);
-      if (data.url !== undefined && data.url !== null) {
-        const result = await updateUserMutation({
-          variables: {
-            avatar: data.url
+    //user avatar
+    const fileInput = useRef(null);
+    const onFileChange = () => {
+      handleSubmit();
+    };
+    const handleSubmit = async () => {
+      console.log("파일 전송 시작");
+      const image = fileInput.current.files[0];
+      if (image !== undefined) {
+        console.log(image, "이미지");
+        const formData = new FormData();
+        formData.append(UPLOAD_API_AVATAR_NAME, image);
+        const options = {
+          method: "POST",
+          url: getAddress("api/upload/user"),
+          headers: {
+            "content-type": "multipart/form-data",
+            Authorization: `Bearer ${localStorage.getItem(TOKEN)}`
+          },
+          data: formData
+        };
+        const { data } = await axios(options);
+        console.log("axios 수신", data);
+        if (data.url !== undefined && data.url !== null) {
+          const result = await updateUserMutation({
+            variables: {
+              avatar: data.url
+            }
+          });
+          console.log("result 데이터 수신", result.data.updateAccount);
+          if (result.data.updateAccount) {
+            setUserAvatarUrl(`${data.url}?tid=${uuidv4()}`);
+          } else {
+            console.log("Avatar Image wasn't able to be reflected.");
           }
-        });
-        console.log(result.data.updateAccount);
-        if (result.data.updateAccount) {
-          setUserAvatarUrl(`${data.url}?tid=${uuidv4()}`);
-        } else {
-          console.log("Avatar Image wasn't able to be reflected.");
+          //쿼리 갱신
         }
-        //쿼리 갱신
       }
-    }
-  };
-  const [userAvatarUrl, setUserAvatarUrl] = useState(null);
+    };
+    const [userAvatarUrl, setUserAvatarUrl] = useState(null);
 
-  useEffect(() => {
-    if (userAvatarUrl === null && userData && userData.seeUser && userData.seeUser.avatar) {
-      setUserAvatarUrl(userData.seeUser.avatar);
-    }
-  });
+    useEffect(() => {
+      if (userAvatarUrl === null && userData && userData.seeUser && userData.seeUser.avatar) {
+        setUserAvatarUrl(userData.seeUser.avatar);
+      }
+    });
 
-  //팔로 시 fake 산정을 위한 useState값 전달 (널체크가 너무 길다)
-  const [followingCount, setFollowingCount] = useState(
-    userData && userData.seeUser && userData.seeUser.followingCount
-      ? userData.seeUser.followingCount
-      : 0
-  );
-  const [followersCount, setFollowersCount] = useState(
-    userData && userData.seeUser && userData.seeUser.followersCount
-      ? userData.seeUser.followersCount
-      : 0
-  );
-  const [isFollowing, setIsFollowing] = useState(
-    userData && userData.seeUser && userData.seeUser.isFollowing
-      ? userData.seeUser.isFollowing
-      : false
-  );
-
-  const onFollowClick = () => {
-    //팔로 언팔로 토글 이벤트
-    setIsFollowing(!isFollowing);
-  };
-
-  if (
-    !feedLoading &&
-    !userLoading &&
-    !meLoading &&
-    feedData &&
-    feedData.seeUserFeed &&
-    userData &&
-    userData.seeUser &&
-    meData &&
-    meData.me
-  ) {
-    console.log(userData.seeUser, feedData.seeUserFeed);
-    return (
-      <ProfilePresenter
-        feed={feedData.seeUserFeed}
-        user={userData.seeUser}
-        me={meData.me}
-        updateUserMutation={updateUserMutation}
-        fileInput={fileInput}
-        onFileChange={onFileChange}
-        userAvatarUrl={userAvatarUrl}
-        setUserAvatarUrl={setUserAvatarUrl}
-        //팔로 설정 관련
-        followingCount={followingCount}
-        setFollowingCount={setFollowingCount}
-        followersCount={followersCount}
-        setFollowersCount={setFollowersCount}
-        isFollowing={isFollowing}
-        onFollowClick={onFollowClick}
-        history={history}
-      />
+    //팔로 시 fake 산정을 위한 useState값 전달 (널체크가 너무 길다)
+    const [followingCount, setFollowingCount] = useState(
+      userData && userData.seeUser && userData.seeUser.followingCount
+        ? userData.seeUser.followingCount
+        : 0
     );
-  } else {
-    return <MainLoader />;
+    const [followersCount, setFollowersCount] = useState(
+      userData && userData.seeUser && userData.seeUser.followersCount
+        ? userData.seeUser.followersCount
+        : 0
+    );
+    const [isFollowing, setIsFollowing] = useState(
+      userData && userData.seeUser && userData.seeUser.isFollowing
+        ? userData.seeUser.isFollowing
+        : false
+    );
+
+    const onFollowClick = () => {
+      //팔로 언팔로 토글 이벤트
+      setIsFollowing(!isFollowing);
+    };
+
+    if (
+      !feedLoading &&
+      !userLoading &&
+      !meLoading &&
+      feedData &&
+      feedData.seeUserFeed &&
+      userData &&
+      userData.seeUser &&
+      meData &&
+      meData.me
+    ) {
+      console.log(userData.seeUser, feedData.seeUserFeed);
+      return (
+        <ProfilePresenter
+          feed={feedData.seeUserFeed}
+          user={userData.seeUser}
+          me={meData.me}
+          updateUserMutation={updateUserMutation}
+          fileInput={fileInput}
+          onFileChange={onFileChange}
+          userAvatarUrl={userAvatarUrl}
+          setUserAvatarUrl={setUserAvatarUrl}
+          //팔로 설정 관련
+          followingCount={followingCount}
+          setFollowingCount={setFollowingCount}
+          followersCount={followersCount}
+          setFollowersCount={setFollowersCount}
+          isFollowing={isFollowing}
+          onFollowClick={onFollowClick}
+          history={history}
+        />
+      );
+    } else {
+      return <MainLoader />;
+    }
   }
-});
+);
