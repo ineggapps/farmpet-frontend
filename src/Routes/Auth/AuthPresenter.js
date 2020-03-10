@@ -22,8 +22,9 @@ const StateChanger = styled.div`
   z-index: 100;
 `;
 
-const Label = styled.span`
+const Label = styled.p`
   color: ${props => props.theme.whiteColor};
+  margin-bottom: 20px;
 `;
 
 const Link = styled(Label)`
@@ -54,6 +55,7 @@ const LogInComponents = ({ email, password, onSubmit }) => (
       <title>Log In | Farmpet</title>
     </Helmet>
     <Form>
+      <Label>로그인 버튼을 누르세요.</Label>
       <form onSubmit={onSubmit}>
         <Input type="email" required placeholder="Email Address" {...email} />
         <Input type="password" required placeholder="Password" {...password} />
@@ -82,6 +84,7 @@ const SignUpComponents = ({
       <title>Sign Up | Farmpet</title>
     </Helmet>
     <Form>
+      <Label>기본 계정(test)로 로그인하세요.</Label>
       <form onSubmit={onSubmit}>
         <Input type="email" required placeholder="Email Address" {...email} />
         <Input type="password" required placeholder="Password" {...password} />
