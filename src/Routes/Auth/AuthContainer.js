@@ -11,8 +11,8 @@ export const STATE_SIGNUP = "signUp";
 
 export default () => {
   const [action, setAction] = useState(STATE_LOGIN);
-  const email = useInput(isDebugging ? "inegg.apps@gmail.com" : "test@test.com");
-  const password = useInput(isDebugging ? "1234" : "test@test.com");
+  const email = useInput(isDebugging ? "guest@inegg.com" : "guest@inegg.com");
+  const password = useInput(isDebugging ? "12341234" : "12341234");
   const passwordConfirm = useInput("");
   const username = useInput("");
   const firstName = useInput("");
@@ -24,7 +24,7 @@ export default () => {
     //   toast.success(confirmAccountMutation);
     //   console.log(confirmAccountMutation);
     // },
-    variables: { email: email.value, password: password.value }
+    variables: { email: email.value, password: password.value },
   });
 
   const [createAccountMutation] = useMutation(CREATE_ACCOUNT, {
@@ -36,20 +36,20 @@ export default () => {
       password: password.value,
       username: username.value,
       firstName: firstName.value,
-      lastName: lastName.value
-    }
+      lastName: lastName.value,
+    },
   });
 
   const [localLogInMutation] = useMutation(LOCAL_LOG_IN, {});
 
-  const onSubmit = async e => {
+  const onSubmit = async (e) => {
     e.preventDefault();
     if (action === STATE_LOGIN) {
       if (email.value !== "" && password.value !== "") {
         try {
           const result = await confirmAccountMutation();
           const {
-            data: { confirmAccount: token }
+            data: { confirmAccount: token },
           } = result;
           if (token !== "" && token !== undefined) {
             localLogInMutation({ variables: { token } });
